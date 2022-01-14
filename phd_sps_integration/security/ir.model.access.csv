@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_phd_sps_commerce_file,phd_sps_commerce_file,phd_sps_integration.model_phd_sps_commerce_file,,1,1,1,1
+access_edi_transaction,edi_transaction,phd_sps_integration.model_edi_transaction,base.group_user,1,1,1,1
+access_edi_transaction_line,edi_transaction_line,phd_sps_integration.model_edi_transaction_line,base.group_user,1,1,1,1
+access_sps_date_qualifier,sps_date_qualifier,phd_sps_integration.model_sps_date_qualifier,base.group_user,1,1,1,1
+access_edi_transaction_setting,edi_transaction_setting,phd_sps_integration.model_edi_transaction_setting,,1,1,1,1
+access_edi_vendor_line_status_code,edi_vendor_line_status_code,phd_sps_integration.model_edi_vendor_line_status_code,,1,1,1,1

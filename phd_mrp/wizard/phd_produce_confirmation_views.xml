@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_produce_confirmation_form_view" model="ir.ui.view">
+        <field name="name">PHD Produce Confirmation</field>
+        <field name="model">phd.produce.confirmation</field>
+        <field name="arch" type="xml">
+            <form string="Produce">
+                <field name="currency_id" invisible="1"/>
+                <div class="alert alert-warning" role="alert" style="margin-bottom:0px;">
+                    The PO unit price used for this production order is
+                    <strong>
+                        <field name="extra_cost" widget="monetary" options="{'currency_field': 'currency_id'}"
+                               readonly="1"/>
+                    </strong>
+                    <i>. Please confirm it or update it on the purchase order.</i>
+                </div>
+                <footer>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary"
+                            context="{'is_confirm': True}"/>
+                    <button string="Discard to update PO price" class="btn-default btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

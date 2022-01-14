@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="mrp assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/phd_report_dashboard/static/src/scss/dashboard.scss"/>
+            <script type="text/javascript" src="/phd_report_dashboard/static/src/js/phd_report_dashboard.js"></script>
+            <script type="text/javascript" src="/phd_report_dashboard/static/src/js/phd_report_dashboard_header.js"></script>
+        </xpath>
+   </template>
+</odoo>

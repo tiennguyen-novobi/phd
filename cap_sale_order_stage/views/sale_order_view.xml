@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--  Inherit Sale Order Form view to add stage and main product fields -->
+    <record id="view_order_form_inherit_cap_stage" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.cap.stage</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="priority">13</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="main_product_id"/>
+                <field name="stage_id" widget="radio"/>
+                <field name="main_product_stage_ids" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--  Inherit Sale Order Form view to add stage and main product fields -->
+    <record id="view_order_tree_inherit_cap_stage" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.cap.stage</field>
+        <field name="model">sale.order</field>
+        <field name="priority">2</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="main_product_id" string="Cap Main Product"/>
+                <field name="stage_id" string="Cap Deal Stage"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--  Inherit Sale Order search view to add filters and group -->
+    <record id="cap_view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.cap.stage</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="priority">13</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']" position="after">
+                <field name="main_product_id"/>
+                <field name="stage_id"/>
+            </xpath>
+            <xpath expr="//filter[@name='salesperson']" position="after">
+                <group expand="0" string="Group By">
+                    <filter string="Main Product" name="main_product" domain="[]" context="{'group_by':'main_product_id'}"/>
+                    <filter string="Stage" name="stage" domain="[]" context="{'group_by':'stage_id'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

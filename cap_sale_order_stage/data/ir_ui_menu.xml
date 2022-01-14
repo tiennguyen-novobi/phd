@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MANAGE 'IR.UI.MENU' DATA -->
+    <data noupdate="0">
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- 'SALE.ORDER.STAGE' MENUS & MENU ACTIONS -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <!-- ACTION OF 'SALES/CONFIGURATION/DEAL STAGES' MENU -->
+        <record model="ir.actions.act_window" id="sale_order_stage_action_menu_01">
+            <field name="name">Deal Stages</field>
+            <field name="res_model">sale.order.stage</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- 'SALES/CONFIGURATION/DEAL STAGES' MENU
+        <record model="ir.ui.menu" id="sale_order_stage_menu_01">
+            <field name="name">Deal Stages</field>
+            <field name="parent_id" ref="sale.menu_sale_config"/>
+            <field name="sequence">4</field>
+            <field name="action" ref="cap_sale_order_stage.sale_order_stage_action_menu_01"/>
+        </record>
+ -->
+    </data>
+</odoo>

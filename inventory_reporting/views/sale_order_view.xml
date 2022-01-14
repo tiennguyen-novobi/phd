@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--print_report method is called from server action-->
+    <record id="action_sale_report" model="ir.actions.server">
+        <field name="name">SO Open Order Report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.print_report()
+        </field>
+    </record>
+
+    <record id="action_sale_report_excel" model="ir.actions.server">
+        <field name="name">SO Open Order Report Excel</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.print_excel_report()
+        </field>
+    </record>
+
+    <record id="action_sale_line_item_report" model="ir.actions.server">
+        <field name="name">SO Line Item Report</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.print_line_item_report()
+        </field>
+    </record>
+
+    <record id="action_sale_line_item_report_excel" model="ir.actions.server">
+        <field name="name">SO Line Item Report Excel</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.print_line_item_excel_report()
+        </field>
+    </record>
+
+    <!--Menu to Print Sale Order - Open Order Report-->
+    <menuitem id="menu_sale_report" name="SO Open Order Report"
+              parent="menu_inv_report" sequence="3" action="action_sale_report"/>
+
+    <menuitem id="menu_sale_report_excel" name="SO Open Order Excel Report"
+              parent="menu_inv_report" sequence="4" action="action_sale_report_excel"/>
+
+    <!--Menu to Print Sale Line Item Report-->
+    <menuitem id="menu_sale_line_item_report" name="SO Line Item Report"
+              parent="menu_inv_report" sequence="5" action="action_sale_line_item_report"/>
+
+    <menuitem id="menu_sale_line_item_report_excel" name="SO Line Item Excel Report"
+              parent="menu_inv_report" sequence="6" action="action_sale_line_item_report_excel"/>
+</odoo>

@@ -1,0 +1,97 @@
+<odoo>
+    <data>
+        <template id="forecasted_footer" inherit_id="web.internal_layout" primary="True">
+            <xpath expr="//span[@t-esc='company.name']" position="replace"/>
+            <xpath expr="//div[hasclass('header')]" position="replace">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <div class="text-muted" style="width:100%;">
+                        <div style="float:left;">
+                            For internal use only: <span
+                                t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                        </div>
+                        <div style="float:right;">
+                            Page: <span class="page"/> / <span class="topage"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="forecasted_filter_info_template" inherit_id="account_reports.filter_info_template" primary="True">
+            <xpath expr="//div[hasclass('print_only')]//div[hasclass('col-4')]" position="replace"/>
+        </template>
+
+        <template id="forecasted_main_template" inherit_id="account_reports.main_template" primary="True">
+            <xpath expr="//div[hasclass('print_only')]" position="after">
+                <t t-if="model._name == 'phd.forecasted.quantity' or model._name == 'phd.negative.report'">
+                    <div class="o_account_reports_filter_input_wrapper no_print">
+                        <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search"
+                                                    title="Search"></i></span>
+                        <input class="o_account_reports_filter_input" type="text" placeholder="Search Product"/>
+                    </div>
+                </t>
+            </xpath>
+            <xpath expr="//div[hasclass('o_account_reports_header')]" position="attributes">
+                <attribute name="class">o_account_reports_header text-center</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_account_reports_header')]/div[hasclass('print_only')]//h2"
+                   position="replace">
+                <h2 class="page mt16" style="font-family:arial;font-size:16px;">
+                    <span style="font-size:12px;"><t t-esc="report.get('company_name')"/></span>
+                    <br/>
+                    <span class="font-weight-bold"><t t-esc="report.get('name')"/></span>
+                    <t t-if="location">
+                        <br/>
+                        <span class="font-weight-bold"><t t-esc="location"/></span>
+                    </t>
+                </h2>
+            </xpath>
+            <xpath expr="//div[hasclass('o_account_reports_header')]/t[@t-call='account_reports.filter_info_template']"
+                   position="replace">
+                <t t-call="phd_stock.forecasted_filter_info_template"/>
+            </xpath>
+        </template>
+
+        <template id="search_template_forecasted" inherit_id="account_reports.search_template" primary="True">
+            <!--            <xpath expr="//div[hasclass('o_account_reports_filter_date')]" position="attributes">-->
+            <!--                <attribute name="class">btn-group o_dropdown o_account_reports_filter_date invisible</attribute>-->
+            <!--            </xpath>-->
+        </template>
+
+        <template id="line_template_forecasted_quantity" inherit_id="account_reports.line_template" primary="True">
+            <xpath expr="//t[@t-as='column']" position="replace">
+                <t t-foreach="line.get('columns')" t-as="column">
+                    <t t-if="column_index == 0 and line.get('level') != 2 and line.get('is_reference',False)">
+                        <t t-set="hierarchies_enabled" t-value="len(lines.get('columns_header', [])) > 1"/>
+                        <td t-att-class="'o_account_report_line ' + (column.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or '')) + ('' if hierarchies_enabled else ' o_account_report_line_indent')"
+                            t-att-style="column.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
+                            <span class="o_account_report_column_value" t-att-title="column.get('title')">
+                                <!--                                <t t-if=""-->
+                                <a t-att-data-record-id="line['record_id']" t-att-data-record-model="line['model']"
+                                   t-att-action="line.get('action', 'execute_action')" style="color: #008784;">
+                                    <t t-esc="column.get('name')"/>
+                                </a>
+                                <t t-if="line.get('mrp_record_id', False)">
+                                    <a t-att-data-record-id="line['mrp_record_id']" t-att-data-record-model="line['mrp_model']"
+                                       t-att-action="line.get('action', 'execute_action')" style="color: #008784;">
+                                        <t t-esc="line.get('mrp_name')"/>
+                                    </a>
+                                </t>
+                            </span>
+                        </td>
+                    </t>
+                    <t t-else="">
+                        <t t-set="hierarchies_enabled" t-value="len(lines.get('columns_header', [])) > 1"/>
+                        <td t-att-class="'o_account_report_line ' + (column.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or '')) + ('' if hierarchies_enabled else ' o_account_report_line_indent')"
+                            t-att-style="column.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
+                            <span class="o_account_report_column_value" t-att-title="column.get('title')">
+                                <t t-esc="column.get('name')"/>
+                            </span>
+                        </td>
+                    </t>
+                    <t t-set="column_index" t-value="column_index + 1"/>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

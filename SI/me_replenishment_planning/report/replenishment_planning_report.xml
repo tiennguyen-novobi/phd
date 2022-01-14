@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_replenishment_planning">
+        <div class="container-fluid o_mrp_bom_report_page" style="margin:0; padding: 0">
+            <t t-if="data">
+                <div class="col-lg-12" style="padding-right: 0; padding-left: 0;">
+                    <div class="mt16">
+                        <table width="100%" class="o_mrp_bom_expandable">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 200px;" title="Internal Reference">Internal Reference
+                                        <span class="fa fa-fw o_mrp_bom_unfoldable fa-expand" role="img" aria-label="Unfold" title="Unfold" id="fold-all-button" style="float: right;"></span>
+                                    </th>
+                                    <th style="max-width: 250px;" title="Product Name">Product</th>
+                                    <t t-if="is_multi_wh">
+                                        <th style="max-width: 100px;" title="Warehouse">Warehouse</th>
+                                    </t>
+                                    <th style="max-width: 250px;" title="The BoM with the highest priority will be set as default">BoM</th>
+                                    <th class="text-right" name="product_qty" title="The currently available quantity on the warehouse, that can be used">Warehouse Quantity</th>
+                                    <th class="text-right" name="lacking_material_quantity" title="The quantity need to be purchased/manufactured to produce another product">Requested Qty from Open MOs</th>
+                                    <th style="max-width: 150px;" class="text-right" name="requested_qty"  title="The requested quantity is the quantity required to meet the current demand based on the Reordering Rule or needed quantity until source suppliers complete their fulfillment.">Requested Quantity</th>
+                                    <th style="max-width: 150px;" class="text-right" title="Order Quantity = Requested Quantity - Warehouse Quantity">Order Quantity</th>
+                                    <th style="max-width: 150px;" class="text-right" title='The ratio of "Purchased Quantity" to "Order Quantity"'>Ordered Quantity from PO (%)</th>
+                                    <th style="max-width: 150px;" class="text-right" title="Open PO = Confirmed Purchase Order Quantity + RFQ Quantity">Open PO</th>
+                                    <th style="max-width: 150px;" class="text-right" title="Purchased Quantity = Order Quantity * Ordered Quantity from PO (%) - Open PO">Purchased Quantity</th>
+                                    <th style="max-width: 150px;" class="text-right" title="Open MO = Quantity To Produce from Confirmed, Planned, and In Progress Manufacturing Orders">Open MO</th>
+                                    <th style="max-width: 150px;" class="text-right" title="Manufactured Quantity = Order Quantity * (100 - Ordered Quantity from PO (%)) - Open MO">Manufactured Quantity</th>
+                                    <th class="text-center"  title="Detail Transactions: Open POs + Open MOs">Detail</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-call="me_replenishment_planning.report_replenishment_planning_line"/>
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </t>
+            <t t-else="">
+                <h1 class="text-center">No data available.</h1>
+            </t>
+        </div>
+    </template>
+
+    <template id="report_replenishment_planning_line">
+        <t t-foreach="data" t-as="l">
+            <t t-set="space_td" t-value="'margin-left: '+ str(l['level'] * 12) + 'px;'"/>
+            <tr t-attf-class="text-o_mrp_bom_report_line #{l.get('hide') and 'hide'}"
+                t-attf-style="#{l['is_root'] and 'background: rgba(0, 0, 0, 0.15);' ''}"
+                t-att-data-parent_id="l.get('parent_id', -1)"
+                t-att-data-is_root="l['is_root']"
+                t-att-data-id="l['bom'] and l['bom'].id or false"
+                t-att-data-line="l.get('line_id', -1)"
+                t-att-data-product_id="l['product'].id"
+                t-att-data-qty="l['required_qty']"
+                t-att-data-bom_ids="l['boms_info'] and l['boms_info'].ids or []"
+                t-att-data-bom_id="l.get('bom') and l.get('bom').id"
+                t-att-data-po_lead="l.get('po_lead') or '0'"
+                t-att-data-mo_lead="l.get('mo_lead') or '0'"
+                t-att-data-line_qty="l.get('line_qty') or '1'"
+                t-att-data-bom_qty="l.get('bom_qty') or '1'"
+                t-att-data-qty_available="l.get('qty_available') or '0'"
+                t-att-data-open_po="l.get('open_po') or '0'"
+                t-att-data-open_mo="l.get('open_mo') or '0'"
+                t-att-data-precision_rounding="l.get('precision_rounding', 1)"
+                t-att-data-precision="l.get('qty_precision', 2)"
+                t-att-data-level="l['level']"
+                t-att-data-total_lacking_quantity="l.get('total_lacking_quantity', 0)"
+                t-att-data-lacking_quantity="l.get('lacking_quantity', 0)"
+                t-att-data-warehouse_id="l.get('warehouse_id')">
+                <td>
+                    <span t-att-style="space_td"/>
+                    <t t-if="l['bom']">
+                        <t t-if="l.get('level', 0) == 0">
+                            <span class="fa fa-fw o_mrp_bom_foldable fa-caret-down" role="img" aria-label="Unfold"
+                                  title="Unfold" t-att-data-function="'get_bom'"/>
+                        </t>
+                        <t t-else="">
+                            <span t-att-data-function="'get_bom'" class="o_mrp_bom_unfoldable fa fa-fw fa-caret-right"
+                                  role="img" aria-label="Unfold" title="Unfold"/>
+                        </t>
+                    </t>
+                    <span t-att-class="None if l['bom'] else 'o_mrp_bom_no_fold'">
+                        <a href="#" t-att-data-res-id="l['product'].id" t-att-data-model="'product.product'"
+                           class="o_mrp_bom_action">
+                            <t t-esc="l['product'].default_code"/>
+                        </a>
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        <t t-esc="l['prod_description']"/>
+                    </span>
+                </td>
+                <!--Warehouse-->
+                <t t-if="is_multi_wh">
+                    <td>
+                        <span>
+                            <t t-esc="l['warehouse_name']"/>
+                        </span>
+                    </td>
+                </t>
+                <!--BOM column-->
+                <td>
+                    <div class="bom-content flex-right-float" t-if="l['boms_info']">
+                        <select class="o_input select_bom">
+                            <option t-foreach="l['boms_info']" t-as="c_bom" t-att-value="c_bom.id"
+                                    t-att-selected="c_bom.id==l['bom'].id">
+                                <t t-esc="c_bom.display_name"/>
+                            </option>
+                        </select>
+                        <a href="#" t-att-data-res-id="l['bom'].id" t-att-data-model="'mrp.bom'"
+                           class="o_mrp_bom_action">
+                            <span class="fa fa-external-link btn btn-link"/>
+                        </a>
+                    </div>
+                </td>
+
+                <!--Total Available column-->
+                <td class="text-right">
+                    <span class="forecasted_quantity" t-att-data-precision="l.get('qty_precision', 2)">
+                        <t t-esc="l['qty_available']"
+                           t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                    </span>
+                </td>
+
+                <!--Lacking material quantity column-->
+                <td class="text-right">
+                    <div class="flex-right-float">
+                        <span class="lacking_quantity" t-att-data-precision="l.get('qty_precision', 2)">
+                            <t t-esc="l['lacking_quantity']"
+                               t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                        </span>
+                        <span class="ex-in-button include-button btn"></span>
+                    </div>
+                </td>
+
+                <!--Requested Quantity column-->
+                <td class="text-right">
+                    <t t-if="l.get('is_root')">
+                        <input class="input-num requested_quantity" t-att-data-precision="l.get('qty_precision', 2)"
+                               value="0.00" required="required"
+                               t-att-value="l.get('required_qty', 0) or '0'"
+                               t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'
+                               name="requested_quantity" t-att-step="10**-l.get('qty_precision', 2)"
+                               style="max-width: 95%;"
+                        />
+                    </t>
+                    <t t-else="">
+                        <span class="requested_quantity" t-att-data-precision="l.get('qty_precision', 2)">
+                            <t t-esc="l.get('required_qty')"
+                               t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                        </span>
+                    </t>
+                </td>
+
+                <!--Order Quantity column-->
+                <td class="text-right">
+                    <span class="order_qty" t-att-data-precision="l.get('qty_precision', 2)">
+                        <t t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                    </span>
+                </td>
+
+                <!-- Ordered Quantity from PO (%) column-->
+                <td class="text-right">
+                    <div style="display: inline; width: 100%; margin: 0;">
+                        <t t-if="l.get('allow_adjust_po_perc')">
+                            <input class="input-num po_perc" t-att-value="l.get('po_perc', 0.00) or '0'"
+                                   required="required" type="number"
+                                   t-att-data-precision="l.get('percentage_precision', 2)"
+                                   name="po_perc" min="0" max="100"
+                                   t-att-step="10**-l.get('percentage_precision', 2)"
+                                   style="width: 75%"
+                            />%
+                        </t>
+                        <t t-else="">
+                            <span class="po_perc" t-att-data-precision="l.get('percentage_precision', 2)">
+                                <t t-esc="l.get('po_perc', 0.00)"
+                                   t-options='{"widget": "float", "decimal_precision": "Adjust Percentage"}'/>
+                            </span>%
+                        </t>
+
+                    </div>
+                </td>
+
+                <!--Open PO Quantity column-->
+                <td class="text-right">
+                    <span class="open_po" t-att-data-precision="l.get('qty_precision', 2)">
+                        <t t-esc="l['open_po']"
+                           t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                    </span>
+                </td>
+
+                <td class="text-right">
+                    <span class="po_qty" t-att-data-precision="l.get('qty_precision', 2)">
+                        <t t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                    </span>
+                    <br></br>
+                    <span class="po_qty_total"></span>
+                </td>
+
+                <!--Open MO column-->
+                <td class="text-right">
+                    <span class="open_mo" t-att-data-precision="l.get('qty_precision', 2)">
+                        <t t-esc="l['open_mo']"
+                           t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                    </span>
+                </td>
+                <td class="text-right">
+                    <span class="mo_qty" t-att-data-precision="l.get('qty_precision', 2)">
+                        <t t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                    </span>
+                    <br></br>
+                    <span class="mo_qty_total"></span>
+                </td>
+                <td class="text-center" t-if="l['detail_transaction_ids']">
+                    <a href="#" t-att-data-res-ids="l['detail_transaction_ids']" t-att-data-model="'detail.transaction'" class="o_detail_transaction_action"><span class="fa fa-list btn btn-link"/></a>
+                </td>
+            </tr>
+            <t t-call="me_replenishment_planning.report_replenishment_planning_line">
+                <t t-set="data" t-value="l.get('data', [])"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="replenishment_plan_report">
+        <t t-set="data_report_landscape" t-value="True"/>
+        <t t-call="web.basic_layout">
+            <t t-call-assets="mrp.assets_common" t-js="False"/>
+            <t t-foreach="docs" t-as="data">
+                <div class="page">
+                    <t t-call="me_replenishment_planning.report_replenishment_planning"/>
+                </div>
+                <p style="page-break-before:always;"></p>
+            </t>
+        </t>
+    </template>
+</odoo>

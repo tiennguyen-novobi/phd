@@ -1,0 +1,12 @@
+<odoo noupdate="1">
+    <record id="ir_cron_generate_tracking_line" model="ir.cron">
+        <field name="name">PHD Royalty: Update Tracking</field>
+        <field name="model_id" ref="model_royalty_tracking"/>
+        <field name="state">code</field>
+        <field name="code">model.action_update_tracking()</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 00:00:00')"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+</odoo>

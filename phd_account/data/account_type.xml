@@ -1,0 +1,22 @@
+<odoo>
+    <data noupdate="1">
+         <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'account'), ('name', 'in', ['data_account_type_direct_costs'])]"/>
+            </function>
+            <value eval="{'noupdate': False}"/>
+        </function>
+
+        <record id="account.data_account_type_direct_costs" model="account.account.type">
+            <field eval="'Cost of Goods Sold'"
+                   name="name"/>
+        </record>
+
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'account'), ('name', 'in', ['data_account_type_direct_costs'])]"/>
+            </function>
+            <value eval="{'noupdate': True}"/>
+        </function>
+    </data>
+</odoo>

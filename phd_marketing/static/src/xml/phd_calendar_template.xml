@@ -1,0 +1,24 @@
+<template>
+    <t t-name="phd-calendar-box">
+        <div t-att-style="typeof color === 'string' ? ('background-color:' + color) + ';' : ''"
+             t-attf-class="#{!event.color_index ? 'text-white' : ''} #{record.is_highlighted ? 'o_event_hightlight' : ''} #{typeof color === 'number' ? _.str.sprintf('o_calendar_color_%s', color) : ''}">
+            <div>
+                <div>
+                    <span t-esc="record.name" class="oe_bold_field"/>
+                </div>
+                <div>
+                    <span>Customer: </span>
+                    <span t-esc="record.partner_id[1]"/>
+                </div>
+                <div>
+                    <span>From: </span>
+                    <span t-esc="record.promotion_period_from._i" class="oe_bold_field"/>
+                </div>
+                <div>
+                    <span>To: </span>
+                    <span t-esc="record.promotion_period_to._i" class="oe_bold_field"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>

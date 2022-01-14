@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Account Financial Report Assets -->
+        <template id="account_reports_backend" inherit_id="web.assets_backend" active="True">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/phd_stock/static/src/js/forecasted_quantity_report.js"></script>
+                <script type="text/javascript" src="/phd_stock/static/src/js/phd_excute_action_on_change_relation_field.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

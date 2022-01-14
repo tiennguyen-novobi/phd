@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_raw_material_consumption_report_tree" model="ir.ui.view">
+        <field name="name">raw.material.consumption.report.tree</field>
+        <field name="model">raw.material.consumption.report</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false" js_class="phd_date_range_export_report_list_view">
+                <field name="date_approve" string="PO Date" widget="date"/>
+                <field name="purchase_id" string="PO#"/>
+                <field name="name" string="MO#"/>
+                <field name="partner_id" string="Vendor"/>
+                <field name="product_id" string="SKU"/>
+                <field name="qty_ordered" string="Quantity Ordered" widget="float"/>
+                <field name="qty_received" string="Quantity Received" widget="float"/>
+                <field name="variance" string="Variance" widget="float"/>
+                <field name="qty_label_usage" string="Label Usage" widget="float"/>
+                <field name="label_variance" avg='{"help": "Average Variance"}'
+                       sum='{"help": "Total Variance Units"}' string="Label Variance"/>
+                <field name="label_usage_rate" string="Label Variance %" widget="percentage"/>
+                <field name="creatine_base_qty" string="Creatine Base Qty"/>
+                <field name="qty_creatine_usage" string="Creatine Usage"/>
+                <field name="creatine_variance" avg='{"help": "Average in kg"}'
+                       sum='{"help": "Total Variance in kg", "is_createtine_in_dollar": {"help": "Total Variance in Dollars","widget": "monetary"}}' string="Creatine Variance"/>
+                <field name="creatine_usage_rate" string="Creatine Variance %" widget="percentage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_raw_material_consumption_report_search" model="ir.ui.view">
+        <field name="name">raw.material.consumption.report.search</field>
+        <field name="model">raw.material.consumption.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" string="Vendor"/>
+                <group expand="0" string="Group By">
+                    <filter name="groupby_partner_id" string="Partner" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <report
+            string="Raw Material Consumption"
+            id="action_report_phd_raw_material_consumption"
+            model="raw.material.consumption.report"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+    />
+
+    <record id="action_raw_material_consumption_report_tree" model="ir.actions.act_window">
+        <field name="name">Raw Material Consumption Reports</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">raw.material.consumption.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_raw_material_consumption_report_search"/>
+        <field name="context" eval="{'list_view_report_id': ref('phd_mrp.action_report_phd_raw_material_consumption'),
+                                     'date_range':'date_approve'}" />
+        <field name="view_id" ref="view_raw_material_consumption_report_tree"/>
+    </record>
+
+    <menuitem id="menu_raw_material_consumption_reports_tree"
+              name="Raw Material Consumption"
+              parent="mrp.menu_mrp_reporting"
+              action="phd_mrp.action_raw_material_consumption_report_tree"/>
+
+</odoo>

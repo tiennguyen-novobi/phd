@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="mrp assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/phd_marketing/static/src/scss/phd_custom.scss" />
+            <script type="text/javascript" src="/phd_marketing/static/src/js/phd_calendar.js"></script>
+            <script type="text/javascript" src="/phd_marketing/static/src/js/phd_report_list_view.js"></script>
+        </xpath>
+   </template>
+</odoo>

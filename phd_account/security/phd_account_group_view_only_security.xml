@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Accounting"
+            id="account_accountant.menu_accounting"
+            groups="phd_account.group_account_view_only"
+            web_icon="account_accountant,static/description/icon.png"
+            sequence="40"/>
+
+    <record id="account.menu_board_journal_1" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.menu_finance_entries" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.menu_finance_reports" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('phd_account.group_account_view_only')), (4, ref('phd_account.group_account_view_only_report'))]"/>
+    </record>
+
+    <record id="account.menu_finance_payables" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_account.group_account_payable_manager'))]"/>
+    </record>
+
+    <record id="account_reports.menu_action_account_report_aged_payable" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_account.group_account_payable_manager'))]"/>
+    </record>
+
+    <record id="l10n_us_reports.check_register_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_account.group_account_payable_manager'))]"/>
+    </record>
+
+    <record id="account_reports.account_reports_audit_reports_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_account.group_account_payable_manager'))]"/>
+    </record>
+
+    <record id="account_reports.menu_action_account_report_general_ledger" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_payable_manager'))]"/>
+    </record>
+
+    <record id="account_reports.menu_action_account_report_partner_ledger" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_payable_manager'))]"/>
+    </record>
+
+    <record id="account_billable_expense.menu_action_account_report_billable_expense" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_payable_manager'))]"/>
+    </record>
+
+    <record id="l10n_us_accounting.menu_action_report_vendor_1099" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_payable_manager'))]"/>
+    </record>
+
+    <record id="account.menu_finance_receivables" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_account.group_account_receivable_manager'))]"/>
+    </record>
+
+    <record id="account_reports.menu_action_account_report_aged_receivable" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_account.group_account_receivable_manager'))]"/>
+    </record>
+
+    <record id="account.menu_action_move_journal_line_form" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.menu_action_account_moves_all" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('base.group_no_one')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.menu_action_account_moves_journal_sales" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.menu_action_account_moves_journal_purchase" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.menu_action_account_moves_journal_bank_cash" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.menu_action_account_moves_journal_misc" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.menu_finance_entries_management" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_invoice')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account_budget_advanced.menu_account_budget_wizard" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
+    </record>
+
+    <record id="account_budget.menu_act_crossovered_budget_view" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_manager')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account_asset.menu_action_account_asset_form" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_manager')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account_asset.menu_action_account_revenue_recognition" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_manager')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account_asset.menu_action_account_expense_recognition" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_manager')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+
+    <record id="account.account_reports_legal_statements_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(3, ref('account.group_account_user')), (4, ref('phd_account.group_account_view_only'))]"/>
+    </record>
+</odoo>

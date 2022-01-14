@@ -1,0 +1,147 @@
+.forecasted-demand-report {
+  font-family: "Lato";
+  overflow-x: hidden;
+  height: 100%;
+  .forecasted-header {
+    margin-bottom: 10px;
+    .product-name {
+      font-size: 2em;
+      width: 40%;
+      .product-last-update{
+        font-size: 0.5em;
+      }
+    }
+
+    .product-quantity {
+      padding-right: 40px;
+      color: black;
+      font-size: 2em;
+      font-weight: 400;
+      width: 60%;
+
+      .product-quantity-cell {
+        align-items: center;
+        margin: 0em 16px;
+
+        .product-qty-cell-value {
+          font-size: 1em;
+          text-align: center;
+        }
+
+        .product-qty-cell-text {
+          font-size: 0.7em;
+          text-align: center;
+        }
+
+        &.danger {
+          color: red;
+        }
+      }
+    }
+  }
+
+  .forecasted-body {
+    height: 450px;
+
+    .forecasted-chart {
+      height: 100%;
+
+      .forecasted-canvas {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .forecasted-footer {
+    margin: 0;
+    font-size: 1.25em;
+
+    @media (max-width: 768px) {
+      .forecasted-table-section{
+        height: auto!important;
+      }
+    }
+    .forecasted-table-section {
+      padding-right: 0px;
+      height: 400px;
+      .forecasted-table-name {
+        font-size: 1.5em;
+        color: black;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 500;
+        height: 36px;
+        margin-bottom: 8px;
+      }
+
+      .forecasted-table-holder {
+        overflow: auto;
+        max-height: 314px;
+        .forecasted-table {
+          font-size: 1em;
+          table-layout: fixed;
+          height: 100%;
+
+          .forecasted-tbl-header {
+            background-color: #e7ebef;
+
+            .forecasted-tbl-header-row {
+              color: black;
+
+              .forecasted-tbl-header-cell {
+                font-size: 1em;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                &.nbr-field{
+                  padding: 9px;
+                  text-align: end;
+                }
+              }
+            }
+          }
+
+          .forecasted-tbl-body {
+            font-size: 1em;
+
+            .forecasted-tbl-body-row {
+              color: black;
+              &.shadow-row{
+                background-color: #e5e5e5;
+              }
+              .forecasted-tbl-body-cell {
+                font-size: 1em;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+              }
+            }
+          }
+
+          .nbr-field {
+            padding:0px;
+            span{
+              padding: 9px;
+              width: 100%;
+              height: 100%;
+              display: inline-block;
+              text-align: end;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  .clickable {
+    color: #007bff;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

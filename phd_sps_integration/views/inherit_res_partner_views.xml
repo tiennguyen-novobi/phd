@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_res_partner_form_inherit_phd_contact" model="ir.ui.view">
+        <field name="name">res.partner.form.view.inherit.phd.contact</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='print_check_as']" position="after">
+                <field name="address_location_number" string="Address Location Number"/>
+            </xpath>
+
+            <xpath expr="//group[@name='misc']" position="after">
+                <group name="sps_integration" string="SPS Integration">
+                    <field string="Order Acknowledgement" name="has_sps_order_acknowledgement"/>
+                    <field string="Order Change" name="has_sps_order_change"/>
+                    <field string="Order Change Acknowledgement" name="has_sps_order_change_ack"/>
+                    <field string="SPS Delivery Window Start Code" name="sps_delivery_window_start_date_code"/>
+                    <field string="SPS Delivery Window End Code" name="sps_delivery_window_end_date_code"/>
+                    <field string="SPS Requested Delivery Window Code" name="sps_requested_delivery_date_code"/>
+                    <field string="Rejected Reason" name="has_sps_rejected_reason"/>
+                    <field string="Item Schedule Qualifier" name="sps_item_schedule_qualifier"/>
+                    <field string="Current Scheduled Delivery Date Code" name="sps_current_scheduled_delivery_date_code"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

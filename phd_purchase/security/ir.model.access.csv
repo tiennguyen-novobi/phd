@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_model_phd_purchase_order_stage,phd.purchase.order.stage,phd_purchase.model_phd_purchase_order_stage,,1,0,0,0
+
+access_purchase_order_view_only,pruchase.order,purchase.model_purchase_order,phd_purchase.group_purchase_view_only,1,0,0,0
+access_mrp_production_view_only,mrp.production,mrp.model_mrp_production,phd_purchase.group_purchase_view_only,1,0,0,0
+access_purchase_order_line_view_only,pruchase.order.line,purchase.model_purchase_order_line,phd_purchase.group_purchase_view_only,1,0,0,0
+access_stock_picking_view_only,stock.picking,stock.model_stock_picking,phd_purchase.group_purchase_view_only,1,0,0,0
+access_account_move_line_view_only,account.move.line,account.model_account_move_line,phd_purchase.group_purchase_view_only,1,0,0,0
+access_stock_move_view_only,stock.move,stock.model_stock_move,phd_purchase.group_purchase_view_only,1,0,0,0
+access_stock_scrap_view_only,stock.scrap,stock.model_stock_scrap,phd_purchase.group_purchase_view_only,1,0,0,0
+access_mrp_bom_view_only,mrp.bom,mrp.model_mrp_bom,phd_purchase.group_purchase_view_only,1,0,0,0

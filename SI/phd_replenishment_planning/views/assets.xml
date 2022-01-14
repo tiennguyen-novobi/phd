@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="event assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/phd_replenishment_planning/static/src/js/replenishment_planning_report.js"></script>
+                <link rel="stylesheet" type="text/scss" href="/phd_replenishment_planning/static/src/scss/replenishment_planning_report.scss" />
+            </xpath>
+        </template>
+    </data>
+</odoo>

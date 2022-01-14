@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Inventory" id="stock.menu_stock_root" sequence="30"
+        groups="stock.group_stock_manager,stock.group_stock_user,phd_inventory.group_stock_view_only"
+        web_icon="stock,static/description/icon.png"/>
+
+    <menuitem id="all_picking" name="Transfers" parent="stock.menu_stock_warehouse_mgmt"
+              sequence="5"
+              action="stock.action_picking_tree_all" groups="stock.group_stock_manager,stock.group_stock_user,phd_inventory.group_stock_view_only"/>
+
+    <menuitem id="stock.menu_warehouse_report" name="Reporting"
+              sequence="99"
+              parent="stock.menu_stock_root" groups="phd_inventory.group_stock_view_only_report"/>
+</odoo>

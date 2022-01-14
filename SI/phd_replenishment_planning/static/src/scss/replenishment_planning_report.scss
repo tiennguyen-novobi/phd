@@ -1,0 +1,15 @@
+.o_mrp_bom_report_page {
+  .bom_m2o,
+  .vendor_m2o {
+
+    input {
+      background-color: transparent;
+    }
+
+    button.o_external_button {
+      background-color: transparent;
+      color: #008784;
+      border: none;
+    }
+  }
+}

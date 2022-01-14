@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_purchase_reveicing_filter" model="ir.ui.view">
+        <field name="name">purchase.order.line.list.select</field>
+            <field name="model">purchase.order.line</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Report Purchase Receiving">
+                    <field name="partner_id" operator="child_of" string="Vendor"/>
+                    <group expand="0" string="Group By">
+                        <filter name="vendor" string="Vendor" domain="[]" context="{'group_by': 'partner_id'}"/>
+                        <filter name="sku" string="SKU" domain="[]" context="{'group_by': 'product_sku'}"/>
+                    </group>
+                    <filter string="Open PO" name="open_po"
+                            domain="[('state', '=', 'purchase')]"/>
+                    <filter string="Closed PO" name="closed_po"
+                            domain="[('state', '=', 'done')]"/>
+               </search>
+            </field>
+    </record>
+
+    <record id="report_purchase_reveicing" model="ir.ui.view">
+            <field name="name">report.purchase.order.line.tree.reveicing</field>
+            <field name="model">purchase.order.line</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false" js_class="phd_date_range_export_report_list_view">
+                    <field name="order_id"/>
+                    <field name="order_date_approve" widget='date'/>
+                    <field name="partner_id" string="Vendor Name"/>
+                    <field name="product_sku"/>
+                    <field name="qty_receiving" sum="Total"/>
+                    <field name="lot_id"/>
+                    <field name="receipt_id"/>
+                    <field name="receipt_date" widget='date'/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+    </record>
+
+    <record id="action_report_purchase_reveicing" model="ir.actions.act_window">
+        <field name="name">Purchase Order Receiving</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('qty_receiving','>','0')]</field>
+        <field name="search_view_id" ref="report_purchase_reveicing_filter"/>
+        <field name="context" eval="{'list_view_report_id': ref('phd_purchase.phd_purchase_order_receiving'),'date_range':'order_date_approve'}"></field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('report_purchase_reveicing')})]"/>
+    </record>
+
+    <menuitem id="menu_report_purchase_reveicing"
+            name="Purchase Order Receiving"
+            action="action_report_purchase_reveicing"
+            parent="purchase.purchase_report"
+            sequence="2"/>
+
+    <record id="report_vendor_order_efficiency_filter" model="ir.ui.view">
+        <field name="name">report.vendor.order.efficiency.filter</field>
+            <field name="model">stock.move</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Vendor Order Efficiency">
+                    <field name="partner_id" operator="child_of" string="Vendor"/>
+                    <group expand="0" string="Group By">
+                        <filter name="vendor" string="Vendor" domain="[]" context="{'group_by': 'partner_id'}"/>
+                    </group>
+               </search>
+            </field>
+    </record>
+
+    <record id="report_vendor_order_efficiency" model="ir.ui.view">
+            <field name="name">report.vendor.order.efficiency</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit="false" delete="false" js_class="phd_date_range_export_report_list_view">
+                    <field name="purchase_order_date" widget="date"/>
+                    <field name="purchase_order_id" string="PO#"/>
+                    <field name="mo_id"/>
+                    <field name="vendor_wo"/>
+                    <field name="partner_id" string="Vendor"/>
+                    <field name="product_sku"/>
+                    <field name="quantity_before_move" string="Quantity Ordered"/>
+                    <field name="quantity_done" string="Quantity Received"/>
+                    <field name="variance" avg='{"help": "Average Variance"}' sum='{"help": "Total Variance"}'/>
+                    <field name="original_promised_date" widget="date"/>
+                    <field name="date_expected" string="Actual Receipt Date" widget="date"/>
+                    <field name="days_late" avg='Average Days Late (Early)'/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+    </record>
+
+    <record id="action_report_vendor_order_efficiency" model="ir.actions.act_window">
+        <field name="name">Vendor Order Efficiency</field>
+        <field name="res_model">stock.move</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('purchase_line_id','!=',False), ('state','=','done')]</field>
+        <field name="search_view_id" ref="report_vendor_order_efficiency_filter"/>
+        <field name="context" eval="{'list_view_report_id': ref('phd_purchase.phd_vendor_order_efficiency'),'date_range':'purchase_order_date'}"></field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('report_vendor_order_efficiency')})]"/>
+    </record>
+
+    <menuitem id="menu_report_vendor_order_efficiency"
+            name="Vendor Order Efficiency"
+            action="action_report_vendor_order_efficiency"
+            parent="purchase.purchase_report"
+            sequence="3"/>
+</odoo>

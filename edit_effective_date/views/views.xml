@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="edit_effective_date.list">
+      <field name="name">edit_effective_date list</field>
+      <field name="model">edit_effective_date.edit_effective_date</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="edit_effective_date.action_window">
+      <field name="name">edit_effective_date window</field>
+      <field name="res_model">edit_effective_date.edit_effective_date</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="edit_effective_date.action_server">
+      <field name="name">edit_effective_date server</field>
+      <field name="model_id" ref="model_edit_effective_date_edit_effective_date"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="edit_effective_date" id="edit_effective_date.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="edit_effective_date.menu_1" parent="edit_effective_date.menu_root"/>
+    <menuitem name="Menu 2" id="edit_effective_date.menu_2" parent="edit_effective_date.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="edit_effective_date.menu_1_list" parent="edit_effective_date.menu_1"
+              action="edit_effective_date.action_window"/>
+    <menuitem name="Server to list" id="edit_effective_date" parent="edit_effective_date.menu_2"
+              action="edit_effective_date.action_server"/>
+    -->
+  </data>
+</odoo>

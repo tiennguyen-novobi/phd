@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_customization_payment_tree" model="ir.ui.view">
+        <field name="name">account.payment.form.phd</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount']" position="replace">
+                    <field name="total_deposit_amount" string="Amount"/>
+                </xpath>
+                <xpath expr="//field[@name='journal_id']" position="replace">
+                    <field name="custom_journal_id" string="Journal"/>
+                </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_payment_customization_payment" model="ir.ui.view">
+        <field name="name">account.payment.form.phd</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='post']" position="replace">
+                <button name="post_deposit" class="oe_highlight" states="draft" string="Confirm" type="object"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='right_column']/div[@name='amount_div']/field[@name='amount']" position="attributes">
+              <attribute name="attrs">{"readonly": [["state","!=","draft"]]}</attribute>
+              <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="custom_journal_id"/>
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//page[@name='open_invoices']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='open_bills']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='payment_total']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='open_invoice_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='check_number']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='check_amount_in_words']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='right_column']/label[1]" position="replace"/>
+            <xpath expr="//field[@name='ar_in_charge']" position="attributes">
+                <attribute name="attrs"/>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='communication']" position="attributes">
+                <attribute name="string">Check Memo</attribute>
+            </xpath>
+            <xpath expr="//sheet" postion="inside">
+                <notebook>
+                    <field name="is_deposit_customization" invisible="1"/>
+                    <page string="Payment Items" attrs="{'invisible':[('is_deposit_customization','=', False)]}">
+                        <field name="phd_payment_deposit_ids" attrs="{'readonly':[('state','!=', 'draft')]}">
+                            <tree string="journal_items" editable="bottom" context="{'default_payment_id': id}">
+                                <field name="description" optional="show"/>
+                                <field name="account_id"/>
+                                <field name="analytic_id"/>
+                                <field name="analytic_tag_ids" widget="many2many_tags"/>
+                                <field name="quantity"/>
+                                <field name="price_unit"/>
+                                <field name="price_subtotal"/>
+                                <field name="currency_id" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_customer_payment_receipt" model="ir.actions.act_window">
+        <field name="name">Customer Payment Receipt</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">tree,kanban,form,graph</field>
+        <field name="context">{
+            'default_payment_type': 'inbound',
+            'default_partner_type': 'customer',
+            'default_is_deposit_customization': 1,
+        }</field>
+        <field name="domain">[('partner_type', '=', 'customer'), ('is_deposit_customization', '=', True)]</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('phd_account.view_account_payment_customization_payment_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_payment_customization_payment')})]"/>
+    </record>
+
+
+    <record id="action_vendor_payment_receipt" model="ir.actions.act_window">
+        <field name="name">Vendor Payment Receipt</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">tree,kanban,form,graph</field>
+        <field name="context">{
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+            'default_is_deposit_customization': 1,
+        }</field>
+        <field name="domain">[('partner_type', '=', 'supplier'), ('is_deposit_customization', '=', True), ('is_credit_card_charges', '=', False)]</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('phd_account.view_account_payment_customization_payment_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_payment_customization_payment')})]"/>
+    </record>
+
+    <menuitem id="menu_customer_payment_receipt" name="Customer Payment Receipt" parent="account.menu_finance_receivables"
+              action="action_customer_payment_receipt" sequence="120"/>
+
+    <menuitem id="menu_vendor_payment_receipt" name="Vendor Payment Receipt" parent="account.menu_finance_payables"
+              action="action_vendor_payment_receipt" sequence="120"/>
+</odoo>

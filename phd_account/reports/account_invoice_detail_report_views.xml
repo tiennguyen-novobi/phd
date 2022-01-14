@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_invoice_detail_report_tree" model="ir.ui.view">
+        <field name="name">account.invoice.detail.report.tree</field>
+        <field name="model">account.invoice.detail.report</field>
+        <field name="arch" type="xml">
+            <tree create="false" string="Invoice Detail" duplicate="true"
+                  js_class="phd_date_range_export_report_list_view">
+                <field name="invoice_date" string="Invoice Date" widget="date"/>
+                <field name="name" string="Invoice Number"/>
+                <field name="order_id" string="SO Number"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="client_order_ref" string="Customer PO"/>
+                <field name="picking_id" string="Deliver Order#"/>
+                <field name="default_code" string="SKU"/>
+                <field name="quantity" string="Quantity"/>
+                <field name="lot_name" string="Lot#"/>
+                <field name="price_unit" string="Price"/>
+                <field name="price_subtotal" string="Line Subtotal"/>
+                <field name="price_total" string="Total Invoice" widget="monetary"/>
+                <field name="state" string="Status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_detail_report_search" model="ir.ui.view">
+        <field name="name">account.invoice.detail.report.search</field>
+        <field name="model">account.invoice.detail.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" string="Customer"/>
+                <separator/>
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]" help="Draft"/>
+                <filter name="posted" string="Posted" domain="[('state','=','posted')]" help="Posted"/>
+                <filter name="cancelled" string="Cancelled" domain="[('state','=','cancelled')]" help="Cancelled"/>
+                <group expand="0" string="Group By">
+                    <filter name="groupby_partner_id" string="Customer" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_account_invoice_detail_report_tree" model="ir.actions.act_window">
+        <field name="name">Invoice Detail Reports</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.invoice.detail.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context" eval="{'list_view_report_id': ref('phd_account.action_report_phd_account_invoice_detail'),
+        'date_range':'invoice_date'}"/>
+        <field name="view_id" ref="view_account_invoice_detail_report_tree"/>
+    </record>
+
+    <menuitem id="menu_account_invoice_detail_reports_tree" name="Invoice Detail"
+              parent="account.account_reports_management_menu"
+              action="phd_account.action_account_invoice_detail_report_tree"/>
+
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Product Template View -->
+    <record id="view_product_template_form_versions" model="ir.ui.view" >
+        <field name="name">product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="previous_version_template"/>
+            </field>
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="latest_version" string="Latest Product Versions">
+                    <field name="latest_version_templates">
+                        <tree>
+                            <field name="name"/>
+                            <field name="standard_price"/>
+                            <field name="list_price"/>
+                            <field name="default_code"/>
+                            <field name="qty_available"/>
+                            <field name="virtual_available"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Product Form View Inherited -->
+    <record id="view_product_form_versions_inherited" model="ir.ui.view" >
+        <field name="name">product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="previous_version"/>
+            </field>
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="latest_version" string="Latest Product Versions">
+                    <field name="latest_versions">
+                        <tree>
+                            <field name="name"/>
+                            <field name="standard_price"/>
+                            <field name="list_price"/>
+                            <field name="default_code"/>
+                            <field name="qty_available"/>
+                            <field name="virtual_available"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="phd_mrp_purchase_order_form_view_disable_many2one" model="ir.ui.view">
+        <field name="name">phd.purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="phd_mrp.view_pruchase_order_form_inherit_phd_mrp"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='subcontract_picking_type_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_mrp_production_form_view_disable_many2one" model="ir.ui.view">
+        <field name="name">phd.mrp.production.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='bom_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True,
+                                           'default_product_tmpl_id': product_tmpl_id}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='picking_type_id'][1]" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_mrp_unbuild_form_view_disable_many2one" model="ir.ui.view">
+        <field name="name">phd.mrp.unbuild.form</field>
+        <field name="model">mrp.unbuild</field>
+        <field name="inherit_id" ref="mrp.mrp_unbuild_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='bom_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='mo_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='lot_id']" positi="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='company_id']" positi="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_stock_scrap_form_view_disable_many2one" model="ir.ui.view">
+        <field name="name">phd.stock.scrap.form</field>
+        <field name="model">stock.scrap</field>
+        <field name="inherit_id" ref="stock.stock_scrap_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='product_uom_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

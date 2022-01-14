@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sps.integration</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='integration']" position="after">
+                <h2>SPS Commerce SFTP Server</h2>
+                <div class="row mt16 o_settings_container" name="sps_commerce_sftp_server">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Server Information</span>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="sftp_ip_host_name" string="IP/hostname: "
+                                           class="col-lg-3 o_light_label"/>
+                                    <field name="sftp_ip_host_name"/>
+                                </div>
+                                <div class="row">
+                                    <label for="sftp_port" string="Port: " class="col-lg-3 o_light_label"/>
+                                    <field name="sftp_port"/>
+                                </div>
+                                <div class="row">
+                                    <label for="sftp_user_name" string="Username: " class="col-lg-3 o_light_label"/>
+                                    <field name="sftp_user_name"/>
+                                </div>
+                                <div class="row">
+                                    <label for="sftp_password" string="Password: " class="col-lg-3 o_light_label"/>
+                                    <field name="sftp_password" password="True"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">SFTP Directory Path</span>
+                            <div class="text-muted">
+                                The patch which files are located on SFTP server
+                            </div>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="sftp_in_path" string="In Patch"
+                                           class="col-lg-3 o_light_label"/>
+                                    <field name="sftp_in_path"/>
+                                </div>
+                                <div class="row">
+                                    <label for="sftp_out_path" string="Out Patch"
+                                           class="col-lg-3 o_light_label"/>
+                                    <field name="sftp_out_path"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <button name="test_sftp_connection" class="btn btn-primary" icon="fa-television"
+                                        type="object">
+                                    <span>Test Connection</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <label for="sps_message_follower_ids" string="Sync Document Followers"/>
+                                <field name="sps_message_follower_ids" widget="many2many_tags"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

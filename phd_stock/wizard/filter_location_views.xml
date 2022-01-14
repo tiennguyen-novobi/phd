@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="filter_location_view_form" model="ir.ui.view">
+            <field name="name">filter.location.form</field>
+            <field name="model">filter.location</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="location_id" options="{'no_create': True, 'no_create_edit':True}" required="1" widget="phd_radio"/>
+                    </group>
+                    <footer>
+                        <button id="forecasted_qty_report_fiter" type="action" name="%(phd_stock.action_forecasted_quantity)d"
+                                context="{'default_location_id' : location_id}" string="Filter"
+                                class="btn-primary" invisible="1"/>
+
+                        <button id="negative_report_filter" type="action" name="%(phd_stock.action_negative_inventory_report)d"
+                                context="{'default_location_id' : location_id}" string="Filter"
+                                class="btn-primary" invisible="1"/>
+
+                        <button id="warehouse_report_filter" type="action" name="%(phd_stock.action_get_warehouse_report)d"
+                                context="{'default_location_id' : location_id}" string="Filter"
+                                class="btn-primary" invisible="1"/>
+
+                        <button id="lot_qty_report_filter" name="%(phd_stock.phd_location_open_quants)d"
+                                string="Filter" invisible="1"
+                                class="btn-primary"
+                                context="{'default_location_id' : location_id}" type="action"/>
+
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

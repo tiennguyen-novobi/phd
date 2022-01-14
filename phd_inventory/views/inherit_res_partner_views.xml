@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_res_partner_form_inherit_phd_inventory" model="ir.ui.view">
+        <field name="name">res.partner.form.view.inherit.phd.inventory</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']//group[@name='sale']" position="inside">
+                    <field string="Month Of Shelf-life required" name="month_of_shelf_life_require"/>
+                    <field string="Check Previous Shipment date" name="check_previous_shipment_date"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

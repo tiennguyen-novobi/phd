@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright © 2021 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<templates>
+    <t t-name="me_replenishment_planning.buttons">
+        <button type="button" class='btn btn-primary auto_replenish'>Replenish</button>
+        <button type="button" class='btn btn-secondary create_purchase_orders'>Create Purchase Order</button>
+        <button type="button" class='btn btn-secondary create_manufacturing_orders'>Create Manufacturing Order</button>
+    </t>
+
+    <div t-name='me_replenishment_planning.fields_widget_table' class="o_form_view">
+        <table class="o_group o_inner_group">
+            <tr t-foreach="fields" t-as="field">
+                <td class="o_td_label"><label class="o_form_label" t-esc="fields[field].label"/></td>
+                <td t-att-id="field + '_field'" style="min-width:200px;"/>
+            </tr>
+        </table>
+    </div>
+
+    <form class="form-inline" t-name="me_replenishment_planning.report_replenishment_planning_search">
+        <div class="form-group col-lg-6">
+            <a type="button" class="dropdown-toggle bom_filter" data-toggle="dropdown">
+                <span class="fa fa-folder-open"/> Products &amp; Warehouse
+            </a>
+            <ul class="dropdown-menu o_filters_menu" role="menu">
+                <li class="o_replenishment_planning_report_search js_m2m"/>
+            </ul>
+        </div>
+    </form>
+
+</templates>

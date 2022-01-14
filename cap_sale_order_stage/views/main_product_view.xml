@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  Created Main Product Form view -->
+    <record id="cap_main_product_form" model="ir.ui.view">
+        <field name="name">main.product.form</field>
+        <field name="model">main.product</field>
+        <field name="arch" type="xml">
+            <form string="Main Product">
+                <group name="main">
+                    <field name="name"/>
+                    <field name="deal_stage_ids" widget="many2many_checkboxes"/>
+                    <field name="master"/>
+                    <field name="convoso_revenue_field_name"/>
+                    <field name="convoso_key"/>
+                    <field name="product_id"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!--  Created Main Product Tree view -->
+    <record id="cap_main_product_tree" model="ir.ui.view">
+        <field name="name">main.product.tree</field>
+        <field name="model">main.product</field>
+        <field name="arch" type="xml">
+            <tree string="Map Websites">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="master"/>
+            </tree> 
+        </field>
+    </record>
+
+    <!--  Created Main Product Search view -->
+    <record id="cap_main_product_search_view" model="ir.ui.view">
+        <field name="name">main.product.search</field>
+        <field name="model">main.product</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="deal_stage_ids"/>
+                <field name="product_id"/>
+                <filter string="Is Master" name="is_master" domain="[('master','=',True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Master" name="is_master_group" domain="[]" context="{'group_by':'master'}"/>
+                    <filter string="Product" name="product" domain="[]" context="{'group_by':'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!--  Created Main Product Action -->
+    <record id="cappp_main_product_action" model="ir.actions.act_window">
+        <field name="name">Cap Main Product</field>
+        <field name="res_model">main.product</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--  Created Menu item for Main Product at Sales -> Configuration -> Cap Main Product -->
+    <menuitem id="cap_main_product_menu" action="cappp_main_product_action"
+    parent="sale.menu_sale_config"/>
+
+</odoo>

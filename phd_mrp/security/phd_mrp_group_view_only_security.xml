@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="mrp.menu_mrp_root"
+            name="Manufacturing"
+            groups="mrp.group_mrp_user,mrp.group_mrp_manager,phd_mrp.group_mrp_view_only"
+            icon="fa-wrench"
+            web_icon="mrp,static/description/icon.png"
+            sequence="35"/>
+
+    <record id="mrp.menu_mrp_reporting" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_mrp.group_mrp_view_only_report'))]"/>
+    </record>
+</odoo>

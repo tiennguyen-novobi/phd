@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="module_category_phd_marketing_order_receivable_user">
+        <field name="name">Receivable User</field>
+        <field name="sequence">99</field>
+    </record>
+
+    <record id="phd_marketing.group_mko_receivable_user" model="res.groups">
+        <field name="name">Receivable User</field>
+        <field name="category_id" ref="phd_marketing.module_category_phd_marketing_order_receivable_user"/>
+    </record>
+
+    <record model="ir.module.category" id="module_category_phd_marketing_order">
+        <field name="name">Marketing</field>
+        <field name="sequence">99</field>
+    </record>
+
+    <record model="ir.module.category" id="module_category_phd_marketing_order">
+        <field name="name">Marketing</field>
+        <field name="sequence">99</field>
+    </record>
+
+    <record id="phd_marketing.group_marketing_view_only" model="res.groups">
+        <field name="name">View Only</field>
+        <field name="category_id" ref="phd_marketing.module_category_phd_marketing_order"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="phd_marketing.group_marketing_view_only_reports" model="res.groups">
+        <field name="name">View Only w Reports</field>
+        <field name="category_id" ref="phd_marketing.module_category_phd_marketing_order"/>
+        <field name="implied_ids" eval="[(4, ref('phd_marketing.group_marketing_view_only'))]"/>
+    </record>
+
+    <record id="phd_marketing.group_mko_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="phd_marketing.module_category_phd_marketing_order"/>
+        <field name="implied_ids" eval="[(4, ref('phd_marketing.group_marketing_view_only_reports'))]"/>
+    </record>
+
+    <record id="phd_marketing.group_mko_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="phd_marketing.module_category_phd_marketing_order"/>
+        <field name="implied_ids" eval="[(4, ref('phd_marketing.group_mko_user'))]"/>
+    </record>
+
+    <record model="res.users" id="base.user_root">
+       <field eval="[(4,ref('phd_marketing.group_mko_manager'))]" name="groups_id"/>
+    </record>
+
+    <record model="res.users" id="base.user_admin">
+       <field eval="[(4,ref('phd_marketing.group_mko_manager'))]" name="groups_id"/>
+   	</record>
+
+    <record model="ir.rule" id="phd_mko_comp_rule">
+        <field name="name">Marketing Order company rule</field>
+        <field name="model_id" ref="model_phd_mko"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

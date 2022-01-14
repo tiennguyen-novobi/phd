@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_view_mrp_add_qty_to_produce_wizard" model="ir.ui.view">
+            <field name="name">MRP Product Produce</field>
+            <field name="model">phd.mrp.add.qty.to.produce</field>
+            <field name="arch" type="xml">
+                <form string="Produce">
+                    <group>
+                        <field name="raw_workorder_line_ids">
+                            <tree editable="bottom" delete="0" create="0">
+                                <field name="product_id" readonly="1"/>
+                                <field name="quantity"/>
+                                <field name="product_uom_id"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="add_qty" type="object" string="Save" class="btn-primary"/>
+                        <button string="Discard" class="btn-default btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>

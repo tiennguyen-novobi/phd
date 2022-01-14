@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_model_phd_sale_order_stage,phd.sale.order.stage,phd_sale.model_phd_sale_order_stage,,1,0,0,0
+access_model_product_customerinfo,product.customerinfo,phd_sale.model_product_customerinfo,,1,1,1,1
+access_sale_order_view_only,sale.order,phd_sale.model_sale_order,phd_sale.group_sale_view_only,1,0,0,0
+access_sale_order_line_view_only,sale.order.line,phd_sale.model_sale_order_line,phd_sale.group_sale_view_only,1,1,0,0
+access_sale_report_view_only,sale.report,sale.model_sale_report,phd_sale.group_sale_view_only,1,0,0,0
+
+access_account_move_view_only,account.move,sale.model_account_move,phd_sale.group_sale_view_only,1,0,0,0
+access_account_move_line_view_only,account.move.line,sale.model_account_move_line,phd_sale.group_sale_view_only,1,0,0,0
+
+access_stock_picking_view_only,stock.picking,stock.model_stock_picking,phd_sale.group_sale_view_only,1,0,0,0
+access_stock_move_view_only,stock.move,stock.model_stock_move,phd_sale.group_sale_view_only,1,1,0,0
+access_stock_scrap_view_only,stock.scrap,stock.model_stock_scrap,phd_sale.group_sale_view_only,1,0,0,0
+access_mrp_bom_view_only,mrp.bom,mrp.model_mrp_bom,phd_sale.group_sale_view_only,1,0,0,0
+
+access_product_template_view_only,product.template,product.model_product_template,phd_sale.group_sale_view_only,1,0,0,0

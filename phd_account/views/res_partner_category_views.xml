@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_res_partner_category_cc_form_view_phd" model="ir.ui.view">
+        <field name="name">res.partner.category.cc.form.view.phd</field>
+        <field name="model">res.partner.category</field>
+        <field name="inherit_id" ref="base.view_partner_category_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//field[@name="parent_id"]' position='after'>
+                <field name="is_cc_tag"/>
+                <field name="is_credit_card_user"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

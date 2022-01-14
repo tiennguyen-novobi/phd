@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2021 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <!--############################## VIEWS ##############################-->
+
+    <!--############################## ACTIONS ##############################-->
+    <record model="ir.actions.client" id="action_replenishment_planning">
+        <field name="name">Replenishment Planning Report</field>
+        <field name="tag">replenishment_planning_report</field>
+        <field name="context">{
+            'model': 'report.replenishment_planning_report',
+            'product_ids': []}
+        </field>
+        <field name="params">{}</field>
+    </record>
+
+    <!--############################## MENUS ##############################-->
+    <menuitem id="menu_replenishment_planning"
+              name="Replenishment Planning"
+              action="action_replenishment_planning"
+              parent="stock.menu_stock_warehouse_mgmt"
+              sequence="10"/>
+    <menuitem id="stock.menu_reordering_rules_replenish"
+              name="Reordering Rules"
+              parent="stock.menu_stock_warehouse_mgmt"
+              sequence="10"/>
+
+</odoo>

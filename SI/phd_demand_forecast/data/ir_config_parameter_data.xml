@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="demand_forecast_recompute_data" model="ir.config_parameter">
+            <field name="key">phd_demand_forecast.has_initialized_data</field>
+            <field name="value">False</field>
+        </record>
+
+        <record id="demand_forecast_last_updated_time" model="ir.config_parameter">
+            <field name="key">phd_demand_forecast.last_updated</field>
+            <field name="value"></field>
+        </record>
+    </data>
+</odoo>

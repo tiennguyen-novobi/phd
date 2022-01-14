@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_view_purchase_order_filter" model="ir.ui.view">
+        <field name="name">purchase.order.search.inherit.subcontracting</field>
+        <field name="model">purchase.order</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_purchases']" position="after">
+                <filter string="Subcontracting" name="subcontracting" domain="[('is_subcontracting','=',True)]"/>
+                <filter string="Raw Materials" name="raw_materials" domain="[('is_subcontracting','=',False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_purchase_order_form" model="ir.ui.view">
+        <field name="name">phd.purchase.order.view.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_rfq_send']" position="before">
+                <button name="generate_mo_for_subcontracting" string="Generate MO" type="object" class="oe_highlight"
+                        groups="base.group_no_one"/>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="attrs"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="stage_id" widget="stagebar"></field>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_subcontracting" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='button_cancel']" position="before">
+                <button name="action_continue" class="oe_highlight" type="object"
+                        attrs="{'invisible': [('stage_id', '!=', %(phd_purchase.phd_purchase_order_stage_on_hold)d)]}"
+                        string="Continue"/>
+                <button name="action_shipped" class="oe_highlight" type="object"
+                        attrs="{'invisible': [('stage_id', '!=', %(phd_purchase.phd_purchase_order_stage_ready_pickup)d)]}"
+                        string="Ship"/>
+                <button name="action_ready_to_pickup" class="oe_highlight" type="object"
+                        attrs="{'invisible': [('stage_id', '!=', %(phd_purchase.phd_purchase_order_stage_purchase_order)d)]}"
+                        string="Ready to Pickup"/>
+                <!--                <button name="action_acknowledgment" type="object" string="Acknowledgment" attrs="{'invisible':['|',('is_subcontracting','=', True), ('stage_id','!=', %(phd_purchase.phd_purchase_order_stage_purchase_order)d)]}"/>-->
+                <button name="action_on_hold" type="object" string="On Hold"
+                        attrs="{'invisible':['|',('stage_id','not in', [%(phd_purchase.phd_purchase_order_stage_purchase_order)d,%(phd_purchase.phd_purchase_order_stage_ready_pickup)d]), '&amp;', ('state','=', 'done'), ('is_subcontracting','=', True)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='button_cancel']" position="attributes">
+                <attribute name="states"></attribute>
+                <attribute name="attrs">{'invisible': ['|', ('stage_id', 'in',
+                    [%(phd_purchase.phd_purchase_order_stage_cancelled)d,%(phd_purchase.phd_purchase_order_stage_ready_pickup)d]),
+                    '&amp;', ('stage_id', '=' , %(phd_purchase.phd_purchase_order_stage_rfq_sent)d),
+                    ('is_subcontracting', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_unlock']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_done']" position="attributes">
+                <attribute name="states"></attribute>
+                <attribute name="string">Close</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('stage_id', 'not in',
+                    [%(phd_purchase.phd_purchase_order_stage_purchase_order)d,
+                    %(phd_purchase.phd_purchase_order_stage_shipped)d]), '&amp;', ('stage_id', '=' ,
+                    %(phd_purchase.phd_purchase_order_stage_purchase_order)d), ('is_subcontracting', '=',
+                    False)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='purchase_delivery_invoice']/group/group//field[@name='picking_type_id']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='purchase_delivery_invoice']//group[@name='other_info']/field[@name='payment_term_id']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="payment_term_id"
+                       attrs="{'readonly': ['|', ('invoice_status','=', 'invoiced'), ('state', '=', 'done')]}"
+                       options="{'no_create': True}" can_create="true" can_write="true"
+                       modifiers="{'readonly':['|',['invoice_status','=','invoiced'],['state','=','done']]}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_ref']" position="after">
+                <field name="picking_type_id"
+                       domain="[('parent_id','=',partner_id), ('code','=','incoming'), '|', ('warehouse_id', '=', False), ('warehouse_id.company_id', '=', company_id)]"
+                       options="{'no_create': True}" groups="stock.group_stock_multi_locations" />
+            </xpath>
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="shipping_address_id" attrs="{'readonly': [('state', '=', 'done')]}"
+                       options="{'no_create': True}" domain="[('parent_id', '=', partner_id)]"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="widget">res_partner_many2one_remove_vat</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_purchase_order_view_kanban" model="ir.ui.view">
+        <field name="name">phd.purchase.order.view.kanban</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="replace">
+                <kanban default_group_by="stage_id" quick_create="false" class="o_kanban_small_column o_kanban_mobile"
+                        js_class="phd_purchase_order_kanban">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="amount_total"/>
+                    <field name="state"/>
+                    <field name="date_order"/>
+                    <field name="currency_id"/>
+                    <field name="activity_state"/>
+                    <field name="previous_state" invisible="1"/>
+                    <field name="is_subcontracting" invisible="1"/>
+                    <progressbar field="activity_state"
+                                 colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong class="o_kanban_record_title"><span><t
+                                                t-esc="record.partner_id.value"/></span></strong>
+                                    </div>
+                                    <strong><field name="amount_total" widget="monetary"/></strong>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span><t t-esc="record.name.value"/> <t
+                                                t-esc="record.date_order.value and record.date_order.value.split(' ')[0] or False"/></span>
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <div>
+                                            <field name="stage_id" widget="label_selection"
+                                                   options="{'classes': {'draft': 'default', 'cancel': 'default', 'done': 'success', 'approved': 'warning'}}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_purchase_subcontracting" model="ir.actions.act_window">
+        <field name="name">Subcontracting</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">kanban,tree,form,pivot,graph,calendar,activity</field>
+        <field name="view_id" ref="purchase.view_purchase_order_kanban"/>
+        <field name="domain">[]</field>
+        <field name="search_view_id" ref="phd_view_purchase_order_filter"/>
+        <field name="context">{'quotation_only': True,'subcontracting': True, 'search_default_subcontracting': 1,
+            'is_reformat_on_export_excel':
+            {
+            'delete_field': ('origin'),
+            }}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a request for quotation
+            </p><p>
+            The quotation contains the history of the discussion
+            you had with your vendor.
+        </p>
+        </field>
+    </record>
+
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+        <field name="name">Raw Materials</field>
+        <field name="view_id" ref="phd_purchase_order_view_kanban"/>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="phd_view_purchase_order_filter"/>
+        <field name="context">{'quotation_only': True, 'search_default_raw_materials': 1, 'is_reformat_on_export_excel':
+            {
+            'delete_field': ('origin'),
+            }}</field>
+    </record>
+
+    <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+        <field name="context">
+            {
+            'is_reformat_on_export_excel':
+            {
+            'delete_field': ('origin'),
+            }
+            }
+        </field>
+    </record>
+
+    <record id="phd_purchase_order_tree_view_inherit" model="ir.ui.view">
+        <field name="name">phd.purchase.order.view.tree</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">phd_tools_export_excel</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem name="Requests for Quotation"
+              id="purchase.menu_purchase_rfq"
+              parent="purchase.menu_procurement_management"
+              sequence="10"/>
+
+    <menuitem action="purchase.purchase_rfq" id="phd_menu_po_raw_material"
+              parent="purchase.menu_purchase_rfq"
+              name="Raw Materials"
+              sequence="1"/>
+
+    <menuitem action="phd_purchase_subcontracting" id="phd_menu_po_subcontracting"
+              parent="purchase.menu_purchase_rfq"
+              name="Subcontracting"
+              sequence="2"/>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo noupdate="1">
+    <record id="ir_cron_phd_fetch_doc_form_sps" model="ir.cron">
+        <field name="name">SPS Automation: Fetch Documents</field>
+        <field name="model_id" ref="model_phd_sps_commerce_file"/>
+        <field name="state">code</field>
+        <field name="code">model._fetch_order()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="doall" eval="True"/>
+        <field name="numbercall">-1</field>
+    </record>
+
+   <record id="ir_cron_phd_import_850_doc_form_sps" model="ir.cron">
+        <field name="name">SPS Automation: Import Orders</field>
+        <field name="model_id" ref="model_edi_transaction"/>
+        <field name="state">code</field>
+        <field name="user_id" ref="base.user_admin" />
+        <field name="code">model.action_import_sps_850()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="doall" eval="True"/>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_phd_import_860_doc_form_sps" model="ir.cron">
+        <field name="name">SPS Automation: Import Order Changes</field>
+        <field name="model_id" ref="model_edi_transaction"/>
+        <field name="state">code</field>
+        <field name="user_id" ref="base.user_admin" />
+        <field name="code">model.action_import_edi_860()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="doall" eval="True"/>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_phd_send_edi_file_to_sps" model="ir.cron">
+        <field name="name">SPS Automation: Send Files to SPS</field>
+        <field name="model_id" ref="model_phd_sps_commerce_file"/>
+        <field name="state">code</field>
+        <field name="user_id" ref="base.user_admin" />
+        <field name="code">model.action_send_edi_to_sps()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="doall" eval="True"/>
+        <field name="numbercall">-1</field>
+    </record>
+<!--c-->
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="forecasted_demand_import_template" model="ir.exports">
+        <field name="name">Import Template</field>
+        <field name="resource">demand.forecast.item</field>
+    </record>
+
+    <record id="forecasted_demand_import_product_line" model="ir.exports.line">
+        <field name="name">product_id</field>
+        <field name="export_id" ref="phd_demand_forecast.forecasted_demand_import_template"/>
+    </record>
+
+    <record id="forecasted_demand_import_partner_line" model="ir.exports.line">
+        <field name="name">partner_id</field>
+        <field name="export_id" ref="phd_demand_forecast.forecasted_demand_import_template"/>
+    </record>
+
+    <record id="forecasted_demand_import_date_line" model="ir.exports.line">
+        <field name="name">week_end_date</field>
+        <field name="export_id" ref="phd_demand_forecast.forecasted_demand_import_template"/>
+    </record>
+
+    <record id="forecasted_demand_import_demand_qty_line" model="ir.exports.line">
+        <field name="name">demand_qty</field>
+        <field name="export_id" ref="phd_demand_forecast.forecasted_demand_import_template"/>
+    </record>
+</odoo>

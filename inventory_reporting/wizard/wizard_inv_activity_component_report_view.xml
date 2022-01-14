@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_wizard_inv_activity_component_report_form" model="ir.ui.view">
+        <field name="name">wizard.inv.activity.component.reports.form</field>
+        <field name="model">wizard.inv.activity.component.reports</field>
+        <field name="type">form</field>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <form string="INV Component Report">
+                <group>
+                    <group>
+                        <field name="date_start" required="1"/>
+                        <field name="product_id" context="{'default_code':1}" options="{'no_create_edit': True}"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                        <field name="item_categ" options="{'no_create_edit': True}"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button string='Print PDF' name="print_inv_pdf_report_component"
+                            type="object" class="btn-primary"/>
+                    <button string='Print Excel' name="print_excel_report"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window"
+            id="action_wizard_inv_act_comp_view">
+        <field name="name">Activity Component Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.inv.activity.component.reports</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_inv_activity_component_report_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_inv_act_comp_report"
+              name="Inv Activity Component Report"
+              action="action_wizard_inv_act_comp_view"
+              parent="menu_inv_report" sequence="2"/>
+
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_vendor_credit_card_tree" model="ir.ui.view">
+        <field name="name">account.payment.form.phd</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount']" position="replace">
+                <field name="total_deposit_amount" string="Amount"/>
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="string">Journal</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_payment_credit_card_charges" model="ir.ui.view">
+        <field name="name">account.payment.form.credit.card.charges.phd</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="phd_account.view_account_payment_customization_payment"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr='//field[@name="custom_journal_id"]' position='attributes'>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr='//field[@name="journal_id"]' position='attributes'>
+                <attribute name="string">Journal</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id'][2]" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True, 'default_is_company': True,
+                    'res_partner_search_mode': 'supplier', 'default_customer_rank': payment_type == 'inbound' and 1,
+                    'is_credit_card_charge': True}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='communication']" position="attributes">
+                <attribute name="string">Bill / Ref#</attribute>
+            </xpath>
+            <xpath expr="//field[@name='communication']" position="after">
+                <field name="credit_card_transaction_id"/>
+                <field name="appears_on_statement_as"/>
+                <field name="partner_card_holder_id"
+                       domain="[('is_credit_card_user', '=', True)]"
+                       context="{'is_disable_create_edit_many2one': True, 'is_credit_card_holder': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='phd_payment_deposit_ids']" position="after">
+                <group>
+                    <field name="extended_details"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_credit_card_charges" model="ir.actions.act_window">
+        <field name="name">Credit Card Charges</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">tree,kanban,form,graph</field>
+        <field name="context">{
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+            'default_is_deposit_customization': 1,
+            'default_is_credit_card_charges': 1,
+            }
+        </field>
+        <field name="domain">[('payment_type', '=', 'outbound'), ('partner_type', '=', 'supplier'),
+            ('is_deposit_customization', '=', True), ('is_credit_card_charges', '=', True)]
+        </field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('phd_account.view_account_payment_vendor_credit_card_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_payment_credit_card_charges')})]"/>
+    </record>
+
+    <record id="action_vendor_credit_card_refund" model="ir.actions.act_window">
+        <field name="name">Credit Card Refund</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">tree,kanban,form,graph</field>
+        <field name="context">{
+            'default_payment_type': 'inbound',
+            'default_partner_type': 'supplier',
+            'default_is_deposit_customization': 1,
+            'default_is_credit_card_charges': 1,
+            }
+        </field>
+        <field name="domain">[('payment_type', '=', 'inbound'), ('partner_type', '=', 'supplier'),
+            ('is_deposit_customization', '=', True), ('is_credit_card_charges', '=', True)]
+        </field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('phd_account.view_account_payment_vendor_credit_card_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_payment_credit_card_charges')})]"/>
+    </record>
+
+    <menuitem id="menu_credit_card_charges" name="Credit Card Charges" parent="account.menu_finance_payables"
+              action="action_credit_card_charges" sequence="150"/>
+
+    <menuitem id="menu_vendor_credit_card_refund" name="Credit Card Refund" parent="account.menu_finance_payables"
+              action="action_vendor_credit_card_refund" sequence="160"/>
+</odoo>

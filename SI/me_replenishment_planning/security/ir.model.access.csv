@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_replenishment_planning_report,replenishment.planning.report,model_report_replenishment_planning_report,base.group_user,1,1,1,1
+access_replenishment_history,replenishment.history,model_replenishment_history,base.group_user,1,1,1,1
+access_replenishment_history_line,replenishment.history,model_replenishment_history_line,base.group_user,1,1,1,1
+access_detail_transaction,access_detail_transaction,model_detail_transaction,base.group_user,1,1,1,1

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_res_partner_form_inherit_phd_contact" model="ir.ui.view">
+        <field name="name">res.partner.form.view.inherit.phd.contact</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='city']" position="after">
+                <field name="county" placeholder="County" class="o_address_city"
+                       attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='print_check_as']" position="after">
+                <field name="is_amazon_distribution_center"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form//field[@name='city']" position="after">
+                <field name="county" placeholder="County" class="o_address_city"/>
+            </xpath>
+
+            <xpath expr="//field[@name='child_ids']//templates//div[hasclass('oe_kanban_details')]
+            //field[@name='city']" position="after">
+                <field name="county" placeholder="County" class="o_address_city"/>
+            </xpath>
+
+            <field name="vat" position="after">
+                <field name="e1_ship_to"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_res_partner_kanban_inherit_phd_contact" model="ir.ui.view">
+        <field name="name">res.partner.kanban.view.inherit.phd.contact</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_details')]
+            //li[@t-if='record.city.raw_value and !record.country_id.raw_value']" position="after">
+                <li t-if="record.county.raw_value">
+                    <field name="county"/>
+                </li>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_res_partner_usa_form_inherit_phd_contact" model="ir.ui.view">
+        <field name="name">res.partner.usa.form.view.inherit.phd.contact</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="l10n_us_accounting.view_partner_form_usa"/>
+        <field name="arch" type="xml">
+            <field name="vendor_eligible_1099" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': True,
+                    'invisible': False}
+                </attribute>
+                <attribute name="force_save">1</attribute>
+            </field>
+            <field name="vendor_eligible_1099" position="after">
+                <field name="tax_classification"/>
+            </field>
+        </field>
+    </record>
+</odoo>

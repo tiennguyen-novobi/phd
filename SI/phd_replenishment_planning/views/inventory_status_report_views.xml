@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_server_stock_status_report_to_replenish" model="ir.actions.server">
+            <field name="name">Replenishment Planning</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_stock_status_report_line" />
+            <field name="binding_model_id" ref="model_stock_status_report_line" />
+            <field name="state">code</field>
+            <field name="code">action = records.render_replenishment_report()</field>
+        </record>
+    </data>
+
+</odoo>

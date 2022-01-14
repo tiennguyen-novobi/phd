@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <t t-name="me_replenishment_planning.buttons" t-extend="me_replenishment_planning.buttons">
+        <t t-jquery=".create_manufacturing_orders" t-operation="attributes">
+            <attribute name="class">d-none</attribute>
+        </t>
+        <t t-jquery=".create_purchase_orders" t-operation="attributes">
+            <attribute name="class">d-none</attribute>
+        </t>
+    </t>
+
+</templates>

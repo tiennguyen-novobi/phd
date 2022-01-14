@@ -1,0 +1,10 @@
+.status_ontrack{
+    color: #019292;
+}
+.status_delayed{
+    color: #a8a805;
+}
+
+.status_onhold{
+    color: #db0101;
+}

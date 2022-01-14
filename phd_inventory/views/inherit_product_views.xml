@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_product_product_form_inherit_phd_inventory" model="ir.ui.view">
+        <field name="name">product.product.form.view.inherit.phd.inventory</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='inventory']" position="after">
+                <page name="product_logistics" string="Logistics">
+                    <group name="logistic_info">
+                        <group name="product_case_info">
+                            <field name="case_upc"/>
+                            <field name="case_length"/>
+                            <field name="case_width"/>
+                            <field name="case_height"/>
+                        </group>
+                        <group name="quantity_management">
+                            <field name="number_of_layers"/>
+                            <field name="unit_per_case"/>
+                            <field name="unit_per_pallet"/>
+                            <field name="case_per_pallet"/>
+                            <field name="case_per_layer"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='general_information']//group[@name='group_general']" position="inside">
+                <field name="description_1"/>
+                <field name="description_2"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

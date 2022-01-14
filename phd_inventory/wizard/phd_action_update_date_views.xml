@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="phd_update_date_form_view" model="ir.ui.view">
+        <field name="name">phd.update.date.form.view</field>
+        <field name="model">phd.update.date</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field colspan="2" name="date_time" string="Effective Date"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_update_date" string="Update" type="object"
+                            class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

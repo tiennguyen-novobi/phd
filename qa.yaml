@@ -1,0 +1,101 @@
+1.0.10:
+  time_line: [2020-09-21]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-qa
+  release_notes:
+    - Vitamin Shoppe
+
+1.0.9:
+  time_line: [2020-07-27]
+  upgrade_modules:
+    - phd_sps_integration
+    - phd_account
+  install_modules:
+  database:
+    - phd-qa
+  release_notes:
+    - GNC Go-live
+
+1.0.8:
+  time_line: [2020-07-24]
+  upgrade_modules:
+    - phd_sps_integration
+    - phd_account
+  install_modules:
+  database:
+    - phd-qa
+  release_notes:
+    - GNC Go-live
+
+1.0.7:
+  time_line: [2020-07-23]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-qa
+  release_notes:
+    - GNC Go-live
+
+1.0.6:
+  time_line: [2020-07-19]
+  upgrade_modules:
+    - phd_purchase
+    - phd_sale
+  install_modules:
+    - remove_decimal_zero_trailing
+  database:
+  release_notes:
+    - Create Mark Done Button On SPS Commerce Files
+
+1.0.5:
+  time_line: [2020-01-11]
+  upgrade_modules:
+    - phd_purchase
+    - phd_sale
+  install_modules:
+    - remove_decimal_zero_trailing
+  database:
+  release_notes:
+    - Improve PO and SO report
+
+1.0.4:
+  time_line: [2020-01-07]
+  upgrade_modules:
+    - phd_mrp
+    - phd_inventory
+    - phd_stock
+  install_modules:
+  database:
+  release_notes:
+    - Add constraint for producing process in MO and fix recommend Lot feature
+
+1.0.3:
+  time_line: [2020-01-06]
+  upgrade_modules:
+    - phd_stock
+  install_modules:
+  database:
+  release_notes:
+    - Add Journal entry for consumable component
+
+1.0.2:
+  time_line: [2020-01-05]
+  upgrade_modules:
+    - phd_stock
+    - phd_mrp
+  install_modules:
+  database:
+  release_notes:
+    - Fix wrong produced quantity on MO when validating Receipt
+
+1.0.1:
+  time_line: [2020-12-23]
+  upgrade_modules: 
+  install_modules:
+  database: 
+  release_notes:
+    - DevOps Team Apply Upgrade Module

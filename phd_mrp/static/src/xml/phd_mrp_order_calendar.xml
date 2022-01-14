@@ -1,0 +1,24 @@
+<template>
+    <t t-name="phd-mrp-order-calendar-box">
+        <div t-att-style="typeof color === 'string' ? ('background-color:' + color) + ';' : ''"
+             t-attf-class="#{!event.color_index ? 'text-white' : ''} #{record.is_highlighted ? 'o_event_hightlight' : ''} #{typeof color === 'number' ? _.str.sprintf('o_calendar_color_%s', color) : ''}">
+            <div>
+                <div class="o_event_title">
+                    <span t-esc="record.display_name" class="oe_bold_field"/>
+                </div>
+                <div>
+                    <span>Product: </span>
+                    <span t-esc="record.product_id[1]"/>
+                </div>
+                <div>
+                    <span>Quantity Produced: </span>
+                    <span t-esc="record.qty_produced"/>
+                </div>
+                <div>
+                    <span>Quantity to Produce: </span>
+                    <span t-esc="record.product_qty"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>

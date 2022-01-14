@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="phd_account_report_invoice_document_inherit"
+              inherit_id="account.report_invoice_document">
+        <xpath expr="//div[hasclass('page')]/div[@id='informations']/div[@name='invoice_date']" position="before">
+            <div class="col-auto mw-100 mb-2" t-if="o.invoice_payment_term_id" name="payment_term">
+                <strong>Terms</strong>
+                <p class="m-0" t-field="o.invoice_payment_term_id"/>
+            </div>
+            <div class="col-auto mw-100 mb-2" t-if="o.ship_date" name="ship_date">
+                <strong>Ship</strong>
+                <p class="m-0" t-field="o.ship_date"/>
+            </div>
+            <div class="col-auto mw-100 mb-2" t-if="o.via" name="via">
+                <strong>Via</strong>
+                <p class="m-0" t-field="o.via"/>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('page')]/div[@id='informations']/div[@name='reference']" position="after">
+            <div class="col-auto mw-100 mb-2" t-if="o.bol_number" name="bol_number">
+                <strong>BOL Number</strong>
+                <p class="m-0" t-field="o.bol_number"/>
+            </div>
+            <div class="col-auto mw-100 mb-2" t-if="o.invoice_incoterm_id" name="incoterm">
+                <strong>F.O.B</strong>
+                <p class="m-0" t-field="o.invoice_incoterm_id"/>
+            </div>
+            <div class="col-auto mw-100 mb-2" t-if="o.wsi_number" name="wsi_number">
+                <strong>WSI#</strong>
+                <p class="m-0" t-field="o.wsi_number"/>
+            </div>
+        </xpath>
+
+         <xpath expr="//div[hasclass('page')]/table/thead/tr/th[@name='th_description']" position="before">
+            <th name="th_sku" class="text-left">
+                <span>Item Code</span>
+            </th>
+        </xpath>
+
+        <xpath expr="//div[hasclass('page')]/table/thead/tr/th[@name='th_description']" position="after">
+            <th name="th_qty_ordered" class="text-right">
+                <span>Ordered</span>
+            </th>
+            <th name="th_qty_backordered" class="text-right">
+                <span>Backordered</span>
+            </th>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table/thead/tr/th[@name='th_subtotal']" position="before">
+            <th name="th_lot">
+                <span>Lot#</span>
+            </th>
+        </xpath>
+
+        <xpath expr="//div[hasclass('page')]/table/tbody//td[@name='account_invoice_line_name']" position="before">
+            <td name="td_sku">
+                <span t-field="line.default_code"/>
+            </td>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table/tbody//td[@name='account_invoice_line_name']" position="after">
+            <td class="text-right" name="td_qty_ordered">
+                <span t-field="line.qty_ordered"/>
+            </td>
+            <td class="text-right" name="td_qty_backordered">
+                <span t-field="line.qty_backordered"/>
+            </td>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/table/tbody//td[hasclass('o_price_total')]" position="before">
+            <td name="td_lot">
+                <span t-field="line.lot_name"/>
+            </td>
+        </xpath>
+    </template>
+</odoo>

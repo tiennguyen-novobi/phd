@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="tools assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_data_export.js"></script>
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_export_list_view_to_excel.js"></script>
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_sum_avg.js"></script>
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_stage_form_view.js"></script>
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_filter_date_range.js"></script>
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_date_range_export_report.js"></script>
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_res_partner_many2one_vat.js"></script>
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_lot_many2one_filter.js"></script>
+            <script type="text/javascript" src="/phd_tools/static/src/js/phd_disable_create_edit_many2one.js"></script>
+        </xpath>
+   </template>
+</odoo>

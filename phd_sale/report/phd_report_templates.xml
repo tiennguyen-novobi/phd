@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="phd_sales_in_dollar"
+            string="Sales in Dollars"
+            model="sale.order.line"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"            
+            paperformat="phd_export_pdf.phd_report_paperformat"
+        />
+
+        <report
+            id="phd_sales_in_unit"
+            string="Sales in Unit"
+            model="sale.order.line"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+        />
+
+        <report
+            id="phd_unbilled_sales"
+            string="Unbilled Sales"
+            model="sale.order.line"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+        />
+
+        <report
+            id="phd_backorder_report"
+            string="Backorder Report"
+            model="sale.order.line"
+            report_type="qweb-pdf"
+			file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+        />
+
+        <report
+            id="phd_customer_order_efficiency"
+            string="Customer Order Efficiency"
+            model="stock.move"
+            report_type="qweb-pdf"
+			file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+        />
+
+    </data>
+</odoo>

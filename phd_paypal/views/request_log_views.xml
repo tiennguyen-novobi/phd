@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_request_log_form_view" model="ir.ui.view">
+        <field name="name">phd.request.log.form.view</field>
+        <field name="model">request.log</field>
+        <field name="inherit_id" ref="phd_request_log.phd_request_log_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object"
+                    name="action_open_details"
+                    class="oe_stat_button"
+                    icon="fa-list"
+                    attrs="{'invisible': ['|', ('transaction_count', '=', 0), ('res_model', '!=', 'paypal.transaction')]}">
+                    <field name="transaction_count" widget="statinfo" string="Transactions"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,9 @@
+.o_limited_date_cell{
+    background-color: #ffff;
+}
+.o_limited_date_cell div.edit_style_on_read{
+    width: 100%;
+}
+.o_limited_date_cell div.edit_style_on_read .o_datepicker_input{
+    border: none;
+}

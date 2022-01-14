@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_view_search_inherit_phd_sps_integration" model="ir.ui.view">
+        <field name="name">sale.order.search.inherit.sale.phd.sps.integration</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <field name="sps_trading_partner_id"/>
+                <separator/>
+                <filter string="SPS Order" name="is_sps_order" domain="[('sps_trading_partner_id','!=', False)]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_form_inherit_phd_sps_integration" model="ir.ui.view">
+        <field name="name">sale.order.form.view.inherit.phd.sps.integration</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//page[@name="other_information"]' position="after">
+                <page id="sps_other_info" string="SPS Other Info">
+                    <group>
+                        <group name="sps_info">
+                            <field name="sps_trading_partner_id"/>
+                            <field name="client_order_ref" string="P.O. Number"/>
+                            <div class="o_row o_td_table">
+                                <label for="sps_delivery_window_start_date" string="Delivery Window"/>
+                            </div>
+                            <div class="o_row">
+                                <field name="sps_delivery_window_start_date"/>
+                                <span>to</span>
+                                <field name="sps_delivery_window_end_date"/>
+                            </div>
+                            <field name="vendor_code"/>
+                            <field name="sps_customer_order_number"/>
+                            <field name="packaging_characteristic_code"/>
+                            <field name="packaging_description"/>
+                            <field name="carrier_routing"/>
+                            <field name="sps_division"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_button_box')]/button[@name='preview_sale_order']" position="before">
+                <button type="object" name="action_view_order_acknowledgement" class="oe_stat_button" icon="fa-th-list"
+                        attrs="{'invisible':[('order_ack_count','=',0)]}">
+                    <field name="order_ack_count" widget="statinfo" string="Acknowledgment"
+                           help="Order Acknowledgement"/>
+                </button>
+                <button type="object" name="action_view_order_change" class="oe_stat_button" icon="fa-th-list"
+                        attrs="{'invisible':[('order_change_count','=',0)]}">
+                    <field name="order_change_count" widget="statinfo" string="Order Change"
+                           help="Order Change"/>
+                </button>
+
+                <!--                <button type="object" name="action_import_edi_860" class="oe_stat_button" icon="fa-th-list"/>-->
+
+            </xpath>
+
+            <xpath expr='//header/button[@name="action_draft"]' position="after">
+                <field name="has_sps_order_acknowledgement" invisible="1"/>
+                <button name="action_acknowledge_order" string="Acknowledge"
+                        type="object" class="btn-primary"
+                        attrs="{'invisible': [('has_sps_order_acknowledgement', '=', False)]}"/>
+            </xpath>
+
+            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='name']"
+                   position="after">
+                <field name="sps_ack_schedule_date" string="ACK Schedule Date"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_sps_quotations" model="ir.actions.act_window">
+        <field name="name">SPS Quotations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+        <field name="domain">[('state', 'in', ['draft', 'sent']), ('sps_trading_partner_id', '!=', False)]</field>
+    </record>
+
+    <record id="action_sps_orders" model="ir.actions.act_window">
+        <field name="name">SPS Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+        <field name="domain">[('state', 'in', ['sale', 'done']), ('sps_trading_partner_id', '!=', False)]</field>
+    </record>
+
+    <menuitem id="menu_sps"
+              name="SPS Orders"
+              parent="sale.sale_order_menu"
+              sequence="2" groups="sales_team.group_sale_salesman"/>
+
+    <menuitem id="menu_quotation_from_sps"
+              name="Quotations"
+              action="phd_sps_integration.action_sps_quotations"
+              parent="phd_sps_integration.menu_sps"
+              sequence="1" groups="sales_team.group_sale_salesman"/>
+
+    <menuitem id="menu_sale_order_from_sps"
+              name="Orders"
+              parent="phd_sps_integration.menu_sps"
+              action="phd_sps_integration.action_sps_orders"
+              sequence="2" groups="sales_team.group_sale_salesman"/>
+
+</odoo>

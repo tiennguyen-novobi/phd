@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_product_product_form_inherit" model="ir.ui.view">
+        <field name="name">view.product.product.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <group name="group_lots_and_weight" position="after">
+                <group name="group_report_configurations" string="Stock Status Configuration"
+                       attrs="{'invisible': [('forecasted_demand_ok', '=', False)]}">
+                    <label for="z_score"/>
+                    <div class="o_row" name="z_score">
+                        <field name="z_score"/>
+                    </div>
+                    <label for="safety_stock_method"/>
+                    <div class="o_row" name="safety_stock_calculation">
+                        <field name="safety_stock_method" widget="radio"/>
+                    </div>
+                    <label for="safety_stock"/>
+                    <div class="o_row" name="safety_stock_value">
+                        <field name="safety_stock"
+                               attrs="{'readonly': [('safety_stock_method', '=', 'automatic')]}"/>
+                    </div>
+                </group>
+            </group>
+            <field name="variant_seller_ids" position="after">
+                <group name="purchase_lead_time">
+                    <group>
+                        <field name="eligible_primary_vendor_ids" invisible="1"/>
+                        <field name="primary_vendor_id" options="{'no_create_edit': True}"
+                               domain="[('id', 'in', eligible_primary_vendor_ids)]"
+                               attrs="{'required': [('eligible_primary_vendor_ids', '!=', [])]}"/>
+                        <field name="purchase_lead_time" force_save="1"/>
+                        <label for="minimum_purchase_qty"/>
+                        <div class="o_row">
+                            <field name="minimum_purchase_qty" force_save="1"/>
+                            <field name="uom_po_id" readonly="1"/>
+                        </div>
+                    </group>
+                </group>
+            </field>
+        </field>
+    </record>
+</odoo>

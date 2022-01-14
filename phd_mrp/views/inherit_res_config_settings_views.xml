@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_res_config_settings_form_inherit_phd_mrp" model="ir.ui.view">
+        <field name="name">res.config.settings.form.view.inherit.phd.mrp</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="mrp.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//label[@for="module_mrp_subcontracting"]' position="after">
+                <div class="mt16">
+                    <div class="content-group" attrs="{'invisible': [('module_mrp_subcontracting' ,'=', False)]}">
+                        <div class="row">
+                            <field name="auto_reserve_subcontracting_mo" class="col-lg-1 ml16"/>
+                            <label for="auto_reserve_subcontracting_mo"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

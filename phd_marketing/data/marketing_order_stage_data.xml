@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="phd_marketing_order_stage_new" model="phd.marketing.order.stage">
+            <field name="name">Draft</field>
+            <field name="folded" eval="False"/>
+        </record>
+
+        <record id="phd_marketing_order_stage_waiting_for_aooroval" model="phd.marketing.order.stage">
+            <field name="name">Waiting For Approval</field>
+            <field name="folded" eval="False"/>
+        </record>
+
+        <record id="phd_marketing_order_stage_changes_needed" model="phd.marketing.order.stage">
+            <field name="name">Changes Needed</field>
+            <field name="folded" eval="False"/>
+        </record>
+
+        <record id="phd_marketing_order_stage_approval" model="phd.marketing.order.stage">
+            <field name="name">Approval</field>
+            <field name="folded" eval="False"/>
+        </record>
+
+        <record id="phd_marketing_order_stage_rejected" model="phd.marketing.order.stage">
+            <field name="name">Rejected</field>
+            <field name="folded" eval="False"/>
+        </record>
+
+        <record id="phd_marketing_order_stage_canceled" model="phd.marketing.order.stage">
+            <field name="name">Canceled</field>
+            <field name="folded" eval="False"/>
+        </record>
+
+        <record id="phd_marketing_order_stage_closed" model="phd.marketing.order.stage">
+            <field name="name">Closed</field>
+            <field name="folded" eval="False"/>
+        </record>
+    </data>
+</odoo>

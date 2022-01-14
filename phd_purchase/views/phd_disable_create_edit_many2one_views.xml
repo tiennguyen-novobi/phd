@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="phd_purchase_order_form_view_disable_many2one" model="ir.ui.view">
+        <field name="name">phd.purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True,
+                                           'res_partner_search_mode': 'supplier', 'show_vat': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='shipping_address_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True,
+                                           'partner_id': parent.partner_id}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom']"
+                   position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_product_product_disable_many2one" model="ir.ui.view">
+        <field name="name">phd.product.supplierinfo.tree</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_purchase_manager_product_product" model="ir.ui.view">
+        <field name="name">phd.product.supplierinfo.tree</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="phd_product_product_disable_many2one"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">1</attribute>
+            </xpath>
+        </field>
+        <field name="groups_id" eval="[(4, ref('purchase.group_purchase_manager'))]"/>
+    </record>
+
+    <record id="phd_product_template_disable_many2one" model="ir.ui.view">
+        <field name="name">phd.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="priority" eval="99"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='seller_ids']" position="inside">
+                <xpath expr="//field[@name='seller_ids']/tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                </xpath>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_purchase_manager_product_template" model="ir.ui.view">
+        <field name="name">phd.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="phd_product_template_disable_many2one"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='seller_ids']" position="inside">
+                <xpath expr="//field[@name='seller_ids']/tree" position="attributes">
+                    <attribute name="create">0</attribute>
+                </xpath>
+            </xpath>
+        </field>
+        <field name="groups_id" eval="[(4, ref('purchase.group_purchase_manager'))]"/>
+    </record>
+</odoo>

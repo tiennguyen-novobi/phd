@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="phd_purchase_order_receiving"
+                string="Purchase Order Receiving"
+                model="purchase.order.line"
+                report_type="qweb-pdf"
+                file="phd_export_pdf.phd_export_list_pdf"
+                name="phd_export_pdf.phd_export_list_pdf"
+                paperformat="phd_export_pdf.phd_report_paperformat"
+        />
+
+        <report
+                id="phd_vendor_order_efficiency"
+                string="Vendor Order Efficiency"
+                model="stock.move"
+                report_type="qweb-pdf"
+                file="phd_export_pdf.phd_export_list_pdf"
+                name="phd_export_pdf.phd_export_list_pdf"
+                paperformat="phd_export_pdf.phd_report_paperformat"
+        />
+        
+    </data>
+</odoo>

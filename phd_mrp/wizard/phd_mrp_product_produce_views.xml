@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_view_mrp_product_produce_wizard" model="ir.ui.view">
+        <field name="name">MRP Product Produce</field>
+        <field name="model">mrp.product.produce</field>
+        <field name="inherit_id" ref="mrp.view_mrp_product_produce_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='continue_production']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='raw_workorder_line_ids']/tree/field[@name='qty_reserved']" position="after">
+                <field name="qty_available" readonly="1" force_save="1" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

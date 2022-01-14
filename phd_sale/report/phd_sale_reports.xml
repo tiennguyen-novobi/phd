@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="phd_sale_report_saleorder_document_inherit"
+              inherit_id="sale.report_saleorder_document">
+        <xpath expr="//t[@t-set='address']/div[@t-field='doc.partner_id']" position="before">
+            <strong>Customer:</strong>
+        </xpath>
+
+        <xpath expr="////t[@t-set='address']/p[@t-if='doc.partner_id.vat']" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+
+        <!--Add more space between Invoice address and Shipping address-->
+        <xpath expr="//t[@t-set='information_block']/div[@t-field='doc.partner_invoice_id']" position="after">
+            <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+                <br></br>
+            </t>
+        </xpath>
+
+        <!--Change label for Customer Reference-->
+        <xpath expr="//div[@id='informations']/div[@t-if='doc.client_order_ref']/strong" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+
+        <xpath expr="//div[@id='informations']/div[@t-if='doc.client_order_ref']/strong" position="after">
+            <strong>Customer Order Number:</strong>
+        </xpath>
+
+        <xpath expr="//div[@id='informations']//p[@t-field='doc.date_order']" position="attributes">
+            <attribute name="t-options">{"widget": "date"}</attribute>
+        </xpath>
+
+        <xpath expr="//div[@id='informations']/div[@t-if='doc.user_id.name']" position="after">
+            <div t-if="doc.payment_term_id" class="col-auto mw-100 mb-2">
+                <strong>Terms:</strong>
+                <p t-field="doc.payment_term_id" class="m-0"/>
+            </div>
+            <div t-if="doc.incoterm" class="col-auto mw-100 mb-2">
+                <strong>FOB:</strong>
+                <p t-field="doc.incoterm" class="m-0"/>
+            </div>
+        </xpath>
+
+        <xpath expr='//div[@id="informations"]/div[@t-if="doc.date_order and doc.state in [&apos;draft&apos;,&apos;sent&apos;]"]
+        /p[@t-field="doc.date_order"]' position="attributes">
+            <attribute name="t-options">{"widget": "date"}</attribute>
+        </xpath>
+
+        <xpath expr="//div[@id='informations']/div[@t-if='doc.user_id.name']" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+
+        <xpath expr='//div[@id="informations"]/div[@t-if="doc.date_order and doc.state in [&apos;draft&apos;,&apos;sent&apos;]"]'
+               position="after">
+            <div t-if="doc.commitment_date" class="col-auto mw-100 mb-2">
+                <strong>Required Date:</strong>
+                <p t-field="doc.commitment_date" class="m-0" t-options='{"widget": "date"}'/>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('page')]/table/thead/tr/th[@name='th_description']" position="before">
+            <th name="th_product">Item</th>
+        </xpath>
+
+        <xpath expr="//div[hasclass('page')]/table/thead/tr/th[@name='th_priceunit']" position="after">
+            <th name="th_invoice_qty" class="text-right">Invoiced</th>
+            <th name="th_lot">Lot#</th>
+        </xpath>
+
+        <xpath expr="//div[hasclass('page')]/table/tbody//td[@name='td_name']" position="before">
+            <td id="td_sku">
+                <span t-field="line.default_code"/>
+            </td>
+        </xpath>
+
+        <xpath expr="//div[hasclass('page')]/table/tbody//td[@name='td_priceunit']" position="after">
+            <td id="td_invoice_qty" class="text-right">
+                <span t-field="line.qty_invoiced"/>
+            </td>
+            <td id="td_lot">
+                <span t-field="line.lot_id"/>
+            </td>
+        </xpath>
+    </template>
+
+    <record id="report_sales_in_dollars_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Report Sales in Dollars">
+                <field name="order_partner_id" operator="child_of"/>
+                <filter string="Open" name="open_sales" domain="[('stage', '=', 'open')]"/>
+                <filter string="Closed" name="closed_sales" domain="[('stage', '=', 'closed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'order_partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="report_sales_in_dollars" model="ir.ui.view">
+        <field name="name">report.sales.in.dollars</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false" js_class="phd_date_range_export_report_list_view">
+                <field name="sales_order_date" widget='date'/>
+                <field name="order_number"/>
+                <field name="order_partner_id"/>
+                <field name="customer_po"/>
+                <field name="expected_delivery_date" widget='date'/>
+                <field name="date_ship" widget='date'/>
+                <field name="currency_id" invisible="1"/>
+                <field name="price_subtotal" string="Total" sum="Total" widget='monetary' class="text-right"/>
+                <field name="trigger_field" invisible="1"/>
+                <field name="stage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_report_sales_in_dollars" model="ir.actions.act_window">
+        <field name="name">Sales in Dollars</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">tree</field>
+        <field name="domain" eval="[('stage', 'in', ('open','closed'))]"/>
+        <field name="search_view_id" ref="report_sales_in_dollars_filter"/>
+        <field name="context"
+               eval="{'list_view_report_id': ref('phd_sale.phd_sales_in_dollar'), 'date_range':'sales_order_date'}"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('report_sales_in_dollars')})]"/>
+    </record>
+
+    <menuitem id="menu_report_sales_in_dollars"
+              name="Sales in Dollars"
+              action="action_report_sales_in_dollars"
+              parent="sale.menu_sale_report"
+              sequence="2"/>
+
+    <record id="report_sales_in_unit_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Report Sales in Unit">
+                <field name="order_partner_id" operator="child_of"/>
+                <field name="product_sku"/>
+                <field name="product_category"/>
+                <filter string="Open" name="open_sales" domain="[('stage', '=', 'open')]"/>
+                <filter string="Closed" name="closed_sales" domain="[('stage', '=', 'closed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="sku" string="SKU" domain="[]" context="{'group_by': 'product_sku'}"/>
+                    <filter name="category" string="Category" domain="[]" context="{'group_by': 'product_category'}"/>
+                    <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'order_partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="report_sales_in_unit" model="ir.ui.view">
+        <field name="name">report.sales.in.unit</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false" js_class="phd_date_range_export_report_list_view">
+                <field name="sales_order_date" widget='date'/>
+                <field name="order_number"/>
+                <field name="order_partner_id" class="text-left"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="customer_po"/>
+                <field name="product_sku"/>
+                <field name="product_uom_qty" sum="Total" widget="float"/>
+                <field name="price_unit" string="Price" widget='monetary' class="text-right"/>
+                <field name="expected_delivery_date" widget='date'/>
+                <field name="date_ship" widget='date'/>
+                <field name="price_subtotal" string="Total" sum="Total" widget='monetary' class="text-right"/>
+                <field name="product_category" invisible="1"/>
+                <field name="trigger_field" invisible="1"/>
+                <field name="stage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_report_sales_in_unit" model="ir.actions.act_window">
+        <field name="name">Sales in Unit</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('stage','in',('open','closed'))]</field>
+        <field name="search_view_id" ref="report_sales_in_unit_filter"/>
+        <field name="context"
+               eval="{'list_view_report_id': ref('phd_sale.phd_sales_in_unit'),'date_range':'sales_order_date'}"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('report_sales_in_unit')})]"/>
+    </record>
+
+    <menuitem id="menu_report_sales_in_unit"
+              name="Sales in Units"
+              action="action_report_sales_in_unit"
+              parent="sale.menu_sale_report"
+              sequence="3"/>
+
+    <record id="report_sales_in_unit_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Report Sales in Unit">
+                <field name="order_partner_id" operator="child_of"/>
+                <field name="product_sku"/>
+                <field name="product_category"/>
+                <filter string="Open" name="open_sales" domain="[('stage', '=', 'open')]"/>
+                <filter string="Closed" name="closed_sales" domain="[('stage', '=', 'closed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="sku" string="SKU" domain="[]" context="{'group_by': 'product_sku'}"/>
+                    <filter name="category" string="Category" domain="[]" context="{'group_by': 'product_category'}"/>
+                    <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'order_partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="report_unbilled_sales" model="ir.ui.view">
+        <field name="name">report.unbilled.sales</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false" js_class="phd_date_range_export_report_list_view">
+                <field name="sales_order_date" widget='date'/>
+                <field name="order_number"/>
+                <field name="order_partner_id" class="text-left"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="customer_po"/>
+                <field name="product_sku"/>
+                <field name="product_uom_qty" sum="Total" widget="float"/>
+                <field name="price_unit" string="Price" widget='monetary' class="text-right"/>
+                <field name="expected_delivery_date" widget='date'/>
+                <field name="date_ship" widget='date'/>
+                <field name="price_subtotal" string="Total" sum="Total" widget='monetary' class="text-right"/>
+                <field name="product_category" invisible="1"/>
+                <field name="trigger_field" invisible="1"/>
+                <field name="stage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_report_unbilled_sales" model="ir.actions.act_window">
+        <field name="name">Unbilled Sales</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('stage','in',('open','closed')), ('is_unbilled_sales','=', True)]</field>
+        <field name="search_view_id" ref="report_sales_in_unit_filter"/>
+        <field name="context"
+               eval="{'list_view_report_id': ref('phd_sale.phd_unbilled_sales'), 'date_range':'sales_order_date'}"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('report_unbilled_sales')})]"/>
+    </record>
+
+    <menuitem id="menu_report_unbilled_sales"
+              name="Unbilled Sales"
+              action="action_report_unbilled_sales"
+              parent="sale.menu_sale_report"
+              sequence="4"/>
+
+
+    <record id="report_backorder_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sale.order.line</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Report Sales in Unit">
+                <field name="order_partner_id" operator="child_of"/>
+                <filter string="Open" name="open_sales" domain="[('stage', '=', 'open')]"/>
+                <filter string="Closed" name="closed_sales" domain="[('stage', '=', 'closed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'order_partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="report_backorder_report" model="ir.ui.view">
+        <field name="name">report.backorder.report</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false" js_class="phd_date_range_export_report_list_view">
+                <field name="sales_order_date" widget='date'/>
+                <field name="order_number"/>
+                <field name="order_partner_id" class="text-left"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="customer_po"/>
+                <field name="product_sku"/>
+                <field name="qty_backordered" sum="Total" widget="float"/>
+                <field name="price_unit" string="Price" widget='monetary' class="text-right"/>
+                <field name="expected_delivery_date" widget='date'/>
+                <field name="days_late"/>
+                <field name="total_qty_backordered" string="Total" sum="Total" widget='monetary' class="text-right"/>
+                <field name="trigger_field" invisible="1"/>
+                <field name="stage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_backorder_report" model="ir.actions.act_window">
+        <field name="name">Backorder Report</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('qty_backordered','>','0')]</field>
+        <field name="search_view_id" ref="report_backorder_filter"/>
+        <field name="context"
+               eval="{'list_view_report_id': ref('phd_sale.phd_backorder_report'), 'date_range':'sales_order_date'}"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('report_backorder_report')})]"/>
+    </record>
+
+    <menuitem id="menu_backorder_report"
+              name="Backorder Report"
+              action="action_backorder_report"
+              parent="sale.menu_sale_report"
+              sequence="5"/>
+
+    <record id="report_customer_efficicency_filter" model="ir.ui.view">
+        <field name="name">stock.move.select</field>
+        <field name="model">stock.move</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Report Sales in Unit">
+                <field name="partner_id" operator="child_of"/>
+                <group expand="0" string="Group By">
+                    <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="report_customer_efficicency" model="ir.ui.view">
+        <field name="name">report.customer.order.efficiency</field>
+        <field name="model">stock.move</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false" js_class="phd_date_range_export_report_list_view">
+                <field name="sale_order_date" widget='date'/>
+                <field name="customer_po"/>
+                <field name="sale_order_id"/>
+                <field name="picking_id"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="product_sku"/>
+                <field name="quantity_before_move" string="Quantity Ordered"/>
+                <field name="quantity_sent" string="Quantity Sent"/>
+                <field name="variance" avg='{"help": "Average Variance"}' sum='{"help": "Total Variance"}'/>
+                <field name="original_promised_date" widget='date'/>
+                <field name="date_expected" widget="date" string="Actual Delivery Date"/>
+                <field name="days_late" avg='Average Days Late (Early)'/>
+                <field name="state" invisible="1"/>
+                <field name="trigger_field" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_customer_efficicency_report" model="ir.actions.act_window">
+        <field name="name">Customer Order Efficiency</field>
+        <field name="res_model">stock.move</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('sale_line_id','!=',False) , ('state','=','done')]</field>
+        <field name="search_view_id" ref="report_customer_efficicency_filter"/>
+        <field name="context"
+               eval="{'list_view_report_id': ref('phd_sale.phd_customer_order_efficiency'), 'date_range':'sale_order_date'}"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('report_customer_efficicency')})]"/>
+    </record>
+
+    <menuitem id="menu_customer_efficicency_report"
+              name="Customer Order Efficiency"
+              action="action_customer_efficicency_report"
+              parent="sale.menu_sale_report"
+              sequence="6"/>
+</odoo>

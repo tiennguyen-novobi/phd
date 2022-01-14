@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_categ_order_point_view_kanban" model="ir.ui.view">
+        <field name="name">product.categ.order.point.kanban</field>
+        <field name="model">product.categ.order.point</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="category_id"/>
+                <field name="product_min_qty"/>
+                <field name="product_max_qty"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <t t-esc="record.category_id.value"/>
+                                    </strong>
+                                </div>
+                                <span class="badge badge-pill">
+                                    <strong>Min qty :</strong>
+                                    <t t-esc="record.product_min_qty.value"/>
+                                </span>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                   <span></span>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <span class="badge badge-pill">
+                                        <strong>Max qty :</strong>
+                                        <t t-esc="record.product_max_qty.value"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="product_categ_order_point_view_tree" model="ir.ui.view">
+        <field name="name">product.categ.order.point.tree</field>
+        <field name="model">product.categ.order.point</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="category_id"/>
+                <field name="warehouse_id" groups="stock.group_stock_multi_locations"/>
+                <field name="location_id" groups="stock.group_stock_multi_locations"/>
+                <field name="product_min_qty"/>
+                <field name="product_max_qty"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="product_categ_order_point_view_search" model="ir.ui.view" >
+        <field name="name">product.categ.order.point.search</field>
+        <field name="model">product.categ.order.point</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="category_id"/>
+                <field name="warehouse_id" groups="stock.group_stock_multi_warehouses"/>
+                <field name="location_id" groups="stock.group_stock_multi_locations"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <group expand="0" string="Group By">
+                    <filter string="Category"
+                            name="category"
+                            context="{'group_by':'category_id'}"
+                    />
+                    <filter string="Warehouse"
+                            name="warehouse"
+                            context="{'group_by':'warehouse_id'}"
+                            groups="stock.group_stock_multi_warehouses"
+                    />
+                    <filter string="Location"
+                            name="location"
+                            context="{'group_by':'location_id'}"
+                            groups="stock.group_stock_multi_locations"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="product_categ_order_point_view_form" model="ir.ui.view">
+        <field name="name">product.categ.order.point.form</field>
+        <field name="model">product.categ.order.point</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="category_id"
+                                   options="{'no_create_edit': 1, 'no_quick_create': 1}"
+                            />
+                        </group>
+                        <group>
+                            <field name="warehouse_id"
+                                   groups="stock.group_stock_multi_locations"
+                                   options="{'no_create_edit': 1, 'no_quick_create': 1}"
+                            />
+                            <field name="location_id"
+                                   groups="stock.group_stock_multi_locations"
+                                   options="{'no_create_edit': 1, 'no_quick_create': 1}"
+                            />
+                            <field name="group_id"
+                                   groups="stock.group_adv_location"
+                            />
+                            <field name="company_id"
+                                   groups="base.group_multi_company"
+                                   options="{'no_create_edit': 1, 'no_quick_create': 1}"
+                            />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Rules">
+                            <field name="product_min_qty"/>
+                            <field name="product_max_qty"/>
+                            <field name="qty_multiple" string="Quantity Multiple"/>
+                        </group>
+                        <group string="Misc">
+                            <label for="lead_days"/>
+                            <div class="o_row">
+                                <field name="lead_days"/>
+                                <field name="lead_type"/>
+                            </div>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_categ_order_point_action" model="ir.actions.act_window">
+        <field name="name">Reordering Rules per Categories</field>
+        <field name="res_model">product.categ.order.point</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="product_categ_order_point_view_tree"/>
+        <field name="search_view_id" ref="product_categ_order_point_view_search" />
+    </record>
+
+    <menuitem id="product_categ_order_point_menu"
+              action="product_categ_order_point_action"
+              name="Reordering Rules per Categories"
+              parent="stock.menu_stock_inventory_control"
+              sequence="9"
+              groups="stock.group_stock_manager"
+    />
+
+</odoo>

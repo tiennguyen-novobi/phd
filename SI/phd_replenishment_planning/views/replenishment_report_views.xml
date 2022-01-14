@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="me_replenishment_planning.menu_replenishment_planning" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

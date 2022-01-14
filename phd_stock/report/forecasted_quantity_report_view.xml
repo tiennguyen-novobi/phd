@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--        <act_window id="filter_location" name="Locations"-->
+<!--                res_model="filter.location"-->
+<!--                view_mode="form" target="new"/>-->
+
+
+        <record id="forecasted_qty_filter_location" model="ir.actions.server">
+            <field name="name">Filter Location</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_filter_location"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'filter.location',
+                    'target': 'new',
+                    'views': [(env.ref('phd_stock.filter_location_view_form').id, 'form')],
+                    'context': {'forecasted_qty': True},
+                }
+            </field>
+        </record>
+
+
+        <record id="action_forecasted_quantity" model="ir.actions.client">
+            <field name="name">Forecasted Quantity Report</field>
+            <field name="tag">forecasted_quantity_report</field>
+            <field name="context" eval="{'model': 'phd.forecasted.quantity'}" />
+        </record>
+
+        <menuitem
+            id="phd_forecasted_quantity_report"
+            name="Forecasted Quantity Report"
+            parent="stock.menu_warehouse_report"
+            action="forecasted_qty_filter_location" sequence="999"/>
+    </data>
+</odoo>

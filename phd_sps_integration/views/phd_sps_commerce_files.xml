@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_sps_commerce_file_filter" model="ir.ui.view">
+        <field name="name">phd.sps.commerce.file</field>
+        <field name="model">phd.sps.commerce.file</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search SPS Commerce Document">
+                <field name="sync_status"/>
+                <field name="attachment_id"/>
+                <field name="origin"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="sps_commerce_document_form" model="ir.ui.view">
+        <field name="name">phd.sps.commerce.document.850.form</field>
+        <field name="model">phd.sps.commerce.file</field>
+        <field name="arch" type="xml">
+            <form edit="false" create="false">
+                <header>
+                    <field name="sync_status" widget="statusbar"/>
+                    <button name="action_pending" class="oe_highlight" type="object" string="Set to Pending"
+                            attrs="{'invisible': [('sync_status', '!=', 'error')]}"/>
+                    <button name="action_mark_done" string="Mark Done" type="object" class="btn-primary"
+                            attrs="{'invisible': [('sync_status', '!=', 'error')]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="upload_download_time"/>
+                        <field name="last_modify_on_remote"/>
+                        <field name="document_type"/>
+                        <field name="last_imported"/>
+                        <field name="is_imported"/>
+                    </group>
+                    <group>
+                        <field name="last_exported"/>
+                        <field name="is_exported"/>
+                        <field name="origin" widget="reference"/>
+                        <field name="attachment_id"/>
+                        <field name="unique"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="sps_commerce_document" model="ir.ui.view">
+        <field name="name">phd.sps.commerce.document.850</field>
+        <field name="model">phd.sps.commerce.file</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="sync_status == 'done'"
+                  decoration-danger="sync_status == 'error'"
+                  decoration-warning="sync_status == 'pending'" create="false">
+                <field name="upload_download_time"/>
+                <field name="last_modify_on_remote"/>
+                <field name="document_type"/>
+                <field name="last_imported"/>
+                <field name="is_imported"/>
+                <field name="last_exported"/>
+                <field name="is_exported"/>
+                <field name="origin"/>
+                <field name="attachment_id"/>
+                <field name="unique"/>
+                <field name="sync_status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sps_commerce_document_850" model="ir.actions.act_window">
+        <field name="name">Document 850</field>
+        <field name="res_model">phd.sps.commerce.file</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('document_type', '=', '850')]</field>
+        <field name="search_view_id" ref="phd_sps_commerce_file_filter"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('sps_commerce_document')})]"/>
+    </record>
+
+    <record id="action_sps_commerce_document_810" model="ir.actions.act_window">
+        <field name="name">Document 810</field>
+        <field name="res_model">phd.sps.commerce.file</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('document_type', '=', '810')]</field>
+        <field name="search_view_id" ref="phd_sps_commerce_file_filter"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('sps_commerce_document')})]"/>
+    </record>
+
+    <record id="action_sps_commerce_document_855" model="ir.actions.act_window">
+        <field name="name">Document 855</field>
+        <field name="res_model">phd.sps.commerce.file</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('document_type', '=', '855')]</field>
+        <field name="search_view_id" ref="phd_sps_commerce_file_filter"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('sps_commerce_document')})]"/>
+    </record>
+
+    <record id="action_sps_commerce_document_860" model="ir.actions.act_window">
+        <field name="name">Document 860</field>
+        <field name="res_model">phd.sps.commerce.file</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('document_type', '=', '860')]</field>
+        <field name="search_view_id" ref="phd_sps_commerce_file_filter"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('sps_commerce_document')})]"/>
+    </record>
+
+    <record id="action_sps_commerce_document_865" model="ir.actions.act_window">
+        <field name="name">Document 865</field>
+        <field name="res_model">phd.sps.commerce.file</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('document_type', '=', '865')]</field>
+        <field name="search_view_id" ref="phd_sps_commerce_file_filter"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('sps_commerce_document')})]"/>
+    </record>
+
+
+    <menuitem id="menu_sps_commerce_document"
+              name="SPS Document"
+              parent="sale.sale_menu_root"
+              sequence="5"/>
+
+    <menuitem id="menu_sps_document_850"
+              name="Orders (850)"
+              action="action_sps_commerce_document_850"
+              parent="phd_sps_integration.menu_sps_commerce_document"
+              sequence="1"/>
+
+    <menuitem id="menu_sps_document_810"
+              name="Invoices (810)"
+              action="action_sps_commerce_document_810"
+              parent="phd_sps_integration.menu_sps_commerce_document"
+              sequence="2"/>
+
+    <menuitem id="menu_sps_document_855"
+              name="Orders Acks (855)"
+              action="action_sps_commerce_document_855"
+              parent="phd_sps_integration.menu_sps_commerce_document"
+              sequence="3"/>
+
+    <menuitem id="menu_sps_document_860"
+              name="Orders Change (860)"
+              action="action_sps_commerce_document_860"
+              parent="phd_sps_integration.menu_sps_commerce_document"
+              sequence="4"/>
+
+    <menuitem id="menu_sps_document_865"
+              name="Orders Change Ack (865)"
+              action="action_sps_commerce_document_865"
+              parent="phd_sps_integration.menu_sps_commerce_document"
+              sequence="5"/>
+</odoo>

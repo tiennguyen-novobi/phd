@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_account_financial_report_form_inherit_phd_account_reports" model="ir.ui.view">
+        <field name="name">account.financial.report.form.view.inherit.phd.account.reports</field>
+        <field name="model">account.financial.html.report</field>
+        <field name="inherit_id" ref="account_reports.view_account_financial_report_form"/>
+        <field name="arch" type="xml">
+            <field name="tax_report" position="after">
+                <field name="analytic_report" string="Analytic Report"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="action_phd_account_report_general_ledger" model="ir.actions.client">
+            <field name="name">General Ledger Expanded</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'phd.account.general.ledger'}" />
+        </record>
+
+    <menuitem id="menu_action_phd_account_report_general_ledger"
+              name="General Ledger Expanded"
+              action="action_phd_account_report_general_ledger"
+              parent="account.account_reports_legal_statements_menu"
+              groups="account.group_account_user"/>
+</odoo>

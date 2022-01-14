@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_wizard_inv_activity_fg_report_form" model="ir.ui.view">
+        <field name="name">wizard.activity.finish.goods.form</field>
+        <field name="model">wizard.activity.finish.goods</field>
+        <field name="type">form</field>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <form string="INV FG Report">
+                <group>
+                    <group>
+                        <field name="date_start" required="1"/>
+                        <field name="product_id" context="{'default_code':1}"
+                               options="{'no_create_edit': True}"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                        <field name="item_categ"
+                               options="{'no_create_edit': True}"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button string='Print PDF' name="print_inv_pdf_report"
+                            type="object" class="btn-primary"/>
+                    <button string='Print Excel' name="print_excel_report"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window"
+            id="action_wizard_inv_finish_goods_view">
+        <field name="name">Activity FG Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.activity.finish.goods</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wizard_inv_activity_fg_report_form"/>
+        <field name="context">{'report_context': 'finish_goods'}</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_inv_report" name="Inventory Reporting"
+              parent="stock.menu_warehouse_report"
+              sequence="5"/>
+
+    <menuitem id="menu_inv_finish_good_report"
+              name="Inv Finish Good Report"
+              action="action_wizard_inv_finish_goods_view"
+              parent="menu_inv_report" sequence="1"/>
+
+</odoo>

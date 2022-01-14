@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="phd_sale_order_form_view_disable_many2one" model="ir.ui.view">
+        <field name="name">phd.sale.order.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True,
+                                           'res_partner_search_mode': 'customer', 'show_address': 1,
+                                           'show_vat': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True,
+                                           'default_type': 'invoice'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True,
+                                           'default_type': 'delivery'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='analytic_account_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True,
+                                           'default_partner_id': partner_invoice_id, 'default_name': name}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_id']"
+                   position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_uom']"
+                   position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='lot_id']"
+                   position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True,
+                                           'partner_id': parent.partner_id,
+                                           'quantity': product_uom_qty,
+                                           'pricelist': parent.pricelist_id,
+                                           'uom': product_uom,
+                                           'company_id': parent.company_id,
+                                           'default_lst_price': price_unit,
+                                           'default_description_sale': name}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="context">{'is_disable_create_edit_many2one': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

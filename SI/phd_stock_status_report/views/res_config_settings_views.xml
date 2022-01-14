@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.stock</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@data-key='stock']" position="inside">
+                    <h2 class="mt32">Inventory Reporting</h2>
+                    <div class="row mt16 o_settings_container" id="inventory_report_configurations">
+                        <div class="col-12 col-lg-6 o_setting_box" id="setting_default_purchase_lead_time"
+                             groups="stock.group_stock_user">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="purchase_lead_time"/>
+                                <span class="fa fa-lg fa-building-o"
+                                      title="Values set here are company-specific."
+                                      aria-label="Values set here are company-specific."
+                                      groups="base.group_multi_company" role="img"/>
+                                <div class="text-muted">
+                                    Default value for purchase lead time of a product
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="purchase_lead_time" class="text-center oe_inline"/>
+                                        <span>day(s)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box" id="setting_default_order_analysis_interval"
+                             groups="stock.group_stock_user">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="order_analysis_interval"/>
+                                <span class="fa fa-lg fa-building-o"
+                                      title="Values set here are company-specific."
+                                      aria-label="Values set here are company-specific."
+                                      groups="base.group_multi_company" role="img"/>
+                                <div class="text-muted">
+                                    The number of months in history will be considered when calculating inventory report
+                                    values
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="order_analysis_interval" class="text-center oe_inline"/>
+                                        <span>month(s)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box" id="setting_default_assigning_z_score"
+                             groups="stock.group_stock_user">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="assigning_z_score"/>
+                                <span class="fa fa-lg fa-building-o"
+                                      title="Values set here are company-specific."
+                                      aria-label="Values set here are company-specific."
+                                      groups="base.group_multi_company" role="img"/>
+                                <div class="text-muted">
+                                    The default Z-score value is assigned to product
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="assigning_z_score" class="text-center oe_inline"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

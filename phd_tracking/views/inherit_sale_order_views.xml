@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_sale_order_form_inherit_phd_tracking" model="ir.ui.view">
+        <field name="name">sale.order.form.view.inherit.phd.tracking</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <label for="commitment_date"/>
+                <div class="o_row">
+                    <field name="commitment_date" widget="date" readonly="1"/>
+                    <button name="action_update_promised_delivery_date" string="Update"
+                            type="object" class="btn btn-link"/>
+                </div>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//label[@for='commitment_date']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='commitment_date']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+                <attribute name="widget">date</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Progress Tracking" name="progress_tracking">
+                    <field name="delay_tracker_ids">
+                        <tree editable="0" create="0" delete="0">
+                            <field name="status_date" string="Status Date"/>
+                            <field name="promised_date" string="Promised Date" required="1"/>
+                            <field name="number_of_day_delayed" string="Number Of Days Delayed"/>
+                            <field name="status" string="Status"/>
+                            <field name="reason" string="Status Reason"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_kanban_inherit_phd_tracking" model="ir.ui.view">
+        <field name="name">sale.order.kanban.view.inherit.phd.tracking</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="phd_sale.phd_sale_order_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]
+            /span/t[@t-esc='record.date_order.value']" position="after">
+                <t t-if="record.commitment_date.value">
+                    <br></br>
+                    Promised Delivery Date:
+                    <field name="commitment_date" widget="date"/>
+                </t>
+                <t t-if="record.number_of_day_delayed.value > 0">
+                    <br></br>
+                    Delayed
+                    <field name="number_of_day_delayed"/>
+                    <t t-if="record.number_of_day_delayed.value > 1">days</t>
+                    <t t-else="">day</t>
+                </t>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_kanban_bottom_right')]//field[@name='stage_id']" position="after">
+                <t t-if="record.status.value">
+                    <t t-set="status_color" t-value="'ontrack'"/>
+                    <t t-if="record.status.value == 'Delayed'">
+                        <t t-set="status_color" t-value="'delayed'"/>
+                    </t>
+                    <t t-elif="record.status.value == 'On Hold'">
+                        <t t-set="status_color" t-value="'onhold'"/>
+                    </t>
+                    <div t-attf-class="status_#{status_color}">
+                        <field name="status"/>
+                    </div>
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>

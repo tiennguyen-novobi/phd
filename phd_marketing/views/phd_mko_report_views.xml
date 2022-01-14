@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_open_mko_report_view_filter" model="ir.ui.view">
+        <field name="name">phd_open_mko_report_view_filter</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <search string="Open Marketing Orders Search">
+                <field name="partner_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="phd_open_marketing_orders_report_tree_view" model="ir.ui.view">
+            <field name="name">phd.mko.open.report.tree</field>
+            <field name="model">phd.mko</field>
+            <field name="arch" type="xml">
+                <tree create="false">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date_order" string="Date of Order"/>
+                    <field name="promotion_period_from" string="Promotion From"/>
+                    <field name="promotion_period_to" string="Promotion To"/>
+                    <field name="order_id" string="Marketing Order #"/>
+                </tree>
+            </field>
+    </record>
+
+    <record id="phd_open_marketing_orders_report_action" model="ir.actions.act_window">
+        <field name="name">Open Marketing Orders</field>
+        <field name="res_model">phd.mko</field>
+        <field name="view_id" ref="phd_open_marketing_orders_report_tree_view"/>
+        <field name="domain" eval="[('stage_id', '=', ref('phd_marketing.phd_marketing_order_stage_approval'))]"/>
+        <field name="search_view_id" ref="phd_open_mko_report_view_filter"/>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="phd_all_mko_report_view_filter" model="ir.ui.view">
+        <field name="name">phd_open_mko_report_view_filter</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <search string="All Marketing Orders Search">
+                <field name="partner_id"/>
+                <field name="promotion_period_from" string="Promotion From &gt;=" filter_domain="[('promotion_period_from','&gt;=', self)]"/>
+                <field name="promotion_period_to" string="Promotion To &lt;=" filter_domain="[('promotion_period_to','&lt;=', self)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="phd_all_marketing_orders_report_tree_view" model="ir.ui.view">
+            <field name="name">phd.mko.all.report.tree</field>
+            <field name="model">phd.mko</field>
+            <field name="arch" type="xml">
+                <tree create="false" js_class="mko_report_list_view">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date_order" string="Date of Order"/>
+                    <field name="promotion_period_from" string="Promotion From"/>
+                    <field name="promotion_period_to" string="Promotion To"/>
+                    <field name="order_id" string="Marketing Order #"/>
+                    <field name="stage_id" string="Status"/>
+                </tree>
+            </field>
+    </record>
+
+    <record id="phd_all_marketing_orders_report_action" model="ir.actions.act_window">
+        <field name="name">All Marketing Orders</field>
+        <field name="res_model">phd.mko</field>
+        <field name="view_id" ref="phd_all_marketing_orders_report_tree_view"/>
+        <field name="domain" eval="[('stage_id', 'in', [ref('phd_marketing.phd_marketing_order_stage_approval'), ref('phd_marketing.phd_marketing_order_stage_closed')])]"/>
+        <field name="search_view_id" ref="phd_all_mko_report_view_filter"/>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="phd_mko_line_report_view_filter" model="ir.ui.view">
+        <field name="name">phd_open_mko_report_view_filter</field>
+        <field name="model">phd.mko.line</field>
+        <field name="arch" type="xml">
+            <search string="Marketing Orders Line">
+                <field name="sku"/>
+                <field name="partner_id"/>
+                <field name="promotion_period_from" string="Promotion From &gt;=" filter_domain="[('promotion_period_from','&gt;=', self)]"/>
+                <field name="promotion_period_to" string="Promotion To &lt;=" filter_domain="[('promotion_period_to','&lt;=', self)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="phd_all_marketing_order_line_report_tree_view" model="ir.ui.view">
+            <field name="name">phd.mko.line.report.tree</field>
+            <field name="model">phd.mko.line</field>
+            <field name="arch" type="xml">
+                <tree create="false" edit='false' js_class="mko_report_list_view">
+                    <field name="product_id" string="Product (SKU)"/>
+                    <field name="partner_id"/>
+                    <field name="date_order" string="Date of Order"/>
+                    <field name="promotion_period_from"/>
+                    <field name="promotion_period_to"/>
+                    <field name="quantity" string="Quantity sold on promotion"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="amount" string="Funding cost"/>
+                    <field name="sku" invisible="1"/>
+                </tree>
+            </field>
+    </record>
+
+    <record id="menu_phd_marketing_order_line_action" model="ir.actions.act_window">
+        <field name="name">Marketing Lines Item Details</field>
+        <field name="res_model">phd.mko.line</field>
+        <field name="view_id" ref="phd_all_marketing_order_line_report_tree_view"/>
+        <field name="domain" eval="[('stage_id', 'in', [ref('phd_marketing.phd_marketing_order_stage_approval'), ref('phd_marketing.phd_marketing_order_stage_closed')])]"/>
+        <field name="search_view_id" ref="phd_mko_line_report_view_filter"/>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+        id="menu_phd_marketing_reporting"
+        name="Reporting"
+        parent="phd_marketing.menu_marketing_order_root"
+        groups="phd_marketing.group_marketing_view_only_reports"
+        sequence="2"/>
+
+    <menuitem
+        id="menu_phd_open_marketing_orders"
+        name="Open Marketing Orders"
+        parent="menu_phd_marketing_reporting"
+        action="phd_open_marketing_orders_report_action"
+        sequence="1"/>
+
+    <menuitem
+        id="menu_phd_all_marketing_orders"
+        name="All Marketing Orders"
+        parent="menu_phd_marketing_reporting"
+        action="phd_all_marketing_orders_report_action"
+        sequence="2"/>
+
+    <menuitem
+        id="menu_phd_marketing_order_line"
+        name="Marketing Lines Item Details"
+        parent="menu_phd_marketing_reporting"
+        action="menu_phd_marketing_order_line_action"
+        sequence="3"/>
+</odoo>

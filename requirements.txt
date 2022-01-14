@@ -1,0 +1,6 @@
+braintree==4.13.1
+Paramiko==2.7.2
+dicttoxml==1.7.4
+xmltodict
+numpy
+pandas

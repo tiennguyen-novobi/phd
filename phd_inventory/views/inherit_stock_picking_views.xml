@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_export_picking_list" model="ir.actions.server">
+        <field name="name">Export Picking List</field>
+        <field name="model_id" ref="phd_inventory.model_stock_picking"/>
+        <field name="binding_model_id" ref="phd_inventory.model_stock_picking"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_export_picking_list()</field>
+    </record>
+
+    <record id="phd_view_picking_form_remove_add_line_subcontract" model="ir.ui.view">
+        <field name="name">phd.stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="hide_add_line_detailed_operation" invisible="1"/>
+                <field name="hide_add_line_in_do" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='move_line_ids_without_package']" position="attributes">
+                <attribute name="widget">remove_add_line</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='move_ids_without_package']" position="attributes">
+                <attribute name="widget">remove_add_line</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='button_validate']" position="replace">
+                <button name="phd_button_validate"
+                        attrs="{'invisible': ['|', ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False)]}"
+                        string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user"/>
+            </xpath>
+
+            <xpath expr="//field[@name='date_done']" position="replace">
+                <label for="date_done" string="Effective Date"/>
+                <div class="o_row" attrs="{'invisible': [('state', '!=', 'done')]}">
+                    <field name="date_done" string="Effective Date" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                    <button name="action_update_done_date" string="Update"
+                            type="object" class="btn btn-link"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

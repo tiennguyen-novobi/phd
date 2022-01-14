@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2021 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <template id="assets_backend" name="replenishment_plan_report assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/me_replenishment_planning/static/src/js/replenishment_planning_report.js"></script>
+        </xpath>
+    </template>
+
+    <template id="assets_common" name="bom purchase_plan common assets" inherit_id="web.assets_common">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/me_replenishment_planning/static/src/scss/replenishment_planning_report.scss" />
+        </xpath>
+    </template>
+
+</odoo>

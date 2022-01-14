@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="phd_view_production_lot_tree">
+        <field name="name">Production Lots Filter</field>
+        <field name="model">stock.production.lot</field>
+        <field name="arch" type="xml">
+            <tree string="Lots/Serial Numbers" multi_edit="1">
+                <field name="name"/>
+                <field name="lot_qty_on_location"/>
+                <field name="use_date" widget="date" string="Expiration Date"/>
+                <field name="ref" optional="show"/>
+                <field name="product_id" readonly="1"/>
+                <field name="create_date" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_stock_move_line_operation_tree_inherit_phd_inventory" model="ir.ui.view">
+        <field name="name">stock.move.line.operation.tree.view.inherit.phd.inventory</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="context">
+                    {
+                        'move_id': move_id,
+                        'active_picking_id': picking_id,
+                        'default_company_id': company_id,
+                        'default_product_id': product_id,
+                        'tree_view_ref': 'phd_inventory.phd_view_production_lot_tree'
+                    }
+                </attribute>
+                <attribute name="widget">phd_lot_many2one_filter</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_move_line_detailed_operation_tree_inherit_phd_inventory" model="ir.ui.view">
+        <field name="name">stock.move.line.detailed.operation.tree.view.inherit.phd.inventory</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="context">
+                    {
+                        'move_id': move_id,
+                        'active_picking_id': picking_id,
+                        'default_company_id': company_id,
+                        'default_product_id': product_id,
+                        'tree_view_ref': 'phd_inventory.phd_view_production_lot_tree',
+                    }
+                </attribute>
+                <attribute name="widget">phd_lot_many2one_filter</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherit_view_move_line_tree_phd" model="ir.ui.view">
+        <field name="name">stock.move.line.lot.reserve.quantity</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_dest_id']" position="after">
+                <field name="lot_id"/>
+                <field name="product_uom_qty"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

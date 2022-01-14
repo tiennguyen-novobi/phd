@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="phd_export_pdf_external_layout_standard" inherit_id="web.external_layout_standard" primary="True">
+        <xpath expr="//img[@t-if='company.logo']" position="replace"/>
+        <xpath expr="//div[@name='company_address']" position="replace"/>
+        <xpath expr="//div[hasclass('text-center')]" position="replace">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <div t-if="report_type == 'pdf'" class="text-muted" style="width:100%;">
+                    <div style="float:left;">
+                        For internal use only: <span><t t-esc="datetime.datetime.today()"
+                                                        t-options='{"widget": "date"}'/></span>
+                    </div>
+                    <div style="float:right;">
+                        Page: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="phd_export_pdf_external_layout" inherit_id="web.external_layout" primary="True">
+        <xpath expr="//t[@t-if='company.external_report_layout_id']" position="replace"/>
+        <xpath expr="//t[@t-call='web.external_layout_standard']" position="replace">
+            <t t-call="phd_export_pdf.phd_export_pdf_external_layout_standard"><t t-raw="0"/></t>
+        </xpath>
+    </template>
+
+    <template id="phd_export_list_pdf">
+        <t t-call="web.html_container">
+            <t t-call="phd_export_pdf.phd_export_pdf_external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div style="text-align:center;">
+                        <span>
+                            <strong>PhD Fitness, LLC</strong>
+                        </span>
+                        <br/>
+                        <span>
+                            <strong><t t-esc="env.context.get('report_title', '')"/></strong>
+                        </span>
+                        <br/>
+                        <t t-if="env.context.get('date_ranges', False)">
+                            <t t-set="date_ranges" t-value="env.context.get('date_ranges', False)"/>
+                            <span>
+                                <strong><t t-esc="date_ranges['start_date']" t-options='{"widget": "date"}'/>
+                                    -
+                                    <t t-esc="date_ranges['end_date']" t-options='{"widget": "date"}'/></strong>
+                            </span>
+                        </t>
+                        <t t-else="">
+                            <span>
+                                <strong><t t-esc="datetime.datetime.today()" t-options='{"widget": "date"}'/></strong>
+                            </span>
+                            <br/>
+                        </t>
+
+                    </div>
+                    <t t-if="env.context.get('default_export_fields', False)">
+                        <t t-set="default_export_fields" t-value="env.context.get('default_export_fields', False)"/>
+                    </t>
+
+                    <t t-if="env.context.get('currency', False)">
+                        <t t-set="currency" t-value="env.context.get('currency', False)"/>
+                    </t>
+
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <t t-foreach="default_export_fields" t-as="field">
+                                    <th t-attf-class="#{field['class']}"><t t-esc="field['label']"/></th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-if="not env.context.get('data_after_grouping', False)">
+                                <t t-foreach="docs" t-as="line">
+                                    <tr t-att-class="'o_line_section'">
+                                        <t t-foreach="default_export_fields" t-as="field">
+                                            <t t-if="env.context.get('hasattr')(line[field['name']], '_name')">
+                                                <td t-attf-class="#{field['class']}">
+                                                    <span t-esc="line[field['name']]['display_name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-if="field['widget'] == 'monetary'">
+                                                    <t t-if="currency">
+                                                        <td t-attf-class="#{field['class']}">
+                                                            <span t-esc="line[field['name']]"
+                                                                  t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <td t-attf-class="#{field['class']}">
+                                                            <span t-esc="line[field['name']]"/>
+                                                        </td>
+                                                    </t>
+                                                </t>
+                                                <t t-elif="field['widget'] == 'date'">
+                                                    <td t-attf-class="#{field['class']}">
+                                                        <span t-esc="line[field['name']]"
+                                                              t-options='{"widget": "date"}'/>
+                                                    </td>
+                                                </t>
+                                                <t t-elif="field['widget'] == 'float'">
+                                                    <td t-attf-class="#{field['class']}">
+                                                        <span t-esc="line[field['name']]"
+                                                              t-options='{"widget": "float", "precision": 2}'/>
+                                                    </td>
+                                                </t>
+                                                <t t-else="">
+                                                    <td t-attf-class="#{field['class']}">
+                                                        <span t-esc="line[field['name']]"/>
+                                                    </td>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </t>
+                                <tr t-att-class="'bg-200 o_line_section'">
+                                    <t t-foreach="range(0,len(default_export_fields))" t-as="i">
+                                        <t t-if="default_export_fields[i].get('sum', False)">
+                                            <td t-attf-class="#{default_export_fields[i - 1]['class']}">
+                                                <t t-if="default_export_fields[i].get('sum', False)">
+                                                    <t t-esc="default_export_fields[i].get('sum', False)"/>
+                                                </t>
+                                            </td>
+                                            <td t-attf-class="#{default_export_fields[i]['class']}">
+                                                <t t-if="default_export_fields[i].get('sum', False)">
+                                                    <t t-if="default_export_fields[i].get('widget', default_export_fields[i].get('sum_widget', False)) and default_export_fields[i].get('widget', default_export_fields[i].get('sum_widget', False)) == 'monetary' and currency">
+                                                        <t t-esc="sum(line[default_export_fields[i]['name']] for line in docs)"
+                                                           t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="sum(line[default_export_fields[i]['name']] for line in docs)" t-options='{"widget": "float", "precision": 2}'/>
+                                                    </t>
+                                                </t>
+                                            </td>
+                                        </t>
+                                        <t t-elif="i &lt; len(default_export_fields) - 1 and (default_export_fields[i+1].get('sum', False))"/>
+                                        <t t-else="">
+                                            <td>&#160;</td>
+                                        </t>
+                                    </t>
+                                </tr>
+
+                                <tr t-att-class="'bg-200 o_line_section'">
+                                    <t t-foreach="range(0,len(default_export_fields))" t-as="i">
+                                        <t t-if="default_export_fields[i].get('avg', False)">
+                                            <td t-attf-class="#{default_export_fields[i - 1]['class']}">
+                                                <t t-if="default_export_fields[i].get('is_createtine', False)">
+                                                    <t t-esc="default_export_fields[i].get('is_createtine',False).get('help',False)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-if="default_export_fields[i].get('avg', False)">
+                                                        <t t-esc="default_export_fields[i].get('avg',False)"/>
+                                                    </t>
+                                                </t>
+                                            </td>
+                                            <td t-attf-class="#{default_export_fields[i]['class']}">
+                                                <t t-if="default_export_fields[i].get('is_createtine', False)">
+                                                    <t t-if="default_export_fields[i].get('is_createtine').get('widget',False) and default_export_fields[i].get('is_createtine').get('widget',False) == 'monetary' and currency">
+                                                        <t t-esc="sum(line[default_export_fields[i]['name']] for line in docs) * default_export_fields[i].get('is_createtine').get('standard_price',0)"
+                                                           t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-esc="sum(line[default_export_fields[i]['name']] for line in docs) * default_export_fields[i].get('is_createtine').get('standard_price',0)" t-options='{"widget": "float", "precision": 2}'/>
+                                                    </t>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-if="default_export_fields[i].get('avg', False)">
+                                                        <t t-if="default_export_fields[i].get('widget', default_export_fields[i].get('avg_widget', False)) and default_export_fields[i].get('widget', default_export_fields[i].get('avg_widget', False)) == 'monetary' and currency">
+                                                            <t t-esc="sum(line[default_export_fields[i]['name']] for line in docs)"
+                                                               t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-esc="round(sum(line[default_export_fields[i]['name']] for line in docs) / len(docs), 2)" t-options='{"widget": "float", "precision": 2}'/>
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                            </td>
+                                        </t>
+                                        <t t-elif="i &lt; len(default_export_fields) - 1 and (default_export_fields[i+1].get('avg', False))"/>
+                                        <t t-else="">
+                                            <td>&#160;</td>
+                                        </t>
+                                    </t>
+                                </tr>
+
+                                <tr t-att-class="'bg-200 o_line_section'">
+                                    <t t-foreach="range(0,len(default_export_fields))" t-as="i">
+                                        <t t-if="default_export_fields[i].get('avg', False) and default_export_fields[i].get('is_createtine', False)">
+                                            <td t-attf-class="#{default_export_fields[i - 1]['class']}">
+                                                <t t-if="default_export_fields[i].get('avg', False)">
+                                                    <t t-esc="default_export_fields[i].get('avg',False)"/>
+                                                </t>
+                                            </td>
+                                            <td t-attf-class="#{default_export_fields[i]['class']}">
+                                                <t t-if="default_export_fields[i].get('avg', False)">
+                                                        <t t-if="default_export_fields[i].get('widget', default_export_fields[i].get('avg_widget', False)) and default_export_fields[i].get('widget', default_export_fields[i].get('avg_widget', False)) == 'monetary' and currency">
+                                                            <t t-esc="sum(line[default_export_fields[i]['name']] for line in docs)"
+                                                               t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-esc="round(sum(line[default_export_fields[i]['name']] for line in docs) / len(docs), 2)" t-options='{"widget": "float", "precision": 2}'/>
+                                                        </t>
+                                                </t>
+                                            </td>
+                                        </t>
+                                        <t t-elif="i &lt; len(default_export_fields) - 1 and default_export_fields[i + 1].get('is_createtine', False)"/>
+                                        <t t-else="">
+                                            <td>&#160;</td>
+                                        </t>
+                                    </t>
+                                </tr>
+                            </t>
+
+                            <t t-else="">
+                                <t t-set="padding_group_name" t-value="10"/>
+                                <t t-set="docs" t-value="env.context.get('data_after_grouping',False)"/>
+                                <t t-foreach="docs" t-as="line">
+                                    <t t-if="line.get('group_name', False) and line.get('level',False)">
+                                        <tbody>
+                                            <tr class="o_group_header o_group_open o_group_has_content">
+                                                <th class="o_group_name" tabindex="-1" colspan="100"
+                                                    t-attf-style="padding-left: #{line.get('level') * padding_group_name}px;"><span><t
+                                                        t-esc="line.get('group_name', False)"/></span></th>
+                                            </tr>
+                                        </tbody>
+                                    </t>
+                                    <t t-else="">
+                                        <tbody>
+                                            <t t-set="records" t-value="line.get('records', False)"/>
+                                            <t t-if="records">
+                                                <t t-foreach="records" t-as="record">
+                                                    <tr t-att-class="'o_line_section'">
+                                                        <t t-set="first_cell" t-value="1"/>
+                                                        <t t-foreach="default_export_fields" t-as="field">
+                                                            <t t-if="isinstance(record[field['name']], tuple)">
+                                                                <td t-attf-class="#{field['class']}">
+                                                                    <span t-esc="record[field['name']][1]"
+                                                                          t-attf-style="padding-left: #{line.get('belong_level') * padding_group_name if first_cell == 1 else 0}px;"/>
+                                                                </td>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <t t-if="field['widget'] == 'monetary'">
+                                                                    <t t-if="currency">
+                                                                        <td t-attf-class="#{field['class']}">
+                                                                            <span t-esc="record[field['name']]"
+                                                                                  t-options='{"widget": "monetary", "display_currency": currency}'
+                                                                                  t-attf-style="padding-left: #{line.get('belong_level') * padding_group_name if first_cell == 1 else 0}px;"/>
+                                                                        </td>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <td t-attf-class="#{field['class']}">
+                                                                            <span t-esc="record[field['name']]"
+                                                                                  t-attf-style="padding-left: #{line.get('belong_level') * padding_group_name if first_cell == 1 else 0}px;"/>
+                                                                        </td>
+                                                                    </t>
+                                                                </t>
+                                                                <t t-elif="field['widget'] == 'date'">
+                                                                    <td t-attf-class="#{field['class']}">
+                                                                        <span t-esc="record[field['name']]"
+                                                                              t-options='{"widget": "date"}'
+                                                                              t-attf-style="padding-left: #{line.get('belong_level') * padding_group_name if first_cell == 1 else 0}px;"/>
+                                                                    </td>
+                                                                </t>
+                                                                <t t-elif="field['widget'] == 'float'">
+                                                                    <td t-attf-class="#{field['class']}">
+                                                                        <span t-esc="record[field['name']]"
+                                                                              t-options='{"widget": "float", "precision": 2}'
+                                                                              t-attf-style="padding-left: #{line.get('belong_level') * padding_group_name if first_cell == 1 else 0}px;"/>
+                                                                    </td>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <td t-attf-class="#{field['class']}">
+                                                                        <span t-esc="record[field['name']]"
+                                                                              t-attf-style="padding-left: #{line.get('belong_level') * padding_group_name if first_cell == 1 else 0}px;"/>
+                                                                    </td>
+                                                                </t>
+                                                            </t>
+                                                            <t t-set="first_cell" t-value="first_cell + 1"/>
+                                                        </t>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                        </tbody>
+                                    </t>
+                                    <t t-if="line.get('total_title', False) or line.get('avg_title', False)">
+                                        <tbody>
+                                            <tr>
+                                                <th t-attf-style="padding-left:#{padding_group_name}px;">
+                                                    <span>
+                                                        <t t-esc="line.get('total_title', False) or line.get('avg_title', False)"/>
+                                                    </span>
+                                                </th>
+                                                <t t-set="first_cell" t-value="1"/>
+                                                <t t-foreach="default_export_fields" t-as="field">
+                                                    <t t-if="first_cell != 1">
+                                                        <t t-if="line.get(field['name'],False)">
+                                                            <t t-if="line.get(field['name']).get('widget',False)">
+                                                                <t t-if="line.get(field['name']).get('widget',False) == 'monetary'">
+                                                                    <t t-if="currency">
+                                                                        <th t-attf-class="#{field['class']}">
+                                                                            <span t-esc="line.get(field['name']).get('total',False)"
+                                                                                  t-options="{'widget': line.get(field['name']).get('widget',False), 'display_currency': currency}"/>
+                                                                            <t t-if="line.get(field['name'],False) and line.get(field['name']).get('is_createtine', False)">
+                                                                                <t t-if="line.get(field['name']).get('is_createtine', False).get('widget',False)">
+                                                                                    <t t-if="line.get(field['name']).get('is_createtine', False).get('widget',False) == 'monetary'">
+                                                                                        <t t-if="currency">
+                                                                                            <br/><span t-esc="line.get(field['name']).get('is_createtine', False).get('total_createtine_in_dollar',False)"
+                                                                                                       t-options="{'widget': line.get(field['name']).get('is_createtine', False).get('widget',False), 'display_currency': currency}"/>
+                                                                                        </t>
+                                                                                        <t t-else="">
+                                                                                            <br/><span t-esc="line.get(field['name']).get('is_createtine', False).get('total_createtine_in_dollar',False)" t-options='{"widget": "float", "precision": 2}'/>
+                                                                                        </t>
+                                                                                    </t>
+                                                                                </t>
+                                                                            </t>
+                                                                        </th>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <th t-attf-class="#{field['class']}">
+                                                                            <span t-esc="line.get(field['name']).get('total',False)"/>
+                                                                            <t t-if="line.get(field['name'],False) and line.get(field['name']).get('is_createtine', False)">
+                                                                                <t t-if="line.get(field['name']).get('is_createtine', False).get('widget',False)">
+                                                                                    <t t-if="line.get(field['name']).get('is_createtine', False).get('widget',False) == 'monetary'">
+                                                                                        <t t-if="currency">
+                                                                                            <br/><span t-esc="line.get(field['name']).get('is_createtine', False).get('total_createtine_in_dollar',False)"
+                                                                                                       t-options="{'widget': line.get(field['name']).get('is_createtine', False).get('widget',False), 'display_currency': currency}"/>
+                                                                                        </t>
+                                                                                        <t t-else="">
+                                                                                            <br/><span t-esc="line.get(field['name']).get('is_createtine', False).get('total_createtine_in_dollar',False)" t-options='{"widget": "float", "precision": 2}'/>
+                                                                                        </t>
+                                                                                    </t>
+                                                                                </t>
+                                                                            </t>
+                                                                        </th>
+                                                                    </t>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <th t-attf-class="#{field['class']}">
+                                                                        <span t-esc="line.get(field['name']).get('total', False)" t-options='{"widget": "float", "precision": 2}'/>
+                                                                    </th>
+                                                                </t>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <th t-attf-class="#{field['class']}">
+                                                                    <span t-esc="line.get(field['name']).get('total', False)" t-options='{"widget": "float", "precision": 2}'/>
+                                                                    <t t-if="line.get(field['name'],False) and line.get(field['name']).get('is_createtine', False)">
+                                                                        <t t-if="line.get(field['name']).get('is_createtine', False).get('widget',False)">
+                                                                            <t t-if="line.get(field['name']).get('is_createtine', False).get('widget',False) == 'monetary'">
+                                                                                <t t-if="currency">
+                                                                                    <br/><span t-esc="line.get(field['name']).get('is_createtine', False).get('total_createtine_in_dollar',False)"
+                                                                                               t-options="{'widget': line.get(field['name']).get('is_createtine', False).get('widget',False), 'display_currency': currency}"/>
+                                                                                </t>
+                                                                                <t t-else="">
+                                                                                    <br/><span t-esc="line.get(field['name']).get('is_createtine', False).get('total_createtine_in_dollar',False)" t-options='{"widget": "float", "precision": 2}'/>
+                                                                                </t>
+                                                                            </t>
+                                                                        </t>
+                                                                    </t>
+                                                                </th>
+                                                            </t>
+                                                        </t>
+
+                                                        <t t-else="">
+                                                            <td>&#160;</td>
+                                                        </t>
+                                                    </t>
+                                                    <t t-set="first_cell" t-value="first_cell + 1"/>
+                                                </t>
+                                            </tr>
+                                        </tbody>
+                                    </t>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

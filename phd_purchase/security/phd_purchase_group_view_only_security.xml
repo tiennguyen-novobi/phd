@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Purchase"
+            id="purchase.menu_purchase_root"
+            groups="purchase.group_purchase_manager,purchase.group_purchase_user,phd_purchase.group_purchase_view_only"
+            web_icon="purchase,static/description/icon.png"
+            sequence="25"/>
+
+    <record id="purchase.purchase_report" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('phd_purchase.group_purchase_view_only_report'))]"/>
+    </record>
+</odoo>

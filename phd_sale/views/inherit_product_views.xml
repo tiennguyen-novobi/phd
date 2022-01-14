@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_product_product_form_inherit_phd_sale" model="ir.ui.view">
+        <field name="name">product.product.form.view.inherit.phd.sale</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales']/group[@name='sale']" position="before">
+                <field name="buyer_ids">
+                    <tree create="0">
+                        <field name="partner_id" string="Customer"/>
+                        <field name="product_name" string="Customer Product Name"/>
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
+  
+    <record id="view_product_product_form_inherit_phd_sale_stock_group_user" model="ir.ui.view">
+        <field name="name">product.product.form.view.inherit.phd.sale</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="phd_sale.view_product_product_form_inherit_phd_sale"/>
+        <field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales']/field[@name='buyer_ids']/tree" position="attributes">
+                <attribute name="create">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

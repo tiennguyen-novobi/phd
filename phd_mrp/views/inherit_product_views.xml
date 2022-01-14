@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_product_product_form_inherit_phd_" model="ir.ui.view">
+        <field name="name">product.product.form.view.inherit.phd.mrp</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']//group[@name='group_general']" position="inside">
+                <field name="is_product_label"/>
+                <field name="is_creatine"/>
+                <field name="is_royalty"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

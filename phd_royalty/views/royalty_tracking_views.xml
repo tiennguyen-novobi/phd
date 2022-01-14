@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_royalty_tracking_filter" model="ir.ui.view">
+        <field name="name">royalty.tracking.filter</field>
+        <field name="model">royalty.tracking</field>
+        <field name="arch" type="xml">
+            <search string="Search Inventory">
+                <field name="partner_id" string="Vendor"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="royalty_tracking_tree_view" model="ir.ui.view">
+        <field name="name">royalty.tracking.tree.view</field>
+        <field name="model">royalty.tracking</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="state == 'cancel'">
+                <field name="date_start" string="Start Date"/>
+                <field name="date_end" string="End Date"/>
+                <field name="product_id"/>
+                <field name="partner_id"/>
+                <field name="state" string="Status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="royalty_tracking_line_tree_view" model="ir.ui.view">
+        <field name="name">royalty.tracking.line.tree.view</field>
+        <field name="model">royalty.tracking.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="product_id"/>
+                <field name="qty_consumed" sum='{"help": "Total Used"}'/>
+                <field name="invoice_id" string="Bill"/>
+                <field name="standard_price" string="Current Cost"/>
+                <button name="action_show_details" type="object" icon="fa-list"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="royalty_tracking_line_detail_tree_view" model="ir.ui.view">
+        <field name="name">royalty.tracking.line.detail.tree.view</field>
+        <field name="model">royalty.tracking.line.detail</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="manufacture_date" string="Manufacture Date"/>
+                <field name="production_id" string="MO#"/>
+                <field name="purchase_id" string="PO#"/>
+                <field name="partner_id" string="Manufacture"/>
+                <field name="finished_product_id" string="Finished Product"/>
+                <!--                <field name="lot_id" string="Lot Number"/>-->
+                <field name="product_id" string="Product"/>
+                <field name="product_uom_qty" string="Consumed Qty"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="royalty_tracking_form_view" model="ir.ui.view">
+        <field name="name">royalty.tracking.form.view</field>
+        <field name="model">royalty.tracking</field>
+        <field name="arch" type="xml">
+            <form string="Royalty Tracking">
+                <header>
+                    <button name="action_start" states="draft" string="Start Tracking" type="object"
+                            class="oe_highlight"/>
+                    <button name="action_cancel" states="confirm" string="Cancel Tracking" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_open_tracking_lines" string="Tracking Report"
+                                class="oe_stat_button" icon="fa-align-justify" states="confirm,done,cancel"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="product_id" options="{'no_create': True}" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                            <field name="bill_frequency"/>
+
+                            <div class="o_row o_td_table">
+                                <label for="date_start" string="Period Begin"/>
+                            </div>
+                            <div class="o_row">
+                                <field name="date_start" widget="date" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                                <label for="date_end" string="to"/>
+                                <field name="date_end" widget="date"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="bill_schedule_date"/>
+                            <field name="partner_id" options="{'no_create': True}" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                            <field name="payment_term_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="royalty_info" string="Royalty Info">
+                            <field name="royalty_info_ids" attrs="{'readonly':[('state','not in',['draft'])]}">
+                                <tree editable="bottom">
+                                    <field name="min_qty"/>
+                                    <field name="standard_price"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_royalty_tracking_form" model="ir.actions.act_window">
+        <field name="name">Royalty Tracking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">royalty.tracking</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="royalty_tracking_tree_view"/>
+        <field name="search_view_id" ref="view_royalty_tracking_filter"/>
+    </record>
+
+    <menuitem action="action_royalty_tracking_form" id="menu_royalty_tracking_form"
+              parent="stock.menu_stock_warehouse_mgmt"/>
+</odoo>

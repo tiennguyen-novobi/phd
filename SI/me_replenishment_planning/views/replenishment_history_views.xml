@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2021 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <!--############################## VIEWS ##############################-->
+    <record id="replenishment_history_view_tree" model="ir.ui.view">
+        <field name="name">replenishment.history.view.tree</field>
+        <field name="model">replenishment.history</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="0" delete="0" duplicate="false">
+                <field name="name" string="Replenishment Reference"/>
+                <field name="number_of_purchased_products" string="# Of Purchased Products"/>
+                <field name="number_of_manufactured_products" string="# Of Manufactured Products"/>
+                <field name="replenishment_date"/>
+                <field name="responsible_id"/>
+                <field name="company_id" string="Company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="replenishment_history_view_form" model="ir.ui.view">
+        <field name="name">replenishment.history.view.form</field>
+        <field name="model">replenishment.history</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="0" delete="0" duplicate="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_view_purchase_orders"
+                                type="object" help="Purchase Orders" style="min-width: 150px;">
+                            <i class="fa fa-fw o_button_icon fa-book" style="max-width: 43px;"></i>
+                            <div class="o_stat_info">
+                                <field name="number_of_purchase_orders" nolabel="1" class="o_stat_value"/>
+                                <span class="o_stat_text">Purchase Orders</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_manufacturing_orders"
+                                type="object" help="Manufacturing Orders" style="min-width: 200px;">
+                            <i class="fa fa-fw o_button_icon fa-book" style="max-width: 43px;"></i>
+                            <div class="o_stat_info">
+                                 <field name="number_of_manufactured_orders" nolabel="1" class="o_stat_value"/>
+                            <span class="o_stat_text">Manufacturing Orders</span>
+                            </div>
+
+                        </button>
+                    </div>
+                    <group>
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </group>
+                    <group name="info">
+                        <field name="replenishment_date"/>
+                        <field name="responsible_id"/>
+                        <field name="timezone"/>
+                        <field name="company_id"/>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Purchase Orders Information">
+                            <field name="purchased_products" nolabel="1">
+                                <tree create="0" edit="0" readonly="1" default_order="order_quantity desc" >
+                                    <field name="default_code" string="Internal Reference"/>
+                                    <field name="product_id" string="Product"/>
+                                    <field name="order_quantity" string="Product Quantity"/>
+                                    <field name="purchase_uom" string="Purchase Unit of Measure"/>
+                                    <field name="order_type" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Manufacturing Orders Information">
+                            <field name="manufactured_products" nolabel="1">
+                                <tree create="0" edit="0" readonly="1" default_order="order_quantity desc" >
+                                    <field name="default_code" string="Internal Reference"/>
+                                    <field name="product_id" string="Product"/>
+                                    <field name="order_quantity" string="Product Quantity"/>
+                                    <field name="bom_uom" string="Manufacture Unit of Measure"/>
+                                    <field name="order_type" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="replenishment_history_line_view_form" model="ir.ui.view">
+        <field name="name">replenishment.history.line.view.form</field>
+        <field name="model">replenishment.history.line</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="0" delete="0" duplicate="false">
+                <sheet>
+                    <group>
+                        <label for="replenishment_id"/>
+                        <h1>
+                            <field name="replenishment_id" readonly="1"/>
+                        </h1>
+                    </group>
+                    <group name="info">
+                        <field name="product_id"/>
+                        <field name="default_code"/>
+                        <field name="company_id"/>
+                        <field name="order_quantity"/>
+                        <field name="order_type"/>
+                    </group>
+                    <group name="unit_of_measures">
+                        <field name="product_uom"/>
+                        <field name="purchase_uom"/>
+                        <field name="bom_uom"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--############################## ACTIONS ##############################-->
+    <record id="action_replenishment_history_view" model="ir.actions.act_window">
+        <field name="name">Replenishment History</field>
+        <field name="res_model">replenishment.history</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="replenishment_history_view_tree"/>
+    </record>
+
+    <!--############################## MENUS ##############################-->
+    <menuitem
+        id="replenishment_history_menu"
+        name="Replenishment History"
+        parent="stock.menu_warehouse_report"
+        action="me_replenishment_planning.action_replenishment_history_view"
+        groups="base.group_user"
+        sequence="11"/>
+
+</odoo>

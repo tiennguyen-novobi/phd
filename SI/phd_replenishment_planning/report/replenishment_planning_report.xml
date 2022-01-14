@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_replenishment_planning" inherit_id="me_replenishment_planning.report_replenishment_planning">
+        <xpath expr="//table[@class='o_mrp_bom_expandable']/thead//t[@t-if='is_multi_wh']//th" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//table[@class='o_mrp_bom_expandable']/thead//th[7]" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//table[@class='o_mrp_bom_expandable']/thead//th[8]" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//table[@class='o_mrp_bom_expandable']/thead//th[11]" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//table[@class='o_mrp_bom_expandable']/thead//th[12]" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <th name="product_qty" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </th>
+        <th name="lacking_material_quantity" position="before">
+            <th class="text-right" name="available_qty">Available Quantity</th>
+        </th>
+        <th name="lacking_material_quantity" position="after">
+            <th class="text-right" name="forecasted_date" >
+                Forecasted Date
+            </th>
+        </th>
+        <th name="lacking_material_quantity" position="replace">
+            <th class="text-right" name="lacking_material_quantity"
+                title="The quantity need to be purchased/manufactured to produce another product">Indirect Demand
+            </th>
+        </th>
+        <xpath expr="//table[@class='o_mrp_bom_expandable']/thead//th[3]" position="after">
+            <th style="max-width: 250px;">Vendor</th>
+            <th style="max-width: 250px;">Lead Time</th>
+        </xpath>
+        <xpath expr="////table[@class='o_mrp_bom_expandable']/thead//th[13]" position="replace">
+            <th style="max-width: 150px;" class="text-right"
+                title="Purchased = Total Incoming Quantity at the Forecasted Date">Purchased
+            </th>
+        </xpath>
+
+        <xpath expr="////table[@class='o_mrp_bom_expandable']/thead//th[14]" position="replace">
+            <th style="max-width: 150px;" class="text-right"
+                title="To Purchase = TO BE UPDATED LATER">To Purchase
+            </th>
+        </xpath>
+
+        <xpath expr="////table[@class='o_mrp_bom_expandable']/thead//th[14]" position="after">
+            <th style="max-width: 150px;" class="text-right"
+                title="Estimated Cost = To Purchase * Product's Cost">Estimated Cost
+            </th>
+            <th style="max-width: 150px; display:none;" class="text-right "
+                title="Cost on Product's form">Product Cost
+            </th>
+        </xpath>
+
+        <xpath expr="//th[@name='requested_qty']" position="replace">
+            <th style="max-width: 150px;" class="text-right" name="requested_qty"
+                title="Forecasted Demand = Total forecasted demand from today to the Forecasted Date">
+                Forecasted Demand
+            </th>
+        </xpath>
+
+        <xpath expr="////table[@class='o_mrp_bom_expandable']/thead//th[19]" position="replace">
+            <th class="text-center" title="Detail Transactions: Open POs">Detail</th>
+        </xpath>
+    </template>
+
+
+    <template id="report_replenishment_planning_line"
+              inherit_id="me_replenishment_planning.report_replenishment_planning_line">
+        <xpath expr="//tr//t[@t-if='is_multi_wh']//td" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//tr//td[7]" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//tr//td[8]" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//tr//td[11]" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//tr//td[12]" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//tr//td[5]" position="before">
+            <td class="text-right">
+                <div class="flex-right-float">
+                    <span class="free_qty" t-att-data-precision="l.get('qty_precision', 2)">
+                        <t t-esc="l['free_qty']"/>
+                    </span>
+                </div>
+            </td>
+        </xpath>
+        <xpath expr="//tr//td[6]" position="after">
+            <td class="text-right">
+                <div class="flex-right-float">
+                    <span>
+                        <t t-esc="l['forecasted_date']"/>
+                    </span>
+                </div>
+            </td>
+        </xpath>
+        <xpath expr="//tr//td[3]" position="replace">
+            <td class="vendor_m2o"></td>
+            <td class="text-right">
+                <div class="flex-right-float">
+                    <span t-att-data-precision="l.get('qty_precision', 2)" class="lead_time">
+                        0
+                    </span>
+                    <span class="ml-2">day(s)</span>
+                </div>
+            </td>
+        </xpath>
+        <xpath expr="//tr//td[3]" position="before">
+            <td class="bom_m2o"></td>
+        </xpath>
+        <xpath expr="//span[hasclass('po_qty')]//parent::td" position="replace">
+            <td class="text-right">
+                <span class="po_qty" t-att-data-precision="l.get('qty_precision', 2)">
+                    <t t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                </span>
+                <span class="po_qty_total" style="display:none"></span>
+            </td>
+        </xpath>
+
+        <xpath expr="//span[hasclass('po_qty')]//parent::td" position="after">
+            <td class="text-right">
+                <span class="estimated_cost" data-precision="2"
+                      t-att-data-currency="l.get('currency', 'USD')">
+                </span>
+            </td>
+            <td class="text-right" style="display:none">
+                <span class="product_cost">
+                    <t t-esc="l['product_cost']"/>
+                </span>
+            </td>
+        </xpath>
+        <xpath expr="//span[hasclass('forecasted_quantity')]//parent::td" position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+        <xpath expr="//tr" position="attributes">
+            <attribute name="t-att-data-free_qty">l.get('free_qty') or '0'</attribute>
+            <attribute name="t-att-data-key">l.get('key', -1)</attribute>
+        </xpath>
+    </template>
+</odoo>

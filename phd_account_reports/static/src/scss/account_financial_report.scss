@@ -1,0 +1,25 @@
+.o_account_reports_page {
+    // truncate span content and ad '...' if content width > span width
+    .o_account_report_line_ellipsis {
+        position: relative;
+        width: 100%;
+        span {
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+    }
+    .o_account_report_line_ellipsis:nth-child(n+2):before {
+        content: '&nbsp;';
+        visibility: hidden;
+    }
+    .o_account_report_line_ellipsis span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_mrp_bom_form_inherit_phd_mrp" model="ir.ui.view">
+        <field name="name">mrp.bom.form.view.inherit.phd.mrp</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <field name="consumption" position="attributes">
+                <attribute name="attrs">{'invisible': [('type', '!=', 'subcontract'),
+                                                        ('type', '!=', 'normal')]}</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

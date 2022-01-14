@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            string="Invoice Detail Report"
+            id="action_report_phd_account_invoice_detail"
+            model="account.invoice.detail.report"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+    />
+</odoo>

@@ -1,0 +1,184 @@
+$under_line_input_color:           #696969;
+
+.o_mrp_bom_report_page {
+  background-color: $o-view-background-color;
+  margin: 16px auto;
+  padding: 24px 16px;
+  // Manage expand icon
+  table.o_mrp_bom_expandable {
+    thead{
+      position: sticky;
+      top: 0px;
+      z-index: 1;
+
+      tr{
+        border-width: 2px;
+        border-top-style: groove;
+        border-bottom-style: groove;
+
+        th{
+          padding-left: 10px;
+          border: none;
+        }
+      }
+    }
+
+    tbody tr {
+      border-width: 1px;
+      border-top-style: solid;
+      border-bottom-style: groove;
+      .o_mrp_bom_unfoldable, .o_mrp_bom_foldable {
+        cursor: pointer;
+      }
+    }
+
+    tbody, tfoot {
+      & > tr > td ~ td > span {
+        margin-left: 0px;
+        padding: 0px 4px;
+      }
+      tr {
+        .warning-sale {
+          background: #f0ad4e !important;
+        }
+        .warning-manufacture {
+          background: #74b18d !important;
+        }
+        .enough-inventory {
+          background: transparent !important;
+        }
+        .highlight-cell {
+          background: #ff00004a !important;
+        }
+        .un-highlight-cell {
+          background: transparent !important;
+        }
+        .bom-content {
+          margin-right: 0px;
+          .select_bom {
+            padding-right: 10px;
+          }
+        }
+        .o_mrp_bom_no_fold {
+          margin-left: 18px;
+        }
+        .o_mrp_bom_unfoldable, .o_mrp_bom_foldable {
+          margin-left: -2px;
+        }
+        .po_perc, .po_qty, .mo_qty {
+          margin: 2px;
+        }
+        .po_perc {
+          width: 90%;
+          max-width: 80px;
+          text-align: right;
+        }
+
+        .mo_qty_total, .po_qty_total{
+          width: 90%;
+          max-width: 80px;
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .mo_qty_total::before, .po_qty_total::before{
+          content: '/';
+          display: inline;
+        }
+
+
+        .input-num {
+          border: 1px solid $under_line_input_color;
+          border-top-style: none;
+          border-right-style: none;
+          border-left-style: none;
+          background: transparent;
+          text-align: right;
+        }
+
+        .input-num::-webkit-outer-spin-button,
+        .input-num::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+      /* Firefox */
+        .input-num{
+          -moz-appearance: textfield;
+          display: inline-block;
+          padding: 0;
+        }
+
+        .input-date {
+          background: transparent;
+          display: block;
+          margin-right: 0;
+          margin-left: auto;
+          width: fit-content;
+          max-width: 85%;
+          padding: 0px;
+          border: 1px solid $under_line_input_color;
+          border-top-style: none;
+          border-right-style: none;
+          border-left-style: none;
+          text-align: right;
+        }
+
+        .input-date-readonly {
+          background: transparent;
+          border: transparent;
+          text-align: right;
+        }
+
+        .input-date-readonly::-webkit-inner-spin-button,
+        .input-date-readonly::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+      }
+    }
+    .btn {
+      padding: 0px;
+      line-height:1.0;
+    }
+
+    .ex-in-button{
+      background: url('../../description/ex-in-button.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      display: inline-block;
+      float: right;
+      width: 17px;
+      height: 17px;
+      margin-top: 1px;
+      margin-left: 2px;
+    }
+
+    .ex-in-button.include-button{
+      transform: scaleX(-1);
+    }
+  }
+}
+
+.o_replenishment_planning_report_search {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.open_bom {
+  margin-left: inherit;
+}
+
+.flex-right-float{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hide{
+  display: none!important;
+}
+
+.hide-background{
+  background: transparent!important;
+  cursor: auto!important;
+}

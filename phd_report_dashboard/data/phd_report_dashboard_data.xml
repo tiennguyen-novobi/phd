@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="phd_dashboard_management_sales" model="phd.report.dashboard">
+            <field name="name">Sales</field>
+            <field name="code">SALE_ORDER</field>
+            <field name="type">sale_order</field>
+        </record>
+
+        <record id="phd_dashboard_management_purchase" model="phd.report.dashboard">
+            <field name="name">Purchases</field>
+            <field name="code">PURCHASE_ORDER</field>
+            <field name="type">purchase_order</field>
+        </record>
+
+        <record id="phd_dashboard_management_bank" model="phd.report.dashboard">
+            <field name="name">Banks</field>
+            <field name="code">BANK</field>
+            <field name="type">bank</field>
+        </record>
+
+        <record id="phd_dashboard_management_upcoming" model="phd.report.dashboard">
+            <field name="name">Upcomings Next Week</field>
+            <field name="code">UNW</field>
+            <field name="type">upcoming_next_week</field>
+        </record>
+    </data>
+</odoo>

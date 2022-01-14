@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            id="phd_warehoure_report"
+            string="Warehouse Report"
+            model="stock.move"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+    />
+
+    <report
+            id="phd_fore_quantity_report"
+            string="Forecasted Quantity"
+            model="phd.forecasted.quantity"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+    />
+
+    <report
+            id="phd_negative_report"
+            string="Negative Inventory Report"
+            model="phd.negative.report"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+    />
+
+    <report
+            id="phd_product_lot_report"
+            string="Product Lot Report"
+            model="stock.quant"
+            report_type="qweb-pdf"
+            file="phd_export_pdf.phd_export_list_pdf"
+            name="phd_export_pdf.phd_export_list_pdf"
+            paperformat="phd_export_pdf.phd_report_paperformat"
+    />
+</odoo>

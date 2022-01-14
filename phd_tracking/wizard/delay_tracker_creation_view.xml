@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="delay_tracker_creation_form_view" model="ir.ui.view">
+        <field name="name">delay.tracker.creation.form.view</field>
+        <field name="model">delay.tracker.creation</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="status_date" string="Status Date" readonly="1"/>
+                        <field name="promised_date" string="Promised Date" required="1"/>
+                        <field name="number_of_day_delayed" string="Number Of Days Delayed" readonly="1" force_save="1"/>
+                        <field name="status" string="Status" required="context.get('is_reason_required', False)"/>
+                        <field name="reason" string="Reason"
+                               required="context.get('is_reason_required', False)"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_update_tracker" string="Update" type="object"
+                            class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

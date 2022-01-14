@@ -1,0 +1,27 @@
+<odoo>
+    <data noupdate="0">
+        <record id="edi_vendor_line_status_code_IA" model="edi.vendor.line.status.code">
+            <field name="code">IA</field>
+        </record>
+
+        <record id="edi_vendor_line_status_code_DR" model="edi.vendor.line.status.code">
+            <field name="code">DR</field>
+        </record>
+
+        <record id="edi_vendor_line_status_code_IQ" model="edi.vendor.line.status.code">
+            <field name="code">IQ</field>
+        </record>
+
+        <record id="edi_vendor_line_status_code_IR" model="edi.vendor.line.status.code">
+            <field name="code">IR</field>
+        </record>
+
+        <record id="edi_vendor_line_status_code_IP" model="edi.vendor.line.status.code">
+            <field name="code">IP</field>
+        </record>
+
+        <record id="edi_vendor_line_status_code_IB" model="edi.vendor.line.status.code">
+            <field name="code">IB</field>
+        </record>
+    </data>
+</odoo>

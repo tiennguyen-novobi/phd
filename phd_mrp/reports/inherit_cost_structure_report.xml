@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="phd_mrp_cost_structure" inherit_id="mrp_account_enterprise.mrp_cost_structure">
+        <!-- INHERIT FOR ADDING SUBCONTRACTING COST -->
+        <!-- DISPLAY PO COST LINE -->
+        <xpath expr='//div[hasclass("o_mrp_report_page")]/t[@t-foreach="lines"]/div[hasclass("row")]
+                    //table/tr[@t-if="line[&apos;mo_qty&apos;] &gt; 1"]' position="before">
+            <tr>
+                <td class="text-right">
+                    <strong>PO Cost</strong>
+                </td>
+                <th class="text-right">
+                    <strong t-esc="line['po_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                </th>
+            </tr>
+        </xpath>
+
+        <!-- ADD PO COST TO TOTAL COST -->
+        <xpath expr='//div[hasclass("o_mrp_report_page")]/t[@t-foreach="lines"]/div[hasclass("row")]
+                    //table//strong[@t-esc="line[&apos;total_cost&apos;] + opcost"]' position="attributes">
+            <attribute name="style">display:none</attribute>
+        </xpath>
+
+        <xpath expr='//div[hasclass("o_mrp_report_page")]/t[@t-foreach="lines"]/div[hasclass("row")]
+                    //table//strong[@t-esc="line[&apos;total_cost&apos;] + opcost"]' position="after">
+            <strong t-esc="line['total_cost'] + opcost + line['po_cost']"
+                    t-options='{"widget": "monetary", "display_currency": currency}'/>
+        </xpath>
+
+        <!-- ADD PO COST TO UNIT COST -->
+        <xpath expr='//div[hasclass("o_mrp_report_page")]/t[@t-foreach="lines"]/div[hasclass("row")]
+                    //table//strong[@t-esc="(line[&apos;total_cost&apos;] + opcost) / line[&apos;mo_qty&apos;]"]'
+               position="attributes">
+            <attribute name="style">display:none</attribute>
+
+        </xpath>
+
+        <xpath expr='//div[hasclass("o_mrp_report_page")]/t[@t-foreach="lines"]/div[hasclass("row")]
+                     //table//strong[@t-esc="(line[&apos;total_cost&apos;] + opcost) / line[&apos;mo_qty&apos;]"]'
+               position="after">
+            <strong t-esc="(line['total_cost'] + opcost + line['po_cost']) / line['mo_qty']"
+                    t-options='{"widget": "monetary", "display_currency": currency}'/>
+        </xpath>
+    </template>
+</odoo>

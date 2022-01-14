@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="phd_report_dashbord.ElementHeader">
+        <div class="float-left card_item">
+            <div class="panel panel-custom">
+                <div class="panel-heading panel-background">
+                    <div class="row">
+                        <div class="col-8 text-left">
+                            <div class="kpi_value" t-attf-title="#{value['value']}">
+                                <t t-esc="value['short_title']"/>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="value['comparison']">
+                        <div class="row comparison">
+                            <div class="col-2 comparison_left">
+                                <img t-attf-src="#{value['trend']}"
+                                     class="img img-fluid img-kpi-trend"/>
+                            </div>
+                            <div class="col-10 text-left comparison_right">
+                                <div class="comparison_label text_break" t-attf-title="#{value['comparison_title']}">
+                                    <t t-esc="value['comparison']"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="row">
+                            <br/>
+                        </div>
+                    </t>
+                    <div class="row">
+                        <div class="col-8 text-left text-kpi-title">
+                            <div class="text_break kpi_name" t-attf-title="#{value['label']}">
+                                <t t-esc="value['label']"/>
+                            </div>
+                            <div class="text_period_type" style="font-size: 13px;">
+                                <t t-esc="value['period_type']"/>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <img t-attf-src="#{value['icon']}"
+                                 class="img img-fluid img-kpi-tile"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="phd_report_dashbord.ElementsHeader">
+        <!--Num of rows kpi will showed in the KPI section-->
+        <t t-set="num_elem" t-value="kpi_data.length"/>
+        <t t-set="num_hidden_element" t-value="6"/>
+
+        <!--Rend data for each row base on number of rows assigned in num_row var-->
+        <div class="items_header">
+
+            <t t-foreach="_.range(0, num_elem)" t-as="index">
+                <t t-if="index&lt;kpi_data.length">
+                    <!--Rend each item in row kpi items-->
+                    <t t-call="phd_report_dashbord.ElementHeader">
+                        <t t-set="value" t-value="kpi_data[index]"/>
+
+                    </t>
+                </t>
+            </t>
+            <t t-foreach="_.range(0, num_hidden_element)" t-as="index">
+                <div class="float-left card_item hidden_item"></div>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="phd_report_dashbord.PHDDashboard">
+        <div t-if="show_demo or data" class="o_account_dashboard">
+            <div class="kpi_header">
+                <t t-call="phd_report_dashbord.ElementsHeader">
+                    <t t-set="kpi_data" t-value="data.kpi_data"/>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="phd_tag_analytic_view_form" model="ir.ui.view">
+            <field name="name">phd.tag.analytic.form</field>
+            <field name="model">phd.tag.analytic</field>
+            <field name="arch" type="xml">
+                <form>
+                    <p class="text-center">
+                        <field name="message" readonly="1"/>
+                    </p>
+                    <footer>
+                        <button type="object" string="OK" name="action_post"
+                                class="btn-primary" />
+
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

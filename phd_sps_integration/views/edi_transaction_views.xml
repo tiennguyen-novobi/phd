@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_edi_transaction_tree" model="ir.ui.view">
+        <field name="name">edi.transaction.tree</field>
+        <field name="model">edi.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="EDI Transaction" decoration-muted="state=='ack_sent'">
+                <field name="transaction_date" string="Date"/>
+                <field name="order_id" string="Order Number"/>
+                <field name="ack_type" string="Type"/>
+                <field name="state" string="Status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_edi_transaction_form" model="ir.ui.view">
+        <field name="name">edi.transaction.form</field>
+        <field name="model">edi.transaction</field>
+        <field name="arch" type="xml">
+            <form string="Order Acknowledgement" class="o_sale_order">
+                <header>
+                    <field name="type" invisible="1"/>
+                    <field name="has_rejected_reason" invisible="1"/>
+                    <button name="action_submit_edi_855"
+                            string="Submit" type="object"
+                            attrs="{'invisible': ['|', ('state', 'not in', ['draft']), ('type', 'not in', ['855'])]}"/>
+                    <button name="action_submit_edi_855"
+                            groups="base.group_no_one"
+                            string="Re-Submit" type="object"
+                            attrs="{'invisible': [('type', 'not in', ['855'])]}"/>
+                    <button name="action_approve_ack"
+                            string="Approve" type="object"
+                            attrs="{'invisible': ['|', ('state', 'not in', ['ack_sent']), ('type', 'not in', ['855'])]}"/>
+                    <button name="action_approve_change"
+                            string="Approve" type="object"
+                            attrs="{'invisible': ['|', ('state', 'not in', ['draft']), ('type', 'not in', ['860'])]}"/>
+                    <button name="action_reject_change"
+                            string="Reject" type="object"
+                            attrs="{'invisible': ['|', ('state', 'not in', ['draft']), ('type', 'not in', ['860'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,ack_sent,approve"
+                           attrs="{'invisible': [('type', 'not in', ['855'])]}"/>
+                    <field name="order_change_state" widget="statusbar" statusbar_visible="draft,approve,reject"
+                           attrs="{'invisible': [('type', 'not in', ['860'])]}"/>
+
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" widget="res_partner_many2one"
+                                   context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}"
+                                   options='{"always_reload": True}'/>
+                            <field name="ack_type" string="Acknowledgement Type"
+                                   attrs="{'readonly': [('state', 'not in', ['draft'])],
+                                           'invisible':[('type', 'not in', ['855'])],
+                                           'required':[('type', 'in', ['855'])]}"/>
+                            <field name="transaction_date" string="Date"
+                                   attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                            <field name="ship_date" string="Ship Date" widget='date'
+                                   attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                        </group>
+                        <group>
+                            <field name="order_id" string="Origin" readonly="1"/>
+                            <field name="attachment_id" string="EDI 855 XML" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="note" string="Note" readonly="1"
+                               attrs="{'invisible':['|',('type', 'not in', ['860']),('note', '=' , False)]}"/>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines" name="order_lines">
+                            <label for="order_line_ids" string="Order Lines"
+                                   attrs="{'invisible': [('type', 'not in', ['855'])]}"/>
+                            <field
+                                    name="order_line_ids"
+                                    widget="section_and_note_one2many"
+                                    mode="tree"
+                                    attrs="{'invisible': [('type', 'not in', ['855'])]}" context="{'default_partner_id': partner_id }">
+                                <tree string="Sales Order Lines">
+                                    <field name="sps_sequence_number" string="SPS Sequence"/>
+                                    <field name="product_id" stirng="Product"/>
+                                    <field name="name" widget="section_and_note_text" optional="show"/>
+                                    <field name="product_uom_qty"/>
+                                    <field
+                                            name="product_uom" string="UoM" groups="uom.group_uom"
+                                            options='{"no_open": True}' optional="show"
+                                    />
+                                    <field name="price_unit"/>
+                                    <field name="state" invisible="1"/>
+                                </tree>
+                            </field>
+                            <label for="edi_transaction_line_ids" string="ACK Lines"/>
+                            <field
+                                    name="edi_transaction_line_ids"
+                                    widget="section_and_note_one2many"
+                                    mode="tree"
+                                    attrs="{'readonly': ['|', ('ack_type', 'in', ['AD', 'RD']),
+                                                            '|', ('state', 'not in', ['draft']),
+                                                                 ('type', 'in', ['860'])]}">
+                                <tree editable="bottom">
+                                    <field name="sps_sequence_number" readonly="1" force_save="1"/>
+                                    <field name="order_line_id" domain="[('order_id', '=', parent.order_id)]"
+                                           required="1"/>
+                                    <field name="product_id" stirng="Product" readonly="1" force_save="1"/>
+                                    <field name="ack_status_code" string="ACK Status code" required="1"
+                                           attrs="{'column_invisible': [('parent.type', 'not in', ['855'])]}"/>
+                                    <field name="change_status_code" string="Change Status code"
+                                           attrs="{'column_invisible': [('parent.type', 'not in', ['860'])]}"/>
+                                    <field name="old_product_uom_qty" string="Old Quantity"
+                                           attrs="{'column_invisible': [('parent.type', 'not in', ['860']),
+                                                                        '|',
+                                                                            ('parent.type', 'not in', ['855']),
+                                                                            ('parent.state', 'not in', ['approve'])]}"/>
+                                    <field name="product_uom_qty" string="Quantity"
+                                           attrs="{'readonly': [('ack_status_code', 'not in', ['IQ'])]}"/>
+                                    <field name="product_schedule_date" string="Schedule Date"
+                                           attrs="{'readonly': [('ack_status_code', 'not in', ['DR', 'IB'])],
+                                                      'required': [('parent.type', '=', '855'), ('ack_status_code', 'in', ['IB'])]}"/>
+                                     <field name="old_price_unit" string="Old Unit Price"
+                                           attrs="{'column_invisible': [('parent.type', 'not in', ['860'])]}"/>
+                                    <field name="price_unit" string="Unit Price"
+                                           attrs="{'column_invisible': [('parent.type', 'not in', ['860', '855'])],
+                                                    'readonly': [('ack_status_code', 'not in', ['IP']), ('parent.type', '=', '855')],}"/>
+                                    <field name="note" string="Note"
+                                           attrs="{'column_invisible': [('parent.has_rejected_reason', '=', False)],
+                                                   'readonly': [('ack_status_code', 'not in', ['IR'])],
+                                                   'required': [('parent.has_rejected_reason', '=', True),
+                                                                ('ack_status_code', 'in', ['IR'])]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="edi_transaction_action" model="ir.actions.act_window">
+        <field name="name">EDI Transaction</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">edi.transaction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+    </record>
+</odoo>

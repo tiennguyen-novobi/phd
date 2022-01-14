@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_sale_order_form" model="ir.ui.view">
+        <field name="name">phd.sale.order.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="stage_id" widget="stagebar"></field>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="before">
+                <button name="action_on_hold" type="object"
+                        attrs="{'invisible': [('stage_id', 'not in', (%(phd_sale.phd_sale_order_stage_sale_order)d, %(phd_sale.phd_sale_order_stage_partially_shipped)d))]}"
+                        string="On Hold"/>
+                <button name="action_continue" class="oe_highlight" type="object"
+                        attrs="{'invisible': [('stage_id', '!=', %(phd_sale.phd_sale_order_stage_on_hold)d)]}"
+                        string="Continue"/>
+                <button name="action_closed"
+                        attrs="{'invisible': [('stage_id', 'not in', (%(phd_sale.phd_sale_order_stage_fully_shipped)d, %(phd_sale.phd_sale_order_stage_partially_shipped)d))]}"
+                        type="object" string="Close"/>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|',('stage_id', '=',
+                    %(phd_sale.phd_sale_order_stage_fully_shipped)d), ('state','=','cancel')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                <field name="lot_id" string="Lot#"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <xpath expr="//field[@name='analytic_account_id']" position="move"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_sale_order_view_kanban" model="ir.ui.view">
+        <field name="name">phd.sale.order.view.kanban</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="replace">
+                <kanban default_group_by="stage_id" quick_create="false" class="o_kanban_small_column"
+                        js_class="phd_sale_order_kanban">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="amount_total"/>
+                    <field name="date_order"/>
+                    <field name="state"/>
+                    <field name="currency_id"/>
+                    <field name="activity_state"/>
+                    <field name="previous_state" invisible="1"/>
+                    <field name="stage_id" invisible="1"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top mb16">
+                                    <div class="o_kanban_record_headings mt4">
+                                        <strong class="o_kanban_record_title">
+                                            <span>
+                                                <t t-esc="record.partner_id.value"/>
+                                            </span>
+                                        </strong>
+                                    </div>
+                                    <strong>
+                                        <field name="amount_total" widget="monetary"/>
+                                    </strong>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left text-muted">
+                                        <span>
+                                            <t t-esc="record.name.value"/>
+                                            <t t-esc="record.date_order.value"/>
+                                        </span>
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <div>
+                                            <field name="stage_id" widget="label_selection"
+                                                   options="{'classes': {'draft': 'default', 'cancel': 'default', 'done': 'success'}}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale.action_orders" model="ir.actions.act_window">
+        <field name="context">
+            {
+                'is_reformat_on_export_excel':
+                    {
+                        'delete_field': ('expected_date', 'activity_exception_decoration', 'magento_payment_method_id'),
+                    }
+            }
+        </field>
+    </record>
+
+    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+        <field name="context">
+            {
+                'is_reformat_on_export_excel':
+                    {
+                        'delete_field': ('expected_date', 'activity_exception_decoration', 'magento_payment_method_id'),
+                    }
+            }
+        </field>
+    </record>
+
+    <record id="phd_sale_order_tree_view_inherit" model="ir.ui.view">
+        <field name="name">phd.sale.order.view.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">phd_tools_export_excel</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+        <field name="view_id" ref="phd_sale_order_view_kanban"/>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
+    </record>
+
+</odoo>

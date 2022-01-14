@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_mrp_production_tree_view_inherit" model="ir.ui.view">
+        <field name="name">phd.mrp.production.tree.view.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">date_planned_finished desc</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_purchase_order_tree_inherit" model="ir.ui.view">
+        <field name="name">phd.purchase.order.tree.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="phd_purchase.phd_purchase_order_tree_view_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">date_approve desc</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="phd_report_dashboard_view_kanban" model="ir.ui.view">
+        <field name="name">phd.report.dashboard</field>
+        <field name="model">phd.report.dashboard</field>
+        <field name="arch" type="xml">
+            <kanban create="false"
+                    class="oe_background_grey o_kanban_dashboard o_account_kanban o_account_dashboard_kanban" js_class="phd_report_dashboard_header">
+                <field name="id"/>
+                <field name="type"/>
+                <field name="extend_data"/>
+                <field name="color"/>
+                <field name="kanban_bank_dashboard"/>
+                <field name="number_upcomming_mo_ids"/>
+                <field name="number_upcomming_po_ids"/>
+                <field name="upcoming_mo"/>
+                <field name="upcoming_po"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)}">
+                            <t t-value="record.type.raw_value" t-set="type"/>
+                            <t t-value="JSON.parse(record.kanban_bank_dashboard.raw_value)" t-set="bank_dashboard"/>
+                            <t t-value="record.extend_data.raw_value" t-set="extend_data"/>
+
+                            <t t-call="JournalTop"/>
+
+                            <t t-if="type == 'bank'">
+                                <div class="container o_kanban_card_content" style="justify-content:flex-start;">
+                                    <t t-call="JournalBodyBankCash"/>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="container o_kanban_card_content">
+                                    <t t-if="type == 'sale_order' || type == 'purchase_order'" t-call="JournalGraph"/>
+                                    <t t-if="type == 'upcoming_next_week'" t-call="Upcoming"/>
+                                </div>
+                            </t>
+                            <div class="container o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                <t t-call="JournalManage"/>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-name="JournalTop">
+                        <div t-attf-class="o_kanban_card_header">
+                            <div class="o_kanban_card_header_title">
+                                <div class="o_primary">
+                                    <t t-if="type == 'sale_order'">
+                                        <a type="action" name="%(sale.action_orders)d"><field name="name"/></a>
+                                    </t>
+                                    <t t-elif="type == 'purchase_order'">
+                                        <a type="action" name="%(purchase.purchase_form_action)d"><field
+                                                name="name"/></a>
+                                    </t>
+                                </div>
+
+                                <t t-if="type == 'sale_order'">
+                                    <div class="o_primary">
+                                        <a type="action" name="%(phd_sale.action_report_sales_in_dollars)d">
+                                            <span style="font-size:12px;">
+                                                Sales in Dollar Report
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="o_primary">
+                                        <a type="action" name="%(phd_sale.action_report_sales_in_unit)d">
+                                            <span style="font-size:12px;">
+                                                Sales in Unit Report
+                                            </span>
+                                        </a>
+                                    </div>
+                                </t>
+
+                                <t t-elif="type == 'purchase_order'">
+                                    <div class="o_primary">
+                                        <a type="action" name="%(purchase.purchase_form_action)d">
+                                            <span style="font-size:12px;">
+                                                Purchase Order Report
+                                            </span>
+                                        </a>
+                                    </div>
+                                </t>
+
+                                <t t-elif="type == 'bank'">
+                                    <a href="javascript:void(0)">
+                                        <field name="name"/>
+                                    </a>
+                                </t>
+                            </div>
+
+                            <div class="o_kanban_manage_button_section">
+                                <a class="o_kanban_manage_toggle_button" href="#">
+                                    <i class="fa fa-ellipsis-v"
+                                       aria-label="Selection"
+                                       role="img"
+                                       title="Selection"/>
+                                </a>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-name="JournalGraph">
+                        <field name="account_dashboard_graph_dashboard_graph"
+                               widget="journal_data"/>
+                    </t>
+
+                    <t t-name="JournalManage">
+                        <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                            <div class="col-8">
+                                <ul class="oe_kanban_colorpicker" data-field="color"/>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-name="JournalBodyBankCash">
+                        <t t-foreach="bank_dashboard" t-as="o">
+                            <div class="row">
+                                <div class="col-5">
+                                    <span><t t-esc="o.bank_name"/>: </span>
+                                </div>
+                                <div class="col-7 text-left">
+                                    <span><t t-esc="o.cash_per_book"/></span>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+
+                    <t t-name="Upcoming">
+                        <div name="upcomingItem">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <t t-set="item" t-value="{
+                                        'color': 'orange', 'number': record.number_upcomming_mo_ids.raw_value,
+                                        'text': 'Total upcoming MO Releases', 'button': 'button_see_all_upcoming_mo'
+                                    }"/>
+                                    <t t-call="UpcomingItem"/>
+
+                                    <t t-set="item" t-value="{
+                                        'color': 'primary-purple', 'number': record.number_upcomming_po_ids.raw_value,
+                                        'text': 'Total upcoming PO Receipts', 'button': 'button_see_all_upcoming_po'
+                                    }"/>
+                                    <t t-call="UpcomingItem"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid mt-3">
+                            <div class="row">
+                                <t t-set="item" t-value="{
+                                    'img': '/phd_report_dashboard/static/src/img/holiday.svg',
+                                    'text': 'Upcoming MOs next 7 days', 'field': record.upcoming_mo.raw_value
+                                }"/>
+                                <t t-call="UpcomingDayItem"/>
+
+                                <t t-set="item" t-value="{
+                                    'img': '/phd_report_dashboard/static/src/img/birthday.svg',
+                                    'text': 'Upcoming POs next 7 days', 'field': record.upcoming_po.raw_value
+                                }"/>
+                                <t t-call="UpcomingDayItem"/>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-name="UpcomingItem">
+                        <div class="col-6 payroll-box-container">
+                            <div t-attf-class="payroll-box white-content pl-3 pr-3 {{ item['color'] }}">
+                                <div class="row h-100">
+                                    <div class="col-8">
+                                        <div class="number"><t t-esc="item['number']"/></div>
+                                        <div class="text"><t t-esc="item['text']"/></div>
+                                    </div>
+                                    <div class="col-4 align-self-center">
+                                        <button t-att-data-name="item['button']" type="object"
+                                                class="btn btn-outline white float-right">
+                                            View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-name="UpcomingDayItem">
+                        <div class="col-6 payroll-box-container">
+                            <div class="payroll-box h-100">
+                                <div class="d-flex align-items-center">
+                                    <img t-att-src="item['img']" alt="Payroll Image" class="img-dashboard mr-4"/>
+                                    <h4 class="bold-text"><t t-esc="item['text']"/></h4>
+                                </div>
+                                <t t-raw="item['field']"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="phd_report_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">phd.report.dashboard</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+
+    <!-- MENUS -->
+    <menuitem
+            id="menu_phd_report_dashboard_root"
+            name="Report Dashboard"
+            web_icon="phd_report_dashboard,static/description/icon.png"
+            sequence="53"/>
+
+    <menuitem
+            id="phd_report_dashboard"
+            name="Dashboard"
+            action="phd_report_dashboard_kanban"
+            parent="menu_phd_report_dashboard_root"
+            sequence="1"/>
+</odoo>

@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_mko_view_tree" model="ir.ui.view">
+        <field name="name">phd.mko.view.tree</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="order_id"/>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="stage_id"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="phd_mko_search" model="ir.ui.view">
+        <field name="name">phd.mko.search</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <search string="ECOs">
+                <field name="stage_id"/>
+                <field name="order_id"/>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="company_id"/>
+                <group expand='0' string='Group by...'>
+                    <filter string="Stage" name="stagegroup" context="{'group_by': 'stage_id'}"/>
+                    <filter string='Company' name="company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="phd_mko_kanban" model="ir.ui.view">
+        <field name="name">phd.mko.kanban</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column" quick_create="false">
+                <field name="name"/>
+                <field name="stage_id"/>
+                <field name="color"/>
+                <field name="kanban_state"/>
+                <field name="user_id"/>
+                <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-box">
+                         <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click">
+                            <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
+                            <div class="o_dropdown_kanban dropdown">
+                                <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <t t-if="widget.editable"><a type="edit" class="dropdown-item" role="menuitem">Edit Task</a></t>
+                                    <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                 <div t-if="record.partner_id.raw_value">
+                                    <field name="partner_id"/>
+                                </div>
+                                <div t-if="record.promotion_period_from.raw_value">
+                                    <span> From </span>
+                                    <field name="promotion_period_from" class="oe_bold_field"/>
+                                </div>
+                                <div t-if="record.promotion_period_to.raw_value">
+                                    <span> To </span>
+                                    <field name="promotion_period_to" class="oe_bold_field"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_right">
+                                    <img t-att-src="kanban_image('res.users', 'image_128', record.user_id.raw_value)" t-att-title="record.user_id.value" t-att-alt="record.user_id.value" class="oe_kanban_avatar"/>
+                                    <div class="float-left mr4">
+                                        <span t-if="record.kanban_state.raw_value == 'normal'" class="o_status o_status_grey" title="Waiting for Approvals" role="img" aria-label="Waiting for Approvals"/>
+                                        <span t-if="record.kanban_state.raw_value == 'done'" class="o_status o_status_green" title="All Approvals have be done" role="img" aria-label="All Approvals have be done"/>
+                                        <span t-if="record.kanban_state.raw_value == 'blocked'" class="o_status o_status_red" title="Someone rejected this change" role="img" aria-label="Someone rejected this change"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="phd_mko_view_form" model="ir.ui.view">
+        <field name="name">phd.mko.view.form</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="user_can_approve" invisible="1"/>
+                <field name="user_can_reject" invisible="1"/>
+                <field name="allow_apply_change" invisible="1"/>
+                <field name="order_id" invisible="1"/>
+                <field name="state" invisible="1"/>
+                <field name="is_approved" invisible="1"/>
+                <field name="is_mk_user" invisible="1"/>
+                <field name="is_receivable" invisible="1"/>
+                <header>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" attrs="{'invisible': [('order_id', '=', False)]}"/>
+                    <button string="Approve" name="approve" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('user_can_approve', '=', False)]}"/>
+                    <button string="Reject" name="reject" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('user_can_reject', '=', False)]}"/>
+                    <button string="Apply Changes" name="action_apply" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('allow_apply_change', '=', False), ('stage_id', '!=', %(phd_marketing_order_stage_changes_needed)d)]}"/>
+                    <button string="Start" name="start_mko" type="object" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_see_attachments" type="object" attrs="{'invisible': [('state', '=', 'draft')]}" string="Update Documents"/>
+                </header>
+                <sheet>
+                    <field name="kanban_state" widget="state_selection"/>
+                    <div class="oe_title">
+                        <label for="name" string="Name of Promotion" class="oe_edit_only"/>
+                        <h2><field name="name" attrs="{'readonly': ['|', ('is_receivable', '=', True), '&amp;', ('is_approved', '=', True), ('is_mk_user', '=', True)]}"/></h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_order" attrs="{'readonly': ['|', ('is_receivable', '=', True), '&amp;', ('is_approved', '=', True), ('is_mk_user', '=', True)]}"/>
+                            <field name="partner_id" attrs="{'readonly': ['|', ('is_receivable', '=', True), '&amp;', ('is_approved', '=', True), ('is_mk_user', '=', True)]}"/>
+                            <label for="promotion_period_from" string="Promotion Period"/>
+                            <div>
+                                <span> From </span>
+                                <field name="promotion_period_from" class="oe_bold_field" attrs="{'readonly': ['|', ('is_receivable', '=', True), '&amp;', ('is_approved', '=', True), ('is_mk_user', '=', True)]}"/>
+                                <span> To </span>
+                                <field name="promotion_period_to" class="oe_bold_field" attrs="{'readonly': ['|', ('is_receivable', '=', True), '&amp;', ('is_approved', '=', True), ('is_mk_user', '=', True)]}"/>
+                            </div>
+                            <field name="company_id" invisible="1"/>
+                            <field name="user_id" invisible="1"/>
+                            <field name="requested_by" readonly="1"/>
+                            <field name="memo" attrs="{'readonly': ['|', ('is_receivable', '=', True), '&amp;', ('is_approved', '=', True), ('is_mk_user', '=', True)]}"/>
+                        </group>
+                        <group>
+                            <field name="promo_id" attrs="{'readonly': [('is_approved', '=', True), ('is_mk_user', '=', True)]}"/>
+                            <field name="date_received" attrs="{'readonly': [('is_approved', '=', True), ('is_mk_user', '=', True)]}"/>
+                            <field name="internal_credit_memo" attrs="{'readonly': [('is_approved', '=', True), ('is_mk_user', '=', True)]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="order_lines">
+                            <field
+                                name="order_line"
+                                widget="section_and_note_one2many"
+                                mode="tree,kanban" attrs="{'readonly': [('is_approved', '=', True), ('is_mk_user', '=', True)]}">
+                                 <tree
+                                    string="Sales Order Lines"
+                                    editable="bottom">
+                                    <control>
+                                        <create name="add_product_control" string="Add a product"/>
+                                    </control>
+                                     <field name="currency_id" invisible="1"/>
+                                    <field name="sequence" widget="handle" />
+                                    <field name="product_id"/>
+                                     <field name="name"/>
+                                    <field name="funding"/>
+                                     <field name="quantity" sum="Total Quantity"/>
+                                    <field name="amount"  sum="Total"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Note">
+                            <field name="note"/>
+                        </page>
+                        <page string="Approvals">
+                            <field name="approval_ids" nolabel="1" readonly="1" help="ECO approvals">
+                                <tree decoration-danger="template_stage_id == eco_stage_id and status == 'rejected' and not is_closed"
+                                  decoration-info="template_stage_id == eco_stage_id and status == 'none' and not is_closed"
+                                  decoration-success="template_stage_id == eco_stage_id and status in ('approved', 'commented') and not is_closed"
+                                  decoration-muted="template_stage_id != eco_stage_id">
+                                    <field name="name"/>
+                                    <field name="user_id"/>
+                                    <field name="status"/>
+                                    <field name="approval_date"/>
+                                    <field name="template_stage_id"/>
+                                    <field name="required_user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    <field name="eco_stage_id" invisible="1"/>
+                                    <field name="is_closed" invisible="1"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="user_id"/>
+                                            <field name="status"/>
+                                        </group>
+                                        <group>
+                                            <field name="template_stage_id"/>
+                                            <field name="required_user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                            <field name="eco_stage_id" groups="base.group_no_one"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="phd_mko_view_calendar" model="ir.ui.view">
+        <field name="name">phd.mko.view.calendar</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <calendar string="MKOs" date_start="promotion_period_from" date_stop="promotion_period_to" color="stage_id" mode="month" js_class="marketing_order_calendar" quick_add="False">
+                <field name="name"/>
+                <field name="promotion_period_from"/>
+                <field name="promotion_period_to"/>
+                <field name="partner_id" avatar_field="image_128"/>
+                <field name="stage_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="phd_mko_view_pivot" model="ir.ui.view">
+        <field name="name">phd.mko.view.pivot</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <pivot string="MKO Analysis">
+                <field name="stage_id" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="phd_mko_view_graph" model="ir.ui.view">
+        <field name="name">phd.mko.view.graph</field>
+        <field name="model">phd.mko</field>
+        <field name="arch" type="xml">
+            <graph string="MKO Analysis">
+                <field name="stage_id" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="phd_mko_action_main" model="ir.actions.act_window">
+        <field name="name">Marketing Orders</field>
+        <field name="res_model">phd.mko</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('phd_mko_kanban')}),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('phd_mko_view_tree')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Create a Marketing Order
+            </p>
+        </field>
+    </record>
+
+    <record id="phd_mko_action_routing" model="ir.actions.act_window">
+        <field name="name">Marketing Orders</field>
+        <field name="res_model">phd.mko</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Create a Marketing Order
+            </p>
+        </field>
+    </record>
+
+    <record id="phd_mko_stage_view_tree" model="ir.ui.view">
+        <field name="name">phd.mko.stage.view.tree</field>
+        <field name="model">phd.mko.stage</field>
+        <field name="arch" type="xml">
+            <tree create="false" delete="false">
+                <field name="name"/>
+                <field name="approval_roles"/>
+                <field name="folded"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_phd_mko_stage_kanban" model="ir.ui.view">
+        <field name="name">phd.mko.stage.kanban</field>
+        <field name="model">phd.mko.stage</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div>
+                                <strong><field name="name"/></strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="phd_mko_stage_view_form" model="ir.ui.view">
+        <field name="name">phd.mko.stage.view.form</field>
+        <field name="model">phd.mko.stage</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="id" invisible="1"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="folded"/>
+                            <field name="allow_apply_change" attrs="{'invisible': [('id', '!=', %(phd_marketing.phd_marketing_order_stage_changes_needed)d)]}"/>
+                            <field name="final_stage" invisible="1"/>
+                        </group>
+                    </group>
+                    <h2 attrs="{'invisible': [('id', '!=', %(phd_marketing.phd_marketing_order_stage_waiting_for_approval)d)]}">Approvals</h2>
+                    <field name="approval_template_ids" attrs="{'invisible': [('id', '!=', %(phd_marketing.phd_marketing_order_stage_waiting_for_approval)d)]}">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name" placeholder="e.g. Engineering Department"/>
+                            <field name="user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="approval_type"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="phd_mko_stage_action" model="ir.actions.act_window">
+        <field name="name">Stages</field>
+        <field name="res_model">phd.mko.stage</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new MKO stage
+            </p>
+        </field>
+    </record>
+
+    <!-- MENUS -->
+    <menuitem
+        id="menu_marketing_order_root"
+        name="Marketing Order"
+        web_icon="phd_marketing,static/description/icon.png"
+        sequence="52"/>
+
+    <menuitem
+        id="menu_phd_marketing_changes"
+        name="Orders"
+        action="phd_mko_action_main"
+        parent="menu_marketing_order_root"
+        sequence="1"/>
+
+    <menuitem
+        id="menu_phd_marketing_configuration"
+        name="Configuration"
+        parent="menu_marketing_order_root"
+        groups="phd_marketing.group_mko_manager"
+        sequence="3"/>
+
+    <menuitem
+        id="menu_phd_marketing_eco_stages"
+        name="Stages"
+        action="phd_mko_stage_action"
+        parent="menu_phd_marketing_configuration"
+        sequence="1"/>
+</odoo>

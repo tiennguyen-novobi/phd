@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  Created Sale Order Stage Form view -->
+    <record id="sale_order_stage_form" model="ir.ui.view">
+        <field name="name">sale.order.stage.form</field>
+        <field name="model">sale.order.stage</field>
+        <field name="arch" type="xml">
+            <form string="Sale Order Stage">
+                <sheet>
+                    <group name="sale_order_stage">
+                        <group >
+                            <field name="sequence"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="datetime_field_name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--  Created Sale Order Stage Tree view -->
+    <record id="sale_order_stage_tree" model="ir.ui.view">
+        <field name="name">sale.order.stage.tree</field>
+        <field name="model">sale.order.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Order Stage">
+                <field name="sequence" />
+                <field name="id"/>
+                <field name="name"/>
+                <field name="write_date"/>
+                <field name="write_uid"/>
+            </tree> 
+        </field>
+    </record>
+
+    <!--  Created Sale Order Stage Search view -->
+    <record id="sale_order_stage_search_view" model="ir.ui.view">
+        <field name="name">sale.order.stage.search</field>
+        <field name="model">sale.order.stage</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="datetime_field_name"/>
+            </search>
+        </field>
+    </record>
+
+    <!--  Created Sale Order Stage Action -->
+    <record id="sale_order_stage_action" model="ir.actions.act_window">
+        <field name="name">Cap Deal Stage</field>
+        <field name="res_model">sale.order.stage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--  Created Menu item for Sale Order Stage at Sales -> Configuration -> Cap Deal Stage -->
+    <menuitem id="cap_sale_order_stage_menu" action="sale_order_stage_action"
+    parent="sale.menu_sale_config"/>
+
+</odoo>
+

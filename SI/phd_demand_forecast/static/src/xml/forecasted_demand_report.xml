@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ForecastedDemandReportTemplate">
+        <div class="forecasted-demand-report container-fluid">
+            <div class="forecasted-header container-fluid">
+                <div class="row">
+                    <div class="product-name d-flex flex-column">
+                            <span class="clickable"
+                                  t-esc="widget.headerContent.name"
+                                  t-att-model="widget.headerContent.model"
+                                  t-att-res_id="widget.headerContent.id"
+                            />
+                            <span class="product-last-update"> Last Updated: <t t-esc="widget.headerContent.lastUpdate"/> (UTC)</span>
+                    </div>
+                    <div class="product-quantity row justify-content-end ml-auto">
+                        <div t-foreach="widget.headerContent.descriptionList"
+                             t-as="o"
+                             t-attf-class="product-quantity-cell {{((o.value &lt; 0)?'danger':'')}}">
+                            <div class="d-flex flex-column">
+                                <span class="product-qty-cell-value">
+                                       <t t-esc="o.value"/> <t t-esc="widget.headerContent.uomText" />
+                                </span>
+                                <span t-esc="o.text" class="product-qty-cell-text"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="forecasted-body mb-4">
+                <div class="forecasted-chart">
+                    <canvas class="forecasted-canvas" t-attf-id="{{widget.canvasID}}"/>
+                </div>
+            </div>
+            <div class="forecasted-footer row">
+                <t t-foreach="widget.tableContent" t-as="tbl">
+                    <t t-call="ForecastedDemandReportTable"/>
+                </t>
+            </div>
+        </div>
+    </t>
+    <t t-name="ForecastedDemandReportTable">
+        <div t-attf-class="forecasted-table-section col-md-{{tbl.size}}">
+            <p class="forecasted-table-name" t-esc="tbl.title"></p>
+            <div class="forecasted-table-holder">
+                <table class="table table-bordered forecasted-table table-striped" >
+                    <thead class="forecasted-tbl-header">
+                        <tr class="forecasted-tbl-header-row">
+                            <td t-attf-class="forecasted-tbl-header-cell {{tbl.headerData[tHead].isNumber?'nbr-field':''}}"
+                                t-foreach="tbl.headerListKey" t-as="tHead"
+                                t-esc="tbl.headerData[tHead].name"
+                                t-att-title="tbl.headerData[tHead].name"/>
+                        </tr>
+                    </thead>
+                    <tbody t-if="tbl.contentList" class="forecasted-tbl-body">
+                        <tr class="forecasted-tbl-body-row " t-foreach="tbl.contentList" t-as="tContent">
+                            <td t-foreach="tbl.headerListKey" t-as="tHead"
+                                t-attf-class="forecasted-tbl-body-cell {{tbl.headerData[tHead].isNumber?'nbr-field':''}} ">
+                                <t t-if="tbl.headerData[tHead].isClickable">
+                                    <span t-esc="tContent[tHead].value"
+                                          t-att-res_id="tContent[tHead].id"
+                                          t-att-model="((tContent[tHead].model)?tContent[tHead].model:tbl.model)"
+                                          class="clickable"
+                                          t-att-title="tContent[tHead].value"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-esc="tContent[tHead].value"
+                                          t-att-title="tContent[tHead].value"/>
+                                </t>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>

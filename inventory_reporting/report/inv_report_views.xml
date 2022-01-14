@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                string="Inv - Activity FG Report"
+                id="action_report_inv_activity_fg_report"
+                model="wizard.inv.activity.reports"
+                report_type="qweb-pdf"
+                name="inventory_reporting.report_finish_goods_reports"
+                file="inventory_reporting.report_finish_goods_reports"
+        />
+        <report
+                string="Inv - Activity Component Report"
+                id="action_report_inv_activity_comp_report"
+                model="wizard.inv.activity.reports"
+                report_type="qweb-pdf"
+                name="inventory_reporting.report_component_reports"
+                file="inventory_reporting.report_component_reports"
+        />
+        <report
+            id="action_report_so_open_order"
+            string="SO Open Order"
+            model="sale.order"
+            report_type="qweb-pdf"
+            menu="False"
+            file="inventory_reporting.report_so_open_order"
+            name="inventory_reporting.report_so_open_order"
+        />
+        <report
+            id="action_report_so_line_item"
+            string="SO Line Item"
+            model="sale.order"
+            report_type="qweb-pdf"
+            menu="False"
+            file="inventory_reporting.report_so_line_item"
+            name="inventory_reporting.report_so_line_item"
+        />
+        <report
+            id="action_report_so_summary"
+            string="SO Summary"
+            model="wizard.so.summary"
+            report_type="qweb-pdf"
+            file="inventory_reporting.report_so_summary"
+            name="inventory_reporting.report_so_summary"
+        />
+        <report
+            id="action_report_so_history"
+            string="SO History"
+            model="wizard.so.history"
+            report_type="qweb-pdf"
+            file="inventory_reporting.report_so_history"
+            name="inventory_reporting.report_so_history"
+        />
+    </data>
+</odoo>

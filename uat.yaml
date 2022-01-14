@@ -1,0 +1,429 @@
+1.1.31:
+  time_line: [2020-10-29]
+  upgrade_modules:
+    - phd_account
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Credit Card Refund
+
+1.1.30:
+  time_line: [2020-10-28]
+  upgrade_modules:
+    - phd_account
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Credit Card Refund
+
+1.1.29:
+  time_line: [2020-10-27]
+  upgrade_modules:
+    - phd_account
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Credit Card User Tag
+
+1.1.28:
+  time_line: [2020-10-26]
+  upgrade_modules:
+    - phd_account
+    - phd_account_reports
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - General Ledger Expanded
+
+1.1.27:
+  time_line: [2020-10-25]
+  upgrade_modules:
+    - phd_account_reports
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - General Ledger Expanded
+
+1.1.26:
+  time_line: [2020-10-12]
+  upgrade_modules:
+    - phd_account_reports
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - General Ledger
+
+1.1.25:
+  time_line: [2020-10-05]
+  upgrade_modules:
+    - phd_account
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - General Ledger
+
+1.1.24:
+  time_line: [2020-09-23]
+  upgrade_modules:
+    - phd_report_dashboard
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - General Ledger
+
+1.1.23:
+  time_line: [2020-09-22]
+  upgrade_modules:
+    - phd_report_dashboard
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - General Ledger
+
+1.1.22:
+  time_line: [2020-09-10]
+  upgrade_modules:
+    - phd_sps_integration
+    - phd_mrp
+  install_modules:
+  database:
+    - phd-uat
+    - phd_prod_09_10_2021
+  release_notes:
+    - Update Accounting Date
+
+1.1.21:
+  time_line: [2020-09-10]
+  upgrade_modules:
+    - phd_account
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Update SPS
+    -
+1.1.20:
+  time_line: [2020-09-07]
+  upgrade_modules:
+    - phd_mrp
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Update Beet Root Royalty
+
+1.1.19:
+  time_line: [2020-09-01]
+  upgrade_modules:
+    - phd_account
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Customer Vendor Payment Receipt
+
+1.1.18:
+  time_line: [2020-08-13]
+  upgrade_modules:
+    - phd_stock
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Inventory Report
+
+1.1.17:
+  time_line: [2020-08-12]
+  upgrade_modules:
+    - phd_stock
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Inventory Valuation Report
+
+1.1.16:
+  time_line: [2020-08-11]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - SPS BBCom Testing
+
+1.1.15:
+  time_line: [2020-08-09]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - SPS BBCom Testing
+
+1.1.14:
+  time_line: [2020-08-03]
+  upgrade_modules:
+    - phd_mrp
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Missing Journal Entry
+
+1.1.13:
+  time_line: [2020-08-02]
+  upgrade_modules:
+    - phd_stock
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Inventory Adjusment
+
+1.1.12:
+  time_line: [2020-08-02]
+  upgrade_modules:
+    - phd_stock
+    - phd_mrp
+    - phd_purchase
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - GNC Go-live
+
+1.1.11:
+  time_line: [2020-07-27]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - GNC Go-live
+
+1.1.10:
+  time_line: [2020-07-23]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - GNC Go-live
+
+1.1.9:
+  time_line: [2020-04-12]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Improve SPS Flow
+
+1.1.8:
+  time_line: [2020-03-31]
+  upgrade_modules:
+    - phd_mrp
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Improve Subcontracting flow
+
+1.1.7:
+  time_line: [2020-03-26]
+  upgrade_modules:
+    - phd_mrp
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Improve Subcontracting flow
+
+1.1.6:
+  time_line: [2020-03-25]
+  upgrade_modules:
+    - phd_sps_integration
+    - phd_account
+  install_modules:
+    - phd_account_reports
+  database:
+    - phd-uat
+  release_notes:
+    - Improve SPS Integration and Account report
+
+1.1.5:
+  time_line: [2020-03-24]
+  upgrade_modules:
+    - phd_sps_integration
+    - phd_account
+  install_modules:
+    - phd_account_reports
+  database:
+    - phd-uat
+  release_notes:
+    - Improve SPS Integration and Account report
+
+1.1.4:
+  time_line: [2020-02-26]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-uat-magento
+  release_notes:
+    - Improve EDI 855
+
+1.1.3:
+  time_line: [2020-02-25]
+  upgrade_modules:
+    - phd_mrp
+  install_modules:
+  database:
+    - phd-uat-magento
+  release_notes:
+    - Add PO cost to Cost Analysis
+
+1.1.2:
+  time_line: [2020-02-23]
+  upgrade_modules:
+    - phd_sps_integration
+  install_modules:
+  database:
+    - phd-uat-magento
+  release_notes:
+    - Implement EDI 855
+
+1.1.1:
+  time_line: [2020-01-29]
+  upgrade_modules:
+    - phd_purchase
+    - phd_stock
+    - phd_inventory
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Improve shipping address of PO report and Add configuration for check Lot
+
+1.1.0:
+  time_line: [2020-01-25]
+  upgrade_modules:
+    - phd-sale
+    - phd-purchase
+    - phd_inventory  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Improve SO and PO report and Small fix in account type
+
+1.0.9:
+  time_line: [2020-01-19]
+  upgrade_modules:
+    - phd_account
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Small fix in account type
+
+1.0.8:
+  time_line: [2020-01-19]
+  upgrade_modules:
+    - phd_mrp
+  install_modules:
+    - remove_decimal_zero_trailing
+  database:
+    - phd-uat
+  release_notes:
+    - Improve Subcontracting flow by adding check available current stock
+
+1.0.7:
+  time_line: [2020-01-14]
+  upgrade_modules:
+    - phd_mrp
+    - phd_purchase
+    - phd_sale
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Improve Subcontracting flow and small fix in PO and SO report
+
+1.0.6:
+  time_line: [2020-01-12]
+  upgrade_modules:
+    - phd_mrp
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Improve Subcontracting flow
+
+1.0.5:
+  time_line: [2020-01-11]
+  upgrade_modules:
+    - phd_purchase
+    - phd_sale
+  install_modules:
+    - remove_decimal_zero_trailing
+  database:
+    - phd-uat
+  release_notes:
+    - Improve PO and SO report
+
+1.0.4:
+  time_line: [2020-01-07]
+  upgrade_modules:
+    - phd_mrp
+    - phd_inventory
+    - phd_stock
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Add constraint for producing process in MO and fix recommend Lot feature
+
+1.0.3:
+  time_line: [2020-01-06]
+  upgrade_modules:
+    - phd_stock
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Add Journal entry for consumable component
+
+1.0.2:
+  time_line: [2020-01-05]
+  upgrade_modules:
+    - phd_stock
+    - phd_mrp
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - Fix wrong produced quantity on MO when validating Receipt
+
+1.0.1:
+  time_line: [2020-12-23]
+  upgrade_modules: 
+  install_modules:
+  database:
+    - phd-uat
+  release_notes:
+    - DevOps Team Apply Upgrade Module

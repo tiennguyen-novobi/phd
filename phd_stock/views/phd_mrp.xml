@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="phd_mrp_production_venndor_wo_form_view" model="ir.ui.view">
+            <field name="name">phd.mrp.production.view.form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="vendor_wo"/>
+                    <field name="purchase_id" readonly="1" attrs="{'invisible': [('purchase_id', '=', False)]}"/>
+                </xpath>
+            </field>
+    </record>
+</odoo>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="phd_request_log_form_view" model="ir.ui.view">
+        <field name="name">phd.request.log.form.view</field>
+        <field name="model">request.log</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0">
+                <header>
+                    <field name="is_resolved" invisible="1"/>
+                    <button name="run" type="object" string="Process-Again" class="btn btn-primary"
+                            attrs="{'invisible': ['|', ('status', '=', 'done'), ('is_resolved', '=', True)]}"/>
+                    <field name="status" widget="statusbar" statusbar_visible="failed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+
+                    <group name="top">
+                        <group name="left">
+                            <field name="create_date"/>
+                            <field name="res_id"/>
+                            <field name="res_model"/>
+                        </group>
+                        <group name="right">
+                            <field name="from_date"/>
+                            <field name="to_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="message"/>
+                    </group>
+                    <group>
+                        <field name="datas" string="Data String" widget="ace" options="{'mode': 'python'}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="phd_request_log_tree_view" model="ir.ui.view">
+        <field name="name">phd.request.log.tree.view</field>
+        <field name="model">request.log</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" decoration-success="status == 'done'" decoration-danger="status == 'failed'">
+                <field name="create_date"/>
+                <field name="res_id"/>
+                <field name="res_model"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name="message" optional="hide"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_log_filter" model="ir.ui.view">
+        <field name="name">log.filter.list</field>
+        <field name="model">request.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Log">
+                <field name="is_resolved" invisible="True"/>
+                <filter string="Today" name="logs_today"
+                    domain="[('create_date', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Done"
+                        domain="[('status','=','done')]" name="done"/>
+                <filter string="Failed"
+                        domain="[('status','=','failed')]" name="failed"/>
+                <separator/>
+                <filter string="Resolved"
+                        domain="[('is_resolved','=',True)]" name="resolved"/>
+                <filter string="Unresolved"
+                        domain="[('is_resolved','=',False)]" name="unresolved"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="status" domain="[]" context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="phd_request_log_action" model="ir.actions.act_window">
+        <field name="name">Request Logs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">request.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_failed': 1, 'search_default_unresolved': 1}</field>
+    </record>
+
+    <menuitem id="request_log_menu"
+            name="Request Logs"
+            action="phd_request_log_action"
+            parent="account.menu_finance_configuration"
+            sequence="500"/>
+</odoo>

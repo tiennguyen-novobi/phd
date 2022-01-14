@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_detail_transaction_tree" model="ir.ui.view">
+        <field name="name">view.detail.transaction.tree</field>
+        <field name="model">detail.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="Detail Transactions" create="0" edit="0">
+                <field name="production_id" widget="many2one"/>
+                <field name="purchase_order_id" widget="many2one"/>
+                <field name="status"/>
+                <field name="product_qty" sum="Total Quantity" />
+                <field name="date_to_complete"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_detail_transaction" model="ir.actions.act_window">
+        <field name="name">Detail Transactions</field>
+        <field name="res_model">detail.transaction</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_detail_transaction_tree"/>
+    </record>
+</odoo>

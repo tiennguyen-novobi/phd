@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="mrp assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/phd_inventory/static/src/js/action_manager_report_dl.js"></script>
+            <script type="text/javascript" src="/phd_inventory/static/src/js/phd_hide_add_line_detailed_operation.js"></script>
+        </xpath>
+   </template>
+</odoo>
