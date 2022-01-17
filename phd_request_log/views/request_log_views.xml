@@ -89,5 +89,5 @@
     <menuitem id="menu_configuration_settlement" name="Settlement" parent="account.menu_finance_configuration" sequence="500"/>
     <menuitem id="request_log_menu" name="Request Logs" parent="menu_configuration_settlement" action="phd_request_log_action" sequence="10"/>
 
-    <menuitem id="menu_reporting_settlement" name="Settlement" parent="account.menu_finance_reports" sequence="100"/>
+    <menuitem id="menu_reporting_settlement" name="Settlement" parent="account.menu_finance_entries" sequence="100"/>
 </odoo>
