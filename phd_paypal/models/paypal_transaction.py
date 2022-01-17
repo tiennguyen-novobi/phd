@@ -21,6 +21,8 @@ class PaypalTransaction(models.Model):
     amount = fields.Float(string='Amount')
     paypal_fee_amount = fields.Float(string='Paypal Fee Amount')
 
+    log_id = fields.Many2one('request.log', string='Log')
+
     # Only one record
     move_ids = fields.One2many('account.move', 'paypal_transaction_id', string='Journal Entries')
     state = fields.Selection([('draft', 'Draft'), ('done', 'Done')], compute='_compute_state', store=True)
@@ -28,7 +30,7 @@ class PaypalTransaction(models.Model):
     @api.depends('move_ids')
     def _compute_state(self):
         for record in self:
-            record.state = 'done' if 'move_ids' else 'draft'
+            record.state = 'done' if record.move_ids else 'draft'
 
     @api.model
     def create_jobs_for_synching(self, vals, update=False, record=False):
