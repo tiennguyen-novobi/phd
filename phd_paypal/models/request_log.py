@@ -1,4 +1,4 @@
-from odoo import api, models, fields, api
+from odoo import api, models, fields, _
 
 
 class RequestLog(models.Model):
@@ -29,7 +29,7 @@ class RequestLog(models.Model):
             'name': _('Journal Entry'),
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
-            'domain': [('id', 'in', record.paypal_transaction_ids.mapped('move_ids').ids)],
+            'domain': [('id', 'in', self.paypal_transaction_ids.mapped('move_ids').ids)],
             'view_mode': 'tree',
             'target': 'current',
         }

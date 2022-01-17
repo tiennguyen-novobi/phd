@@ -11,7 +11,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="object" name="action_view_entry" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                        <button type="object" name="action_view_entry" class="oe_stat_button" string="Journal Entry" icon="fa-bars" attrs="{'invisible': [('state', '=', 'draft')]}"/>
                     </div>
                     <group name="top">
                         <group name="left">
