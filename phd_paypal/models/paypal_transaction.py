@@ -64,6 +64,7 @@ class PaypalTransaction(models.Model):
 
     @api.model
     def get_paypal_transaction_via_braintree(self, settled_date_from, settled_date_to):
+        paypal_transactions = self.env['paypal.transaction'].sudo()
         ir_params_sudo = self.env['ir.config_parameter'].sudo()
         credentials = {
             'merchant_id': ir_params_sudo.get_param('braintree_merchant_id'),
@@ -83,7 +84,6 @@ class PaypalTransaction(models.Model):
                 'datas': json.dumps({'data': res}, indent=2),
                 'paypal_transaction_ids': [(6, 0, paypal_transactions.ids)]
             })
-            paypal_transactions.create_journal_entry()
         except PaypalError as e:
             self.env['request.log'].create({
                 'from_date': settled_date_from,
@@ -102,6 +102,8 @@ class PaypalTransaction(models.Model):
                 'datas': json.dumps({'data': res}, indent=2),
                 'message': e,
             })
+
+        paypal_transactions.create_journal_entry()
 
     def _prepare_entry_values(self, company):
         self.ensure_one()
