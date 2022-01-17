@@ -9,7 +9,8 @@ class ResConfigSettings(models.TransientModel):
     braintree_private_key = fields.Char(string='Braintree Private Key', config_parameter='braintree_private_key')
 
     paypal_journal_id = fields.Many2one('account.journal', related='company_id.paypal_journal_id', readonly=False, domain="[('type', '=', 'bank')]")
-    paypal_merchant = fields.Char(related='company_id.paypal_merchant', readonly=False, domain="[('deprecated', '=', False)]")
+    paypal_partner_id = fields.Many2one(related='company_id.paypal_partner_id', readonly=False)
+    paypal_merchant = fields.Char(related='company_id.paypal_merchant', readonly=False)
     paypal_sales_account_id = fields.Many2one('account.account', related='company_id.paypal_sales_account_id', readonly=False, domain="[('deprecated', '=', False)]")
     paypal_fee_account_id = fields.Many2one('account.account', related='company_id.paypal_fee_account_id', readonly=False, domain="[('deprecated', '=', False)]")
     paypal_bank_account_id = fields.Many2one('account.account', related='company_id.paypal_bank_account_id', readonly=False, domain="[('deprecated', '=', False)]")

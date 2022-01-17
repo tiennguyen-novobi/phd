@@ -4,7 +4,7 @@ from odoo import api, models, fields, api
 class RequestLog(models.Model):
     _inherit = 'request.log'
 
-    paypal_transaction_ids = fields.Many2many('paypal.transaction', string='Paypal Transaction')
+    paypal_transaction_ids = fields.One2many('paypal.transaction', string='Paypal Transactions')
     transaction_count = fields.Integer(compute='_compute_transaction_count')
 
     @api.depends('res_model', 'paypal_transaction_ids')

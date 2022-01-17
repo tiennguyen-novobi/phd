@@ -15,15 +15,15 @@
                                     <div class="content-group">
                                         <div class="row mt16">
                                             <label for="braintree_merchant_id" class="col-lg-3 o_light_label"/>
-                                            <field name="braintree_merchant_id" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="braintree_merchant_id" required="1"/>
                                         </div>
                                         <div class="row mt16">
                                             <label for="braintree_public_key" class="col-lg-3 o_light_label"/>
-                                            <field name="braintree_public_key" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="braintree_public_key" required="1"/>
                                         </div>
                                         <div class="row mt16">
                                             <label for="braintree_private_key" class="col-lg-3 o_light_label"/>
-                                            <field name="braintree_private_key" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="braintree_private_key" required="1"/>
                                         </div>
                                     </div>
                                 </div>
@@ -34,31 +34,35 @@
                                     <div class="content-group">
                                         <div class="row mt16">
                                             <label for="paypal_journal_id" class="col-lg-3 o_light_label"/>
-                                            <field name="paypal_journal_id" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="paypal_journal_id" required="1" options="{'no_create_edit': True, 'no_open': True}"/>
+                                        </div>
+                                        <div class="row mt16">
+                                            <label for="paypal_partner_id" class="col-lg-3 o_light_label"/>
+                                            <field name="paypal_partner_id" required="1"/>
                                         </div>
                                         <div class="row mt16">
                                             <label for="paypal_merchant" class="col-lg-3 o_light_label"/>
-                                            <field name="paypal_merchant" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="paypal_merchant" required="1"/>
                                         </div>
                                         <div class="row mt16">
                                             <label for="paypal_sales_account_id" class="col-lg-3 o_light_label"/>
-                                            <field name="paypal_sales_account_id" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="paypal_sales_account_id" required="1" options="{'no_create_edit': True, 'no_open': True}"/>
                                         </div>
                                         <div class="row mt16">
                                             <label for="paypal_fee_account_id" class="col-lg-3 o_light_label"/>
-                                            <field name="paypal_fee_account_id" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="paypal_fee_account_id" required="1" options="{'no_create_edit': True, 'no_open': True}"/>
                                         </div>
                                         <div class="row mt16">
                                             <label for="paypal_bank_account_id" class="col-lg-3 o_light_label"/>
-                                            <field name="paypal_bank_account_id" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="paypal_bank_account_id" required="1" options="{'no_create_edit': True, 'no_open': True}"/>
                                         </div>
                                         <div class="row mt16">
                                             <label for="paypal_analytic_account_id" class="col-lg-3 o_light_label"/>
-                                            <field name="paypal_analytic_account_id" required="1" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="paypal_analytic_account_id" required="1" options="{'no_create_edit': True, 'no_open': True}"/>
                                         </div>
                                         <div class="row mt16">
                                             <label for="paypal_analytic_tag_ids" class="col-lg-3 o_light_label"/>
-                                            <field name="paypal_analytic_tag_ids" required="1" widget="many2many_tags" options="{'no_create_edit': True, 'no_open': True}" context="{'active_test': False}"/>
+                                            <field name="paypal_analytic_tag_ids" required="1" widget="many2many_tags" options="{'no_create_edit': True, 'no_open': True}"/>
                                         </div>
                                     </div>
                                 </div>

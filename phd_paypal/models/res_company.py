@@ -5,6 +5,7 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     paypal_journal_id = fields.Many2one('account.journal', string='Journal', domain="[('type', '=', 'bank')]")
+    paypal_partner_id = fields.Many2one('res.partner', string='Paypal Partner')
     paypal_merchant = fields.Char(string='Merchant')
     paypal_sales_account_id = fields.Many2one('account.account', string='Sales Account',
                                               domain="[('deprecated', '=', False)]")
