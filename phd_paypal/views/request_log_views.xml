@@ -15,7 +15,7 @@
                 </button>
 
                 <button type="object"
-                    name="action_open_details"
+                    name="action_open_paypal_entries"
                     class="oe_stat_button"
                     icon="fa-bars"
                     attrs="{'invisible': ['|', ('paypal_entries_count', '=', 0), ('res_model', '!=', 'paypal.transaction')]}">
