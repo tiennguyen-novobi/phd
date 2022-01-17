@@ -116,6 +116,7 @@ class PaypalTransaction(models.Model):
             'x_studio_transaction_id': self.transaction_id,
             'x_studio_authorization_id': self.authorization_id,
             'x_studio_merchant': company.paypal_merchant,
+            'paypal_transaction_id': self.id,
         }
 
     def _prepare_item_values(self, company, entry=None):
