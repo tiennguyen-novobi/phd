@@ -36,13 +36,14 @@
         <field name="name">phd.paypal.transaction.tree.view</field>
         <field name="model">paypal.transaction</field>
         <field name="arch" type="xml">
-            <tree create="0" edit="0">
+            <tree create="0" edit="0" decoration-muted="state == 'draft'">
                 <field name="transaction_id"/>
                 <field name="date"/>
                 <field name="order_id"/>
                 <field name="authorization_id"/>
                 <field name="amount"/>
                 <field name="paypal_fee_amount"/>
+                <field name="state" invisible="1"/>
             </tree>
         </field>
     </record>
