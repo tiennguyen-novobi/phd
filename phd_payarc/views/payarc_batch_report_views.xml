@@ -7,10 +7,20 @@
         <field name="arch" type="xml">
             <form create="0">
                 <header>
-                    <button name="confirm" type="object" string="Post" class="btn btn-primary" states="draft"/>
+                    <button name="action_confirm" type="object" string="Post" class="btn-primary" states="draft"/>
+                    <button name="action_draft" type="object" string="Set to draft" class="btn-secondary" states="post,cancel"
+                            confirm="Reset to draft will cancel the posted entry. Are you sure to continue?"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" states="draft"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,post"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_entry" class="oe_stat_button" icon="fa-calculator" type="object"
+                                attrs="{'invisible': [('move_count', '=', 0)]}">
+                            <field name="move_count" widget="statinfo" string="Journal Entry"/>
+                        </button>
+                    </div>
+
                     <group name="top">
                         <group>
                             <field name="journal_id" readonly="1"/>
@@ -20,9 +30,9 @@
                         </group>
                         <group>
                             <field name="amount" readonly="1"/>
-                            <field name="fees_amount"/>
-                            <field name="reserve_hold_amount"/>
-                            <field name="subtotal"/>
+                            <field name="fees_amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="reserve_hold_amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="subtotal" readonly="1"/>
                         </group>
                     </group>
                     <group>
@@ -42,7 +52,7 @@
         <field name="name">phd.batch.report.tree.view</field>
         <field name="model">payarc.batch.report</field>
         <field name="arch" type="xml">
-            <tree create="0" edit="0">
+            <tree create="0" edit="0" decoration-muted="state == 'cancel'">
                 <field name="date"/>
                 <field name="amount"/>
                 <field name="transaction_qty" string="Transactions"/>

@@ -20,6 +20,7 @@ class PayarcBatchReport(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('post', 'Posted'),
+        ('cancel', 'Cancelled')
         ], string='State', default='draft')
     settlement_id = fields.Many2one('settlement.report', string='Settlement')
 
@@ -28,13 +29,45 @@ class PayarcBatchReport(models.Model):
     reserve_account_id = fields.Many2one('account.account', string='Reserve Account', domain="[('deprecated', '=', False)]")
     transit_account_id = fields.Many2one('account.account', string='Transit Account', domain="[('deprecated', '=', False)]")
 
+    move_ids = fields.One2many('account.move', 'payarc_batch_id', string='Journal Entries')
+    move_count = fields.Integer(compute='_compute_move_count')
+
     @api.depends('amount', 'fees_amount', 'reserve_hold_amount')
     def _compute_subtotal(self):
         for record in self:
             record.subtotal = record.amount - record.fees_amount - record.reserve_hold_amount
 
-    def confirm(self):
+    def _compute_move_count(self):
+        for record in self:
+            record.move_count = len(record.move_ids)
+
+    def _prepare_entry_values(self):
+        pass
+
+    def _prepare_item_values(self):
+        pass
+
+    def create_journal_entry(self):
+        pass
+
+    def action_confirm(self):
         self.update({'state': 'post'})
+
+    def action_draft(self):
+        # Cancel all linked journal entries, then set state to draft
+        posted_moves = elf.mapped('move_ids').filtered(lambda r: r.state == 'posted')
+        posted_moves.button_draft()
+        posted_moves.button_cancel()
+
+        self.write({
+            'state': 'draft'
+        })
+
+
+    def action_cancel(self):
+        self.write({
+            'state': 'cancel'
+        })
 
     @api.model
     def process_batch_report_from_payarc(self, batch_report_datas):
