@@ -6,7 +6,13 @@
         <field name="model">paypal.transaction</field>
         <field name="arch" type="xml">
             <form create="0" edit="0">
+                <header>
+                    <field name="state" widget="statusbar" readonly="1"/>
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_entry" class="oe_stat_button" icon="fa-bars" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                    </div>
                     <group name="top">
                         <group name="left">
                             <group>

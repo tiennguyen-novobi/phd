@@ -13,6 +13,14 @@
                     attrs="{'invisible': ['|', ('transaction_count', '=', 0), ('res_model', '!=', 'paypal.transaction')]}">
                     <field name="transaction_count" widget="statinfo" string="Transactions"/>
                 </button>
+
+                <button type="object"
+                    name="action_open_details"
+                    class="oe_stat_button"
+                    icon="fa-bars"
+                    attrs="{'invisible': ['|', ('paypal_entries_count', '=', 0), ('res_model', '!=', 'paypal.transaction')]}">
+                    <field name="paypal_entries_count" widget="statinfo" string="Journal Entries"/>
+                </button>
             </xpath>
         </field>
     </record>
