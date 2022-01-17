@@ -31,5 +31,5 @@ class RequestLog(models.Model):
             'res_model': 'account.move',
             'domain': [('id', 'in', record.paypal_transaction_ids.mapped('move_ids').ids)],
             'view_mode': 'tree',
-            'target': 'main',
+            'target': 'current',
         }

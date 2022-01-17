@@ -193,5 +193,5 @@ class PaypalTransaction(models.Model):
             'res_model': 'account.move',
             'res_id': self.move_ids.id,
             'view_mode': 'form',
-            'target': 'main',
+            'target': 'current',
         }
