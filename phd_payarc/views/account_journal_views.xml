@@ -22,19 +22,13 @@
         <field name="inherit_id" ref="account.view_account_journal_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='advanced_settings']" position="after">
-                <page string="Integration" name="payarc_integration" groups="base.group_no_one">
-                    <div string="PayArc/Authorize.Net">
-                        <h1>
-                            <p>PayArc/Authorize.Net</p>
-                        </h1>
+                <page name="integration" string="Integrations" attrs="{'invisible': [('type', '!=', 'bank')]}">
+                    <group name="payarc" string="PayArc/Authorize.Net">
                         <div>
                             <field name="is_integrate_with_payarc" nolabel="1" class="oe_inline"/>
                             <label for="is_integrate_with_payarc" string="Integrate with PayArc / Authorize.Net" class="oe_inline"/>
                         </div>
-
-                    </div>
-                    <group>
-                        <group string="Credentials" attrs="{'invisible': [('is_integrate_with_payarc', '=', False)]}">
+                        <group name="credential" string="Credential" groups="base.group_no_one" attrs="{'invisible': [('is_integrate_with_payarc', '=', False)]}">
                             <field name="payarc_access_token" attrs="{'required': [('is_integrate_with_payarc', '=', True)]}"/>
                             <field name="authorize_login_id" attrs="{'required': [('is_integrate_with_payarc', '=', True)]}"/>
                             <field name="authorize_transaction_key" attrs="{'required': [('is_integrate_with_payarc', '=', True)]}"/>
