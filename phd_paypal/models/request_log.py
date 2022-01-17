@@ -25,11 +25,14 @@ class RequestLog(models.Model):
     def action_open_paypal_entries(self):
         self.ensure_one()
 
+        view_id = self.env.ref('account.view_move_tree').id
         return {
-            'name': _('Journal Entry'),
-            'type': 'ir.actions.act_window',
+            'name': _('Journal Entries'),
+            'view_mode': 'tree,form',
             'res_model': 'account.move',
+            'views': [(view_id, 'tree')],
+            'view_id': view_id,
+            'type': 'ir.actions.act_window',
             'domain': [('id', 'in', self.paypal_transaction_ids.mapped('move_ids').ids)],
-            'view_mode': 'tree',
             'target': 'current',
         }
