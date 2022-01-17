@@ -86,9 +86,9 @@
         <field name="context">{'search_default_failed': 1, 'search_default_unresolved': 1}</field>
     </record>
 
-    <menuitem id="request_log_menu"
-            name="Request Logs"
-            action="phd_request_log_action"
-            parent="account.menu_finance_configuration"
-            sequence="500"/>
+    <menuitem id="menu_configuration_settlement" name="Settlement" parent="account.menu_finance_configuration" sequence="500">
+        <menuitem id="request_log_menu" name="Request Logs" action="phd_request_log_action" sequence="10"/>
+    </menuitem>
+
+    <menuitem id="menu_reporting_settlement" name="Settlement" parent="account.menu_finance_reports" sequence="100"/>
 </odoo>

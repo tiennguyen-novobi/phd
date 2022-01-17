@@ -57,6 +57,6 @@
     <menuitem id="phd_paypal_transaction_menu"
             name="Paypal Transactions"
             action="phd_paypal_transaction_action"
-            parent="account.menu_finance_configuration"
-            sequence="420"/>
+            parent="phd_request_log.menu_reporting_settlement"
+            sequence="10"/>
 </odoo>
