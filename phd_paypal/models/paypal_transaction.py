@@ -124,6 +124,10 @@ class PaypalTransaction(models.Model):
         analytic_account = company.paypal_analytic_account_id.id,
         analytic_tags = company.paypal_analytic_tag_ids.ids,
 
+        _logger.error(type(company))
+        _logger.error(type(company.paypal_analytic_account_id.id))
+        _logger.error(type(analytic_account))
+
         _logger.error(analytic_account)
         _logger.error(analytic_tags)
 
