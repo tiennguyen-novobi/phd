@@ -119,6 +119,11 @@ class PaypalTransaction(models.Model):
         }
 
     def _prepare_item_values(self, company, entry=None):
+        self.ensure_one()
+        label = (entry or {}).get('ref', False)
+        analytic_account = company.paypal_analytic_account_id,
+        analytic_tags = company.paypal_analytic_tag_ids,
+
         def prepare_sales_line():
             return {
                 'account_id': company.paypal_sales_account_id.id,
@@ -151,12 +156,6 @@ class PaypalTransaction(models.Model):
                 'debit': self.self.amount - self.paypal_fee_amount,
                 'credit': 0,
             }
-
-
-        self.ensure_one()
-        label = (entry or {}).get('ref', False)
-        analytic_account = company.paypal_analytic_account_id,
-        analytic_tags = company.paypal_analytic_tag_ids,
 
         return [
             (0, 0, prepare_sales_line()),
