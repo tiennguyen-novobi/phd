@@ -156,7 +156,7 @@ class PaypalTransaction(models.Model):
                 'name': label,
                 'analytic_account_id': analytic_account,
                 'analytic_tag_ids': [(6, 0, analytic_tags)],
-                'debit': self.self.amount - self.paypal_fee_amount,
+                'debit': self.amount - self.paypal_fee_amount,
                 'credit': 0,
             }
 
