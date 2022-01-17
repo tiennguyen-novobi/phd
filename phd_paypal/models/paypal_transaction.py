@@ -124,6 +124,9 @@ class PaypalTransaction(models.Model):
         analytic_account = company.paypal_analytic_account_id,
         analytic_tags = company.paypal_analytic_tag_ids,
 
+        _logger.error(analytic_account)
+        _logger.error(analytic_tags)
+
         def prepare_sales_line():
             return {
                 'account_id': company.paypal_sales_account_id.id,
