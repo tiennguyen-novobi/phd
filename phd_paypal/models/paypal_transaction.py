@@ -121,8 +121,8 @@ class PaypalTransaction(models.Model):
     def _prepare_item_values(self, company, entry=None):
         self.ensure_one()
         label = (entry or {}).get('ref', False)
-        analytic_account = company.paypal_analytic_account_id,
-        analytic_tags = company.paypal_analytic_tag_ids,
+        analytic_account = company.paypal_analytic_account_id.id,
+        analytic_tags = company.paypal_analytic_tag_ids.ids,
 
         _logger.error(analytic_account)
         _logger.error(analytic_tags)
@@ -132,8 +132,8 @@ class PaypalTransaction(models.Model):
                 'account_id': company.paypal_sales_account_id.id,
                 'partner_id': False,
                 'name': label,
-                'analytic_account_id': analytic_account.id,
-                'analytic_tag_ids': [(6, 0, analytic_tags.ids)],
+                'analytic_account_id': analytic_account,
+                'analytic_tag_ids': [(6, 0, analytic_tags)],
                 'debit': 0,
                 'credit': self.amount,
             }
@@ -143,8 +143,8 @@ class PaypalTransaction(models.Model):
                 'account_id': company.paypal_fee_account_id.id,
                 'partner_id': company.paypal_partner_id.id,
                 'name': label,
-                'analytic_account_id': analytic_account.id,
-                'analytic_tag_ids': [(6, 0, analytic_tags.ids)],
+                'analytic_account_id': analytic_account,
+                'analytic_tag_ids': [(6, 0, analytic_tags)],
                 'debit': self.paypal_fee_amount,
                 'credit': 0,
             }
@@ -154,8 +154,8 @@ class PaypalTransaction(models.Model):
                 'account_id': company.paypal_bank_account_id.id,
                 'partner_id': False,
                 'name': label,
-                'analytic_account_id': analytic_account.id,
-                'analytic_tag_ids': [(6, 0, analytic_tags.ids)],
+                'analytic_account_id': analytic_account,
+                'analytic_tag_ids': [(6, 0, analytic_tags)],
                 'debit': self.self.amount - self.paypal_fee_amount,
                 'credit': 0,
             }
