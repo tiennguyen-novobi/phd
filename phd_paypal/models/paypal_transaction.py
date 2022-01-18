@@ -14,12 +14,17 @@ class PaypalTransaction(models.Model):
     _description = 'Paypal Transaction'
     _rec_name = 'transaction_id'
 
+    def _get_default_currency_id(self):
+        return self.env.company.currency_id.id
+
+    currency_id = fields.Many2one('res.currency', 'Currency', default=_get_default_currency_id)
+
     transaction_id = fields.Char(string='Transaction ID')
     date = fields.Date(string='Date')
     order_id = fields.Char(string='DTC Order ID')
     authorization_id = fields.Char(string='Authorization ID')
-    amount = fields.Float(string='Amount')
-    paypal_fee_amount = fields.Float(string='Paypal Fee Amount')
+    amount = fields.Monetary(string='Amount')
+    paypal_fee_amount = fields.Monetary(string='Paypal Fee Amount')
 
     log_id = fields.Many2one('request.log', string='Log')
 
@@ -30,7 +35,10 @@ class PaypalTransaction(models.Model):
     @api.depends('move_ids')
     def _compute_state(self):
         for record in self:
-            record.state = 'done' if record.move_ids else 'draft'
+            if record.move_ids and any(move_state in ['draft', 'posted'] for move_state in record.move_ids.mapped('state')):
+                record.state = 'done'
+            else:
+                record.state = 'draft'
 
     @api.model
     def create_jobs_for_synching(self, vals, update=False, record=False):
@@ -174,7 +182,7 @@ class PaypalTransaction(models.Model):
             _logger.error('Cannot process journal entries from Paypal Transactions due to missing config for Journal!')
             return
 
-        for record in self.filtered('authorization_id'):
+        for record in self.filtered(lambda r: r.authorization_id and r.state == 'draft'):
             entry = record._prepare_entry_values(company)
             entry['line_ids'] = record._prepare_item_values(company, entry)
             values_lst.append(entry)

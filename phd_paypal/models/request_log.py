@@ -22,7 +22,7 @@ class RequestLog(models.Model):
             return action
         return super().action_open_details()
 
-    def action_open_paypal_entries(self):
+    def action_view_entry(self):
         self.ensure_one()
 
         view_id = self.env.ref('account.view_move_tree').id

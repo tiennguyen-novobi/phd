@@ -23,6 +23,7 @@
                         </group>
                         <group name="right">
                             <field name="order_id" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
                             <field name="amount" readonly="1"/>
                             <field name="paypal_fee_amount" readonly="1"/>
                         </group>
@@ -43,6 +44,7 @@
                 <field name="authorization_id"/>
                 <field name="amount"/>
                 <field name="paypal_fee_amount"/>
+                <field name="currency_id" invisible="1"/>
                 <field name="state" invisible="1"/>
             </tree>
         </field>

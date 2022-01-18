@@ -9,14 +9,18 @@ class PayarcBatchReport(models.Model):
     _description = 'PayArc Batch Report'
     _rec_name = 'batch_ref'
 
+    def _get_default_currency_id(self):
+        return self.env.company.currency_id.id
+
     journal_id = fields.Many2one('account.journal', string='Journal', domain="[('type', '=', 'bank')]")
+    currency_id = fields.Many2one('res.currency', 'Currency', default=_get_default_currency_id)
     date = fields.Date(string='Batch Date')
-    amount = fields.Float(string='Amount')
+    amount = fields.Monetary(string='Amount')
     transaction_qty = fields.Integer(string='# of Transactions')
     batch_ref = fields.Char(string='Batch Ref')
-    fees_amount = fields.Float(string='Fees')
-    reserve_hold_amount = fields.Float(string='Reserve Hold')
-    subtotal = fields.Float(string='Subtotal', compute='_compute_subtotal')
+    fees_amount = fields.Monetary(string='Fees')
+    reserve_hold_amount = fields.Monetary(string='Reserve Hold')
+    subtotal = fields.Monetary(string='Subtotal', compute='_compute_subtotal')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('post', 'Posted'),
@@ -42,20 +46,69 @@ class PayarcBatchReport(models.Model):
             record.move_count = len(record.move_ids)
 
     def _prepare_entry_values(self):
-        pass
+        self.ensure_one()
+
+        return {
+            'date': self.date,
+            'journal_id': self.journal_id.id,
+        }
 
     def _prepare_item_values(self):
-        pass
+        def prepare_sales_line():
+            return {
+                'account_id': self.sales_account_id.id,
+                'debit': 0,
+                'credit': self.amount,
+            }
+
+        def prepare_fees_line():
+            return {
+                'account_id': self.fees_account_id.id,
+                'debit': self.fees_amount,
+                'credit': 0,
+            }
+
+        def prepare_reserve_line():
+            return {
+                'account_id': self.reserve_account_id.id,
+                'debit': self.reserve_hold_amount,
+                'credit': 0,
+            }
+
+        def prepare_fund_line():
+            return {
+                'account_id': self.transit_account_id.id,
+                'debit': self.subtotal,
+                'credit': 0,
+            }
+
+        self.ensure_one()
+
+        return [
+            (0, 0, prepare_sales_line()),
+            (0, 0, prepare_fees_line()),
+            (0, 0, prepare_reserve_line()),
+            (0, 0, prepare_fund_line())
+        ]
 
     def create_journal_entry(self):
-        pass
+        values_lst = []
+
+        for record in self.filtered(lambda r: r.state == 'draft'):
+            entry = record._prepare_entry_values()
+            entry['line_ids'] = record._prepare_item_values()
+            values_lst.append(entry)
+
+        moves = self.env['account.move'].sudo().create(values_lst)
+        moves.action_post()
 
     def action_confirm(self):
+        self.create_journal_entry()
         self.update({'state': 'post'})
 
     def action_draft(self):
         # Cancel all linked journal entries, then set state to draft
-        posted_moves = elf.mapped('move_ids').filtered(lambda r: r.state == 'posted')
+        posted_moves = self.mapped('move_ids').filtered(lambda r: r.state == 'posted')
         posted_moves.button_draft()
         posted_moves.button_cancel()
 
@@ -68,6 +121,9 @@ class PayarcBatchReport(models.Model):
         self.write({
             'state': 'cancel'
         })
+
+    def action_view_entry(self):
+        pass
 
     @api.model
     def process_batch_report_from_payarc(self, batch_report_datas):
