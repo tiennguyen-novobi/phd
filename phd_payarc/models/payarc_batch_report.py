@@ -132,7 +132,6 @@ class PayarcBatchReport(models.Model):
         if len(moves) > 1:
             action['domain'] = [('id', 'in', moves.ids)]
         elif moves:
-            # action['views'] =
             form_view = [(self.env.ref('account.view_move_form').id, 'form')]
             if 'views' in action:
                 action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
@@ -141,35 +140,6 @@ class PayarcBatchReport(models.Model):
             action['res_id'] = moves.id
 
         return action
-
-
-        #
-        # tree_view_id = self.env.ref('account.view_move_tree').id
-        # form_view_id = self.env.ref('account.view_move_line_form').id
-        #
-        # moves = self.mapped('move_ids')
-        # action = {
-        #     'type': 'ir.actions.act_window',
-        #     'target': 'current',
-        #     'res_model': 'account.move',
-        # }
-        #
-        # if len(moves) > 1:
-        #     action.update({
-        #         'name': _('Journal Entries'),
-        #         'view_mode': 'tree,form',
-        #         'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
-        #         'view_id': tree_view_id,
-        #         'domain': [('id', 'in', moves.ids)],
-        #     })
-        # else:
-        #     action.update({
-        #         'name': _('Journal Entry'),
-        #         'view_mode': 'form',
-        #         'res_id': moves.id,
-        #     })
-        #
-        # return action
 
     @api.model
     def process_batch_report_from_payarc(self, batch_report_datas):

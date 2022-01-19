@@ -191,15 +191,20 @@ class PaypalTransaction(models.Model):
         moves.with_context(is_post=True).action_post()
 
     def action_view_entry(self):
-        self.ensure_one()
-        if not self.move_ids:
-            return
 
-        return {
-            'name': _('Journal Entry'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'account.move',
-            'res_id': self.move_ids.id,
-            'view_mode': 'form',
-            'target': 'current',
-        }
+        action = self.env.ref('account.action_move_journal_line').read()[0]
+        action.pop('context')
+        action.pop('domain')
+
+        moves = self.mapped('move_ids')
+        if len(moves) > 1:
+            action['domain'] = [('id', 'in', moves.ids)]
+        elif moves:
+            form_view = [(self.env.ref('account.view_move_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = moves.id
+
+        return action
