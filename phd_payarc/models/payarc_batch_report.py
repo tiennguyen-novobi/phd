@@ -51,6 +51,7 @@ class PayarcBatchReport(models.Model):
         return {
             'date': self.date,
             'journal_id': self.journal_id.id,
+            'payarc_batch_id': self.id,
         }
 
     def _prepare_item_values(self):
