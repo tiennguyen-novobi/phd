@@ -126,6 +126,11 @@ class PayarcBatchReport(models.Model):
     def action_view_entry(self):
         view_id = self.env.ref('account.view_move_tree').id
         moves = self.mapped('move_ids')
+        action = {
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'res_model': 'account.move',
+        }
 
         if len(moves) > 1:
             action.update({
@@ -141,7 +146,7 @@ class PayarcBatchReport(models.Model):
                 'view_mode': 'form',
                 'res_id': moves.id,
             })
-
+            
         return action
 
     @api.model
