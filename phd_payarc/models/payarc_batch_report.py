@@ -124,7 +124,9 @@ class PayarcBatchReport(models.Model):
         })
 
     def action_view_entry(self):
-        view_id = self.env.ref('account.view_move_tree').id
+        tree_view_id = self.env.ref('account.view_move_tree').id
+        form_view_id = self.env.ref('account.view_move_line_form').id
+
         moves = self.mapped('move_ids')
         action = {
             'type': 'ir.actions.act_window',
@@ -136,8 +138,8 @@ class PayarcBatchReport(models.Model):
             action.update({
                 'name': _('Journal Entries'),
                 'view_mode': 'tree,form',
-                'views': [(view_id, 'tree')],
-                'view_id': view_id,
+                # 'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
+                'view_id': tree_view_id,
                 'domain': [('id', 'in', moves.ids)],
             })
         else:
@@ -146,7 +148,7 @@ class PayarcBatchReport(models.Model):
                 'view_mode': 'form',
                 'res_id': moves.id,
             })
-            
+
         return action
 
     @api.model
