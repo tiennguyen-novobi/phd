@@ -124,7 +124,7 @@ class PayarcBatchReport(models.Model):
         })
 
     def action_view_entry(self):
-        action = self.env.ref('account.action_account_moves_all').read()[0]
+        action = self.env.ref('account.action_move_journal_line').read()[0]
         action.pop('context')
         action.pop('domain')
 
