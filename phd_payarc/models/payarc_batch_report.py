@@ -142,6 +142,8 @@ class PayarcBatchReport(models.Model):
                 'res_id': moves.id,
             })
 
+        return action
+
     @api.model
     def process_batch_report_from_payarc(self, batch_report_datas):
         batch_reports = self.browse()
