@@ -24,13 +24,14 @@ class RequestLog(models.Model):
 
     def action_view_entry(self):
         self.ensure_one()
+        tree_view_id = self.env.ref('account.view_move_tree').id
+        form_view_id = self.env.ref('account.view_move_line_form').id
 
-        view_id = self.env.ref('account.view_move_tree').id
         return {
             'name': _('Journal Entries'),
             'view_mode': 'tree,form',
             'res_model': 'account.move',
-            'views': [(view_id, 'tree')],
+            'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
             'view_id': view_id,
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', self.paypal_transaction_ids.mapped('move_ids').ids)],

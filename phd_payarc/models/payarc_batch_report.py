@@ -138,7 +138,7 @@ class PayarcBatchReport(models.Model):
             action.update({
                 'name': _('Journal Entries'),
                 'view_mode': 'tree,form',
-                # 'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
+                'views': [(tree_view_id, 'tree'), (form_view_id, 'form')],
                 'view_id': tree_view_id,
                 'domain': [('id', 'in', moves.ids)],
             })
