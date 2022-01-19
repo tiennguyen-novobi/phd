@@ -124,7 +124,20 @@ class PayarcBatchReport(models.Model):
         })
 
     def action_view_entry(self):
-        pass
+        action = self.env.ref('account.action_move_journal_line').read()[0]
+
+        moves = self.mapped('move_ids')
+        if len(moves) > 1:
+            action['domain'] = [('id', 'in', moves.ids)]
+        elif moves:
+            form_view = [(self.env.ref('account.view_move_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = moves.id
+
+        return action
 
     @api.model
     def process_batch_report_from_payarc(self, batch_report_datas):

@@ -15,7 +15,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_entry" class="oe_stat_button" icon="fa-calculator" type="object"
+                        <button name="action_view_entry" class="oe_stat_button" icon="fa-bars" type="object"
                                 attrs="{'invisible': [('move_count', '=', 0)]}">
                             <field name="move_count" widget="statinfo" string="Journal Entry"/>
                         </button>
