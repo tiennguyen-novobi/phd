@@ -133,11 +133,11 @@ class PayarcBatchReport(models.Model):
             action['domain'] = [('id', 'in', moves.ids)]
         elif moves:
             # action['views'] =
-            # form_view = [(self.env.ref('stock.view_picking_form').id, 'form')]
-            # if 'views' in action:
-            #     action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
-            # else:
-            #     action['views'] = form_view
+            form_view = [(self.env.ref('account.view_move_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
             action['res_id'] = moves.id
 
         return action
