@@ -101,7 +101,7 @@ class PayarcBatchReport(models.Model):
             values_lst.append(entry)
 
         moves = self.env['account.move'].sudo().create(values_lst)
-        moves.action_post()
+        moves.with_context(is_post=True).action_post()
 
     def action_confirm(self):
         self.create_journal_entry()
