@@ -24,7 +24,7 @@
             <xpath expr="//page[@name='advanced_settings']" position="after">
                 <page name="integration" string="Integrations" attrs="{'invisible': [('type', '!=', 'bank')]}">
                     <group name="payarc" string="PayArc/Authorize.Net">
-                        <div>
+                        <div colspan="2">
                             <field name="is_integrate_with_payarc" nolabel="1" class="oe_inline"/>
                             <label for="is_integrate_with_payarc" string="Integrate with PayArc / Authorize.Net" class="oe_inline"/>
                         </div>
