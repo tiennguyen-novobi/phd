@@ -5,14 +5,24 @@
         <field name="model">account.journal</field>
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('o_kanban_manage_reports')]" position="inside">
-                <div>
-                    <a role="menuitem" type="object" name="action_open_batch_report">PayArc Batch Reports</a>
+            <xpath expr="//div[hasclass('o_kanban_manage_reconciliation')]" position="inside">
+                <hr/>
+                <div class="o_kanban_card_manage_title" groups="account.group_account_manager">
+                    <span role="separator">Reconciliation</span>
                 </div>
                 <div>
-                    <a role="menuitem" type="object" name="action_open_settlement_report">Settlements</a>
+                    <a name="action_open_batch_report" role="menuitem" type="object">Batch Reports</a>
                 </div>
             </xpath>
+
+<!--            <xpath expr="//div[hasclass('o_kanban_manage_reports')]" position="inside">-->
+<!--                <div>-->
+<!--                    <a role="menuitem" type="object" name="action_open_batch_report">PayArc Batch Reports</a>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                    <a role="menuitem" type="object" name="action_open_settlement_report">Settlements</a>-->
+<!--                </div>-->
+<!--            </xpath>-->
         </field>
     </record>
 

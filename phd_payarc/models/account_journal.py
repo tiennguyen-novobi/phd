@@ -15,7 +15,12 @@ class AccountJournal(models.Model):
 
     def action_open_batch_report(self):
         action = self.env.ref('phd_payarc.phd_batch_report_action').read()[0]
-        action['domain'] = [('journal_id', '=', self.id)]
+        action.update({
+            'domain': [('journal_id', '=', self.id)],
+            'context': {
+                'default_journal_id': self.id,
+            }
+        })
         return action
 
     def action_open_settlement_report(self):
