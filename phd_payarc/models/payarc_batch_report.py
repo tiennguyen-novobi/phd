@@ -104,6 +104,7 @@ class PayarcBatchReport(models.Model):
         moves.with_context(is_post=True).action_post()
 
     def action_confirm(self):
+        self = self.filtered(lambda r: r.state == 'draft')
         self.create_journal_entry()
         self.update({'state': 'post'})
 
