@@ -14,6 +14,7 @@
                     <a name="action_open_batch_report" role="menuitem" type="object">Batch Reports</a>
                     <a name="action_open_authorize_transaction" role="menuitem" type="object">Authorize.Net Transactions</a>
                     <a name="action_open_settlement_report" role="menuitem" type="object">Settlements</a>
+                    <a name="action_open_released_fund" role="menuitem" type="object">Released Funds</a>
                 </div>
             </xpath>
         </field>

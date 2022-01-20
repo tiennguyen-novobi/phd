@@ -12,7 +12,7 @@ class PayarcBatchReport(models.Model):
     def _get_default_currency_id(self):
         return self.env.company.currency_id.id
 
-    journal_id = fields.Many2one('account.journal', string='Journal', domain="[('type', '=', 'bank')]")
+    journal_id = fields.Many2one('account.journal', string='Journal', required=True, domain="[('type', '=', 'bank')]")
     currency_id = fields.Many2one('res.currency', 'Currency', default=_get_default_currency_id)
     date = fields.Date(string='Batch Date')
     amount = fields.Monetary(string='Amount')
