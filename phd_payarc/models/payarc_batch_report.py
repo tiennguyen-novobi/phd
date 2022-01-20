@@ -118,7 +118,6 @@ class PayarcBatchReport(models.Model):
             'state': 'draft'
         })
 
-
     def action_cancel(self):
         self.write({
             'state': 'cancel'
