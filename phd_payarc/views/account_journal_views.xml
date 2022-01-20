@@ -6,11 +6,12 @@
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('o_kanban_manage_reconciliation')]" position="inside">
-                <hr/>
-                <div class="o_kanban_card_manage_title" groups="account.group_account_manager">
-                    <span role="separator">Reconciliation</span>
+                <hr attrs="{'invisible': [('is_integrate_with_payarc', '=', False)]}"/>
+                <div name="settlement_header" class="o_kanban_card_manage_title" groups="account.group_account_manager"
+                     attrs="{'invisible': [('is_integrate_with_payarc', '=', False)]}">
+                    <span role="separator">Settlement</span>
                 </div>
-                <div>
+                <div name="settlement_action" attrs="{'invisible': [('is_integrate_with_payarc', '=', False)]}">
                     <a name="action_open_batch_report" role="menuitem" type="object">Batch Reports</a>
                     <a name="action_open_authorize_transaction" role="menuitem" type="object">Authorize.Net Transactions</a>
                     <a name="action_open_settlement_report" role="menuitem" type="object">Settlements</a>
