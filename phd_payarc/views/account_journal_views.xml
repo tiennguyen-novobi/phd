@@ -12,17 +12,10 @@
                 </div>
                 <div>
                     <a name="action_open_batch_report" role="menuitem" type="object">Batch Reports</a>
+                    <a name="action_open_authorize_transaction" role="menuitem" type="object">Authorize.Net Transactions</a>
+                    <a name="action_open_settlement_report" role="menuitem" type="object">Settlements</a>
                 </div>
             </xpath>
-
-<!--            <xpath expr="//div[hasclass('o_kanban_manage_reports')]" position="inside">-->
-<!--                <div>-->
-<!--                    <a role="menuitem" type="object" name="action_open_batch_report">PayArc Batch Reports</a>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <a role="menuitem" type="object" name="action_open_settlement_report">Settlements</a>-->
-<!--                </div>-->
-<!--            </xpath>-->
         </field>
     </record>
 

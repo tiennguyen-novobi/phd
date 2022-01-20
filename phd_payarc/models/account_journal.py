@@ -13,8 +13,8 @@ class AccountJournal(models.Model):
     payarc_reserve_account_id = fields.Many2one('account.account', string='Reserve Account', domain="[('deprecated', '=', False)]")
     payarc_transit_account_id = fields.Many2one('account.account', string='Transit Account', domain="[('deprecated', '=', False)]")
 
-    def action_open_batch_report(self):
-        action = self.env.ref('phd_payarc.phd_batch_report_action').read()[0]
+    def _action_settlement(self, action_xml):
+        action = self.env.ref(action_xml).read()[0]
         action.update({
             'domain': [('journal_id', '=', self.id)],
             'context': {
@@ -23,8 +23,14 @@ class AccountJournal(models.Model):
         })
         return action
 
+    def action_open_batch_report(self):
+        return self._action_settlement('phd_payarc.phd_batch_report_action')
+
+    def action_open_authorize_transaction(self):
+        return self._action_settlement('phd_payarc.action_view_authorize_transaction')
+
     def action_open_settlement_report(self):
-        action = self.env.ref('phd_payarc.phd_settlement_report_action').read()[0]
-        action['domain'] = [('journal_id', '=', self.id)]
-        action['context'] = {'default_journal_id': self.id}
-        return action
+        return self._action_settlement('phd_payarc.phd_settlement_report_action')
+
+    def action_open_released_fund(self):
+        return self._action_settlement('phd_payarc.action_view_released_fund')

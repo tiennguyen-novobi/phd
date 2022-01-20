@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_paypal_transaction_user,paypal.transaction.user,model_paypal_transaction,base.group_user,1,1,1,0
-access_paypal_transaction_admin,paypal.transaction.admin,model_paypal_transaction,base.group_system,1,1,1,1
+access_paypal_transaction_user,paypal.transaction user,model_paypal_transaction,base.group_user,1,1,1,0
+access_paypal_transaction_admin,paypal.transaction admin,model_paypal_transaction,account.group_account_manager,1,1,1,1

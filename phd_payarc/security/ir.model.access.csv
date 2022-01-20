@@ -1,3 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_payarc_batch_report_user,payarc.batch.report.user,model_payarc_batch_report,base.group_user,1,1,1,0
-access_settlement_report_user,settlement.report.user,model_settlement_report,base.group_user,1,1,1,1
+access_payarc_batch_report_user,payarc.batch.report user,model_payarc_batch_report,base.group_user,1,1,1,0
+access_payarc_batch_report_admin,payarc.batch.report admin,model_payarc_batch_report,account.group_account_manager,1,1,1,1
+access_authorize_transaction_user,authorize.transaction user,model_authorize_transaction,base.group_user,1,1,1,0
+access_authorize_transaction_admin,authorize.transaction admin,model_authorize_transaction,account.group_account_manager,1,1,1,1
+access_settlement_report_user,settlement.report user,model_settlement_report,base.group_user,1,1,1,0
+access_settlement_report_admin,settlement.report admin,model_settlement_report,account.group_account_manager,1,1,1,1
+access_released_fund_user,released.fund user,model_released_fund,base.group_user,1,1,1,0
+access_released_fund_admin,released.fund admin,model_released_fund,account.group_account_manager,1,1,1,1

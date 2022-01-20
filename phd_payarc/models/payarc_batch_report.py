@@ -36,6 +36,8 @@ class PayarcBatchReport(models.Model):
     move_ids = fields.One2many('account.move', 'payarc_batch_id', string='Journal Entries')
     move_count = fields.Integer(compute='_compute_move_count')
 
+    transaction_ids = fields.One2many('authorize.transaction', 'batch_report_id', 'Authorize.Net Transactions')
+
     @api.depends('amount', 'fees_amount', 'reserve_hold_amount')
     def _compute_subtotal(self):
         for record in self:

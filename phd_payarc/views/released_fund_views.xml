@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_released_fund_form" model="ir.ui.view">
+        <field name="name">released.fund.form</field>
+        <field name="model">released.fund</field>
+        <field name="arch" type="xml">
+            <form>
+                ABC
+            </form>
+        </field>
+    </record>
+
+    <record id="view_released_fund_tree" model="ir.ui.view">
+        <field name="name">released.fund.tree</field>
+        <field name="model">released.fund</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="journal_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_view_released_fund" model="ir.actions.act_window">
+        <field name="name">Released Funds</field>
+        <field name="res_model">released.fund</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_released_fund"
+            action="action_view_released_fund"
+            parent="phd_request_log.menu_reporting_settlement"
+            sequence="40"/>
+</odoo>
