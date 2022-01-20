@@ -6,6 +6,7 @@
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('o_kanban_manage_reconciliation')]" position="inside">
+                <field name="is_integrate_with_payarc" invisible="1"/>
                 <hr attrs="{'invisible': [('is_integrate_with_payarc', '=', False)]}"/>
                 <div name="settlement_header" class="o_kanban_card_manage_title" groups="account.group_account_manager"
                      attrs="{'invisible': [('is_integrate_with_payarc', '=', False)]}">
