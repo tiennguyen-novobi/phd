@@ -61,4 +61,9 @@
         <field name="res_model">settlement.report</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <menuitem id="menu_settlement_payarc_settlements"
+            action="phd_settlement_report_action"
+            parent="phd_request_log.menu_settlement_payarc"
+            sequence="30"/>
 </odoo>

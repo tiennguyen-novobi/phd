@@ -26,8 +26,8 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_authorize_transactions"
+    <menuitem id="menu_settlement_payarc_authorize_transactions"
             action="action_view_authorize_transaction"
-            parent="phd_request_log.menu_reporting_settlement"
-            sequence="30"/>
+            parent="phd_request_log.menu_settlement_payarc"
+            sequence="20"/>
 </odoo>

@@ -57,9 +57,9 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="phd_paypal_transaction_menu"
+    <menuitem id="menu_paypal_transaction"
             name="Paypal Transactions"
             action="phd_paypal_transaction_action"
-            parent="phd_request_log.menu_reporting_settlement"
+            parent="phd_request_log.menu_settlement_paypal"
             sequence="10"/>
 </odoo>

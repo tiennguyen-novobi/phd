@@ -75,11 +75,10 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="phd_payarc_batch_report_menu"
-            name="PayArc Batch Reports"
+    <menuitem id="menu_settlement_payarc_batch_report"
             action="phd_batch_report_action"
-            parent="phd_request_log.menu_reporting_settlement"
-            sequence="20"/>
+            parent="phd_request_log.menu_settlement_payarc"
+            sequence="10"/>
 
     <record model="ir.actions.server" id="action_post_multiple_batch_reports">
             <field name="name">Post</field>

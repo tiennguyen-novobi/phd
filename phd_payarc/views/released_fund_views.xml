@@ -45,7 +45,7 @@
         <field name="name">released.fund.tree</field>
         <field name="model">released.fund</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-muted="state == 'cancel'">
                 <field name="journal_id" invisible="1"/>
                 <field name="date"/>
                 <field name="name"/>
@@ -63,8 +63,8 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_released_fund"
+    <menuitem id="menu_settlement_released_fund"
             action="action_view_released_fund"
-            parent="phd_request_log.menu_reporting_settlement"
+            parent="phd_request_log.menu_settlement_payarc"
             sequence="40"/>
 </odoo>
