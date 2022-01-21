@@ -36,6 +36,7 @@ class ReleasedFund(models.Model):
         return {
             'date': self.date,
             'journal_id': self.journal_id.id,
+            'ref': self.name,
             'released_fund_id': self.id,
         }
 

@@ -53,6 +53,7 @@ class PayarcBatchReport(models.Model):
         return {
             'date': self.date,
             'journal_id': self.journal_id.id,
+            'ref': self.batch_ref,
             'payarc_batch_id': self.id,
         }
 
