@@ -5,7 +5,30 @@
         <field name="model">released.fund</field>
         <field name="arch" type="xml">
             <form>
-                ABC
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary" states="draft"/>
+                    <button name="action_draft" type="object" string="Set to draft" class="btn-secondary" states="confirm,cancel"
+                            confirm="Reset to draft will cancel the posted entry. Are you sure to continue?"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" states="draft"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_entry" class="oe_stat_button" icon="fa-bars" type="object"
+                                attrs="{'invisible': [('move_count', '=', 0)]}">
+                            <field name="move_count" widget="statinfo" string="Journal Entry"/>
+                        </button>
+                    </div>
+
+                    <group name="top">
+                        <group>
+                            <field name="date" string="Batch Date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="journal_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="transit_account_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
@@ -15,7 +38,13 @@
         <field name="model">released.fund</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="journal_id"/>
+                <field name="journal_id" invisible="1"/>
+                <field name="date"/>
+                <field name="number"/>
+                <field name="amount"/>
+                <field name="transit_account_id"/>
+                <field name="is_reconciled" widget="boolean_toggle"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
