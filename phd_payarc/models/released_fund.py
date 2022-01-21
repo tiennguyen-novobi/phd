@@ -12,8 +12,8 @@ class ReleasedFund(models.Model):
     currency_id = fields.Many2one('res.currency', 'Currency', default=_get_default_currency_id)
 
     date = fields.Date('Date', required=True)
-    name = fields.Char('Number')
-    amount = fields.Monetary('Amount')
+    name = fields.Char('Number', required=True)
+    amount = fields.Monetary('Amount', required=True)
     transit_account_id = fields.Many2one('account.account', string='Transit Account', required=True)
     is_reconciled = fields.Boolean(string='Reconciled')
 
