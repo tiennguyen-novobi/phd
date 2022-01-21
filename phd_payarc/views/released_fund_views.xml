@@ -33,6 +33,7 @@
                             <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="journal_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="transit_account_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
                 </sheet>
