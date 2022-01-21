@@ -24,6 +24,11 @@ class ReleasedFund(models.Model):
     ], string='State', default='draft')
 
     move_ids = fields.One2many('account.move', 'released_fund_id', string='Journal Entries')
+    move_count = fields.Integer(compute='_compute_move_count')
+
+    def _compute_move_count(self):
+        for record in self:
+            record.move_count = len(record.move_ids)
 
     def _prepare_entry_values(self):
         self.ensure_one()
